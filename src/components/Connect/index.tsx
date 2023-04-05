@@ -1,9 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useConnect } from 'wagmi'
-
+import MetamaskLogo from '../../assets/logo/metamask-logo.png'
 import Button from '../Button'
 import './Connect.css'
+import { connect } from 'http2'
 
 export function Connector() {
   const { connectAsync, connectors, error, isLoading, pendingConnector } =
@@ -22,6 +23,11 @@ export function Connector() {
             navigate('/home')
           }}
         >
+          {connector.name === 'MetaMask' && (
+            <>
+              <img src={MetamaskLogo} alt="" /> {connector.name}
+            </>
+          )}
           {connector.name}
           {!connector.ready && ' (unsupported)'}
           {isLoading &&

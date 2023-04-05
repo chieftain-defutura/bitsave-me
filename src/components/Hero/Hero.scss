@@ -1,0 +1,22 @@
+.hero-container {
+  display: flex;
+  padding: 32px 124px 32px 64px;
+  gap: 206px;
+  .hero-content {
+    h1 {
+      font-weight: 700;
+      font-size: 64px;
+      line-height: 77px;
+      letter-spacing: -0.06em;
+      color: #fff;
+
+      span {
+        background: linear-gradient(180deg, #eb7f00 0%, #fea823 100%);
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+  }
+}

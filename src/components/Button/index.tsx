@@ -16,11 +16,9 @@ const Button: React.FC<IButton> = ({
   ...rest
 }) => {
   return (
-    <>
-      <button className={` btn btn-${variant} ${size}`} {...rest}>
-        {children}
-      </button>
-    </>
+    <button className={` btn btn-${variant} ${size}`} {...rest}>
+      {children}
+    </button>
   )
 }
 

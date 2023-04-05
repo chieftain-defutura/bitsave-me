@@ -1,41 +1,66 @@
 import React, { useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Link } from 'react-router-dom'
-
-import { Connector } from '../Connect'
-import Modal from '../Model'
-import './Navigation.css'
+import { useNavigate } from 'react-router-dom'
+import { useConnect } from 'wagmi'
+import './Navigation.scss'
 import useDebounce from 'hooks/useDebounce'
 import Button from 'components/Button'
-
+import MetamaskLogo from '../../assets/logo/metamask-logo.png'
+import WalletConnectLogo from '../../assets/logo/walletconnect-logo.png'
 import { ReactComponent as Logo } from '../../assets/logo/stake-logo.svg'
 
 const Navigation: React.FC = () => {
+  const { connectAsync, connectors, error, isLoading, pendingConnector } =
+    useConnect()
+  const navigate = useNavigate()
   const { address } = useAccount()
   const [open, setOpen] = useState(false)
-  const [inputFocus, setInputFocus] = useState(false)
-  const [searchInput, setSearchInput] = useState('')
-  const debouncedSearchInput = useDebounce(searchInput, 1000)
 
   return (
-    <div className="navigation-container">
-      <div className="container">
-        <div className="container-left">
-          <div className="logo-container">
-            <Link to="/">
-              <Logo />
-            </Link>
-          </div>
-        </div>
-        <div className="container-right">
+    <div className="mx">
+      <div className="header">
+        <Link to="/">
+          <Logo />
+        </Link>
+        <div className="header-container">
           {!address ? (
             <>
-              <Button variant="primary" onClick={() => setOpen(true)}>
+              <Button variant="primary" onClick={() => setOpen((m) => !m)}>
                 Login
               </Button>
-              <Modal isOpen={open} handleClose={() => setOpen(false)}>
-                <Connector />
-              </Modal>
+
+              {open && (
+                <div className="modal">
+                  {connectors.map((connector) => (
+                    <div
+                      key={connector.id}
+                      onClick={async () => {
+                        await connectAsync({ connector })
+                        navigate('/home')
+                      }}
+                    >
+                      {connector.name === 'MetaMask' && (
+                        <div className="modal-content">
+                          <img src={MetamaskLogo} alt="" />
+                          <p>{connector.name}</p>
+                        </div>
+                      )}
+                      {connector.name === 'WalletConnect' && (
+                        <div className="modal-content">
+                          <img src={WalletConnectLogo} alt="" />
+                          <p> {connector.name}</p>
+                        </div>
+                      )}
+                      {!connector.ready && ' (unsupported)'}
+                      {isLoading &&
+                        connector.id === pendingConnector?.id &&
+                        ' (connecting)'}
+                    </div>
+                  ))}
+                  {error && <div style={{ color: 'red' }}>{error.message}</div>}
+                </div>
+              )}
             </>
           ) : (
             <div className="address">
