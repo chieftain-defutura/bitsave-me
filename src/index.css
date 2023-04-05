@@ -7,7 +7,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
+.App code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.App button:disabled {
+  cursor: no-drop;
+}
+
+.App .loading {
+  margin-top: 100px;
+}
+
+.App .error-msg p {
+  margin-top: 180px;
+  text-align: center;
+  color: #fff;
+}
+
+.App a {
+  text-decoration: none;
+  color: inherit;
 }

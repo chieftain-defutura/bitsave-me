@@ -1,14 +1,18 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Button from "./component/Button/Button";
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
 
-function App() {
+import './App.css'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+
+import Navigation from 'components/Navigation'
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <Button varient="secondary" children="button" />
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<Navigation />} />
+    </Routes>
+  )
 }
 
-export default App;
+export default App

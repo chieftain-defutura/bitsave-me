@@ -1,0 +1,35 @@
+.header-nav-container {
+  display: flex;
+  justify-content: center;
+  padding: 23px 10px;
+  color: var(--textColorOne);
+  font-family: var(--montserratFont);
+  margin-left: 28%;
+}
+
+.header-nav-container .header-nav ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 32px;
+}
+
+.header-nav-container .header-nav li {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 17px;
+  cursor: pointer;
+}
+
+.header-nav-container .header-nav li button {
+  height: 35px;
+  width: 114px;
+  border-radius: 5px;
+  background-color: var(--textColorTwo);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--textColorOne);
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+}
