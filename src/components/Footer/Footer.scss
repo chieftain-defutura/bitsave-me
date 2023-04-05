@@ -1,0 +1,42 @@
+.footer-wrapper {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 32px 0;
+  .stake-house-logo {
+    display: flex;
+    justify-content: center;
+    img {
+      max-width: 149px;
+      width: 100%;
+      max-height: 64px;
+      height: 100%;
+    }
+  }
+  .footer-nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 39px;
+    margin: 32px 0;
+    @media (max-width: 380px) {
+      gap: 25px;
+    }
+    a {
+      font-size: 14px;
+    }
+  }
+  .media-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
+  .footer-end {
+    text-align: center;
+    margin-top: 32px;
+
+    p {
+      color: #aaaaaa;
+      font-size: 16px;
+    }
+  }
+}

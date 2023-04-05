@@ -17,7 +17,7 @@ const Button: React.FC<IButton> = ({
 }) => {
   return (
     <>
-      <button className={` btn btn-${variant} ${size}`} {...rest}>
+      <button className={`btn btn-${variant} ${size}`} {...rest}>
         {children}
       </button>
     </>
