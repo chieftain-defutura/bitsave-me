@@ -7,14 +7,17 @@
 .btn-primary {
   padding: 16px 32px;
   font-size: 16px;
-  background: #00ce53;
+  background: linear-gradient(98.86deg, #fea823 -0.11%, #eb7f00 99.89%);
+  border-radius: 8px;
   color: #ffffff;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
 }
 .btn-secondary {
   padding: 8px 32px;
-  background: #02d4f8;
-  color: #ffffff;
+  background: none;
+  box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: linear-gradient(98.86deg, #fea823 -0.11%, #eb7f00 99.89%);
   font-size: 16px;
   filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.1));
 }
