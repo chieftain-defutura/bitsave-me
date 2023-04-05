@@ -2,7 +2,7 @@ import React from 'react'
 import Button from 'components/Button'
 import './Hero.scss'
 
-import Robot from '../../assets/image/robot.png'
+import Robot from '../../assets/images/robot.png'
 const Hero = () => {
   return (
     <div className="mx">
@@ -15,8 +15,11 @@ const Hero = () => {
             Stake your BNB & earn daily 9% for 30 days. Stable & profitable
             yield farming DApp with automated users insurance.
           </p>
-          <Button variant="primary">Deposit</Button>
+          <div className="button">
+            <Button variant="primary">Deposit</Button>
+          </div>
         </div>
+
         <div className="hero-image">
           <img src={Robot} alt="" />
         </div>

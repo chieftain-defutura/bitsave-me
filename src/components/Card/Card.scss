@@ -1,0 +1,35 @@
+.card-wrapper {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 32px 71px;
+  @media (max-width: 875px) {
+    padding: 32px;
+  }
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    @media (max-width: 690px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 518px) {
+      grid-template-columns: 1fr;
+    }
+    .card-content {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      text-align: center;
+      padding: 26px 23px;
+      h5 {
+        font-size: 20px;
+        font-weight: 100;
+        margin-bottom: 28px;
+      }
+      p {
+        color: #aaaaaa;
+        font-size: 16px;
+        margin-top: 11px;
+        line-height: 21px;
+      }
+    }
+  }
+}

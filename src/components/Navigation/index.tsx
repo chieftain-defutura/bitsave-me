@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useConnect } from 'wagmi'
 import './Navigation.scss'
-import useDebounce from 'hooks/useDebounce'
 import Button from 'components/Button'
 import MetamaskLogo from '../../assets/logo/metamask-logo.png'
 import WalletConnectLogo from '../../assets/logo/walletconnect-logo.png'
-import { ReactComponent as Logo } from '../../assets/logo/stake-logo.svg'
+import Logo from '../../assets/images/footer-logo.png'
 
 const Navigation: React.FC = () => {
   const { connectAsync, connectors, error, isLoading, pendingConnector } =
@@ -21,13 +20,13 @@ const Navigation: React.FC = () => {
     <div className="mx">
       <div className="header">
         <Link to="/">
-          <Logo />
+          <img src={Logo} alt="" />
         </Link>
         <div className="header-container">
           {!address ? (
             <>
               <Button variant="primary" onClick={() => setOpen((m) => !m)}>
-                Login
+                Connect Wallet
               </Button>
 
               {open && (

@@ -3,6 +3,10 @@
   padding: 32px 124px 32px 64px;
   gap: 206px;
   .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
     h1 {
       font-weight: 700;
       font-size: 64px;
@@ -17,6 +21,10 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
+    }
+    p {
+      padding: 10px 90px 20px 0;
+      color: #f5f5f5;
     }
   }
 }

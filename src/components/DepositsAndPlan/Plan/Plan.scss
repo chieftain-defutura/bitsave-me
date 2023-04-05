@@ -1,0 +1,29 @@
+.plan-container {
+  background: rgba(17, 17, 17, 0.48);
+  box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  .profit {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 20px 0;
+  }
+  .balance-container {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 30px;
+    padding: 0px 0 20px;
+  }
+  .max-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 0px 0 20px;
+  }
+  .min-max {
+    padding: 20px 0;
+  }
+}
