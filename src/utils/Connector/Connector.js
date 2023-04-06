@@ -1,4 +1,4 @@
-import { createClient, defaultChains, configureChains } from 'wagmi'
+import { createClient, configureChains } from 'wagmi'
 
 import { publicProvider } from 'wagmi/providers/public'
 

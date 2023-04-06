@@ -1,0 +1,163 @@
+.deposits-wrapper {
+  padding: 64px 108px;
+  background: rgba(0, 0, 0, 0.5);
+  @media (max-width: 1024px) {
+    padding: 64px;
+  }
+  @media (max-width: 620px) {
+    padding: 54px 32px;
+  }
+  .deposits-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    place-items: center;
+    @media (max-width: 920px) {
+      grid-template-columns: 1fr;
+    }
+    .deposits-first {
+      h4 {
+        font-size: 48px;
+        font-family: var(--font-semiBold);
+        letter-spacing: -0.06em;
+        @media (max-width: 570px) {
+          font-size: 42px;
+        }
+        @media (max-width: 412px) {
+          font-size: 34px;
+        }
+      }
+      .deposits-media {
+        margin-top: 32px;
+        display: flex;
+        justify-content: center;
+
+        img {
+          max-width: 450px;
+          width: 100%;
+          max-height: 410px;
+          height: 100%;
+        }
+        @media (min-width: 921px) {
+          display: none;
+        }
+      }
+      .box-content {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        max-width: 534px;
+        width: 100%;
+        max-height: 202px;
+        height: 100%;
+        padding: 24px;
+        margin-top: 32px;
+        @media (max-width: 920px) {
+          margin: 0 auto;
+        }
+        @media (max-width: 550px) {
+          max-height: 258px;
+        }
+        @media (max-width: 412px) {
+          max-height: 300px;
+          padding: 24px 18px;
+        }
+
+        .box-flex-content {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          @media (max-width: 412px) {
+            display: block;
+          }
+          input {
+            max-width: 363px;
+            width: 100%;
+            max-height: 48px;
+            height: 100%;
+            border: 1px solid rgba(221, 221, 221, 0.5);
+            border-radius: 5px;
+            background: transparent;
+            color: rgba(170, 170, 170, 0.6);
+            padding: 16px;
+            @media (max-width: 412px) {
+              font-size: 14px;
+            }
+          }
+          .copy-btn {
+            @media (max-width: 412px) {
+              display: flex;
+              justify-content: center;
+              margin-top: 8px;
+              button {
+                padding: 12px 22px;
+              }
+            }
+          }
+        }
+        .referral-content {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          place-items: center;
+          gap: 23px;
+          margin-top: 24px;
+          @media (max-width: 550px) {
+            gap: 10px;
+          }
+          @media (max-width: 550px) {
+            grid-template-columns: 1fr 1fr;
+          }
+          .Claim-btn {
+            @media (max-width: 550px) {
+              display: none;
+            }
+          }
+
+          h5 {
+            font-size: 16px;
+            font-weight: 100;
+            white-space: nowrap;
+            @media (max-width: 412px) {
+              font-size: 14px;
+            }
+          }
+          h1 {
+            font-size: 48px;
+            margin-top: 4px;
+            @media (max-width: 412px) {
+              font-size: 38px;
+            }
+          }
+        }
+        .Claim-btn-media {
+          display: flex;
+          justify-content: center;
+          margin-top: 15px;
+          @media (min-width: 550px) {
+            display: none;
+          }
+        }
+      }
+      .deposit-para {
+        margin-top: 16px;
+        @media (max-width: 920px) {
+          text-align: center;
+          margin-top: 32px;
+        }
+        span {
+          font-size: 20px;
+        }
+      }
+    }
+    .deposits-second {
+      img {
+        max-width: 450px;
+        width: 100%;
+        max-height: 410px;
+        height: 100%;
+      }
+      @media (max-width: 920px) {
+        display: none;
+      }
+    }
+  }
+}

@@ -5,14 +5,19 @@ import Navigation from 'components/Navigation'
 import Card from 'components/Card'
 import Footer from 'components/Footer'
 import TotalBNB from 'components/TotalBNB'
+import StakePlans from 'components/StakePlans'
+import Deposits from 'components/Deposits'
 
-const Home = () => {
+const Home: React.FC = () => {
   return (
-    <div>
+    <div className="bg-img-move">
       <Navigation />
+
       <Hero />
       <TotalBNB />
+      <StakePlans />
       <DepositAndPlan />
+      <Deposits />
       <Card />
       <Footer />
     </div>

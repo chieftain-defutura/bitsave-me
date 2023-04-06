@@ -4,8 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-
-import Home from 'page/Home'
+import Home from 'page'
 
 const App: React.FC = () => {
   return (

@@ -4,7 +4,7 @@ import Deposit from './Deposit'
 
 import './DepositAndPlan.scss'
 
-const DepositAndPlan = () => {
+const DepositAndPlan: React.FC = () => {
   return (
     <div className="deposit-and-plan-container">
       <h1>BNB Stake</h1>

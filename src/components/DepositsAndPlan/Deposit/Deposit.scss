@@ -1,13 +1,34 @@
+.card-2 {
+  @media (max-width: 822px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .deposit-container {
   background: rgba(17, 17, 17, 0.48);
   box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 32px;
   text-align: left;
+  max-width: 408px;
+  width: 100%;
+  max-height: 528px;
+  height: 100%;
+  @media (max-width: 822px) {
+    margin-top: 50px;
+  }
+  h1 {
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 100;
+  }
+
   .deposit {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    // align-items: center;
+    // justify-content: space-between;
     flex-direction: column;
     .details {
       display: flex;
@@ -17,13 +38,22 @@
       gap: 20px;
       padding-top: 30px;
       .content {
-        h2 {
-          font-weight: 500;
-          font-size: 18px;
-          line-height: 21px;
-          text-transform: capitalize;
-          color: #ffffff;
+        .flex-content {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          h2 {
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 21px;
+            text-transform: capitalize;
+            color: #ffffff;
+            @media (max-width: 385px) {
+              font-size: 16px;
+            }
+          }
         }
+
         p {
           padding: 5px 0;
           font-size: 16px;
@@ -31,6 +61,9 @@
           letter-spacing: 0.06em;
           text-transform: capitalize;
           color: #eeeeee;
+          @media (max-width: 385px) {
+            font-size: 14px;
+          }
         }
       }
 
@@ -39,6 +72,19 @@
         align-items: center;
         flex-direction: column;
         gap: 10px;
+        .withdrawal-btn {
+          button {
+            font-size: 16px;
+            background: linear-gradient(
+              98.86deg,
+              #fea823 -0.11%,
+              #eb7f00 99.89%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+        }
       }
     }
   }

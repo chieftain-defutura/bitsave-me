@@ -8,10 +8,8 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 32px;
-    @media (max-width: 690px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    @media (max-width: 518px) {
+
+    @media (max-width: 520px) {
       grid-template-columns: 1fr;
     }
     .card-content {

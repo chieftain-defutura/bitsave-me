@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ethers } from 'ethers'
 
-import Button from 'components/Button'
+import Button from '../../Button/Button'
 import { useAccount, useSigner } from 'wagmi'
 import TokenAbi from '../../../utils/abi/tokenABI.json'
 import StakeAbi from '../../../utils/abi/stakingABI.json'
@@ -23,12 +23,10 @@ const Plan = () => {
   const [tokenAddress, setTokenAddress] = useState(BUSD_TOKEN_ADDRESS)
   const [plan, setPlan] = useState('1')
   const [amount, setAmount] = useState('0')
-  const [canShow, setCanShow] = useState('')
 
-  console.log(tokenAddress)
   const handleApproveToken = async () => {
     try {
-      if (!signerData) return
+      if (!signerData || !address) return
 
       setTransaction({
         loading: true,
@@ -129,7 +127,7 @@ const Plan = () => {
         <button onClick={() => handleApproveToken()}>Approve</button>
 
         <Button
-          variant="primary"
+          varient="primary"
           onClick={() => {
             handlStake()
           }}
