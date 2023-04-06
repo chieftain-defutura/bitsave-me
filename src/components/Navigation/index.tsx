@@ -36,7 +36,6 @@ const Navigation: React.FC = () => {
                       key={connector.id}
                       onClick={async () => {
                         await connectAsync({ connector })
-                        navigate('/home')
                       }}
                     >
                       {connector.name === 'MetaMask' && (

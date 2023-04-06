@@ -1,8 +1,82 @@
-import React from 'react'
-import Button from 'components/Button'
+import React, { useState } from 'react'
+import { ethers } from 'ethers'
 
+import Button from 'components/Button'
+import { useContractReads, erc20ABI, useAccount, useSigner } from 'wagmi'
+
+import { useTransactionModal } from 'context/TransactionContext'
+import { PENDING_MESSAGE, SUCCESS_MESSAGE } from 'utils/messaging'
 import './Plan.scss'
+import {
+  BUSD_TOKEN_ADDRESS,
+  STAKE_CONTRACT_ADDRESS,
+  USDT_TOKEN_ADDRESS,
+} from 'utils/contractAddress'
+
+interface IContractData {
+  title: string
+  contractAddress: string
+  tokenAddress?: string
+  allowance?: number
+}
+
+const ContractData = [
+  {
+    title: 'BUSD',
+    tokenAddress: BUSD_TOKEN_ADDRESS,
+    allowance: 0,
+  },
+  {
+    title: 'USDT',
+    tokenAddress: USDT_TOKEN_ADDRESS,
+    allowance: 0,
+  },
+]
+
 const Plan = () => {
+  const { setTransaction, loading } = useTransactionModal()
+  const { address } = useAccount()
+  const { data: signerData } = useSigner()
+  const [tokenAddress, setTokenAddress] = useState(BUSD_TOKEN_ADDRESS)
+  const [canShow, setCanShow] = useState('')
+  console.log(tokenAddress)
+  const handleApproveToken = async () => {
+    try {
+      if (!signerData) return
+
+      setTransaction({
+        loading: true,
+        status: 'pending',
+        message: PENDING_MESSAGE,
+      })
+      const nftContract = new ethers.Contract(
+        tokenAddress,
+        erc20ABI,
+        signerData,
+      )
+      const tx = await nftContract.approve(
+        STAKE_CONTRACT_ADDRESS,
+        ethers.constants.MaxUint256,
+      )
+      await tx.wait()
+      setTransaction({
+        loading: true,
+        status: 'success',
+        message: SUCCESS_MESSAGE,
+      })
+    } catch (error) {
+      console.log(error)
+      setTransaction({ loading: true, status: 'error' })
+    }
+  }
+
+  const handlStake = async () => {
+    try {
+      console.log('')
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div className="plan-container">
       <div className="plan-dropdown">
@@ -29,9 +103,13 @@ const Plan = () => {
       </div>
       <div className="balance-container">
         <div className="busd-dropdown">
-          <select name="" id="">
-            <option value="">BUSD</option>
-            <option value="">USD</option>
+          <select
+            name=""
+            id=""
+            onChange={(e) => setTokenAddress(e.target.value)}
+          >
+            <option value={BUSD_TOKEN_ADDRESS}>BUSD</option>
+            <option value={USDT_TOKEN_ADDRESS}>USDT</option>
           </select>
         </div>
         <div className="balance">
@@ -41,6 +119,22 @@ const Plan = () => {
       <div className="max-container">
         <p>0</p>
         <h4>Max</h4>
+      </div>
+
+      <div className="button">
+        {canShow ? (
+          <button onClick={() => handleApproveToken()}>Approve</button>
+        ) : (
+          <button
+            className="btn-mint"
+            onClick={() => {
+              handlStake()
+            }}
+            disabled={loading}
+          >
+            Create
+          </button>
+        )}
       </div>
       <Button variant="primary">Stake</Button>
       <div className="min-max">
