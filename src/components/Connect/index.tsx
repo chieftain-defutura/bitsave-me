@@ -2,9 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useConnect } from 'wagmi'
 import MetamaskLogo from '../../assets/logo/metamask-logo.png'
-import Button from '../Button'
 import './Connect.css'
-import { connect } from 'http2'
+import Button from 'components/Button/Button'
 
 export function Connector() {
   const { connectAsync, connectors, error, isLoading, pendingConnector } =
@@ -15,7 +14,7 @@ export function Connector() {
     <div className="connector">
       {connectors.map((connector) => (
         <Button
-          variant="primary"
+          varient="primary"
           disabled={!connector.ready}
           key={connector.id}
           onClick={async () => {

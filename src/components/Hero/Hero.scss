@@ -2,6 +2,11 @@
   display: flex;
   padding: 32px 124px 32px 64px;
   gap: 206px;
+  @media (max-width: 1024px) {
+    gap: 0px;
+    padding: 42px;
+  }
+
   .hero-content {
     display: flex;
     flex-direction: column;
@@ -13,6 +18,12 @@
       line-height: 77px;
       letter-spacing: -0.06em;
       color: #fff;
+      @media (max-width: 720px) {
+        font-size: 52px;
+      }
+      @media (max-width: 720px) {
+        font-size: 48px;
+      }
 
       span {
         background: linear-gradient(180deg, #eb7f00 0%, #fea823 100%);
@@ -22,9 +33,46 @@
         background-clip: text;
       }
     }
+    .hero-robot-img-media {
+      margin-top: 20px;
+      img {
+        width: 100%;
+      }
+      @media (min-width: 591px) {
+        display: none;
+      }
+    }
     p {
       padding: 10px 90px 20px 0;
       color: #f5f5f5;
+      font-size: 20px;
+      line-height: 28px;
+      @media (max-width: 1024px) {
+        padding: 10px 0;
+      }
+      @media (max-width: 720px) {
+        font-size: 18px;
+      }
+    }
+    .deposit-btn {
+      button {
+        padding: 18px 40px;
+        font-size: 20px;
+        @media (max-width: 720px) {
+          padding: 12px 22px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  .hero-robot-img {
+    @media (max-width: 820px) {
+      img {
+        width: 300px;
+      }
+    }
+    @media (max-width: 590px) {
+      display: none;
     }
   }
 }
