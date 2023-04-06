@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { ethers } from 'ethers'
 
 import Button from 'components/Button'
-import { useContractReads, erc20ABI, useAccount, useSigner } from 'wagmi'
+import { useAccount, useSigner } from 'wagmi'
+import TokenAbi from '../../../utils/abi/tokenABI.json'
+import StakeAbi from '../../../utils/abi/stakingABI.json'
 
 import { useTransactionModal } from 'context/TransactionContext'
 import { PENDING_MESSAGE, SUCCESS_MESSAGE } from 'utils/messaging'
@@ -12,33 +14,17 @@ import {
   STAKE_CONTRACT_ADDRESS,
   USDT_TOKEN_ADDRESS,
 } from 'utils/contractAddress'
-
-interface IContractData {
-  title: string
-  contractAddress: string
-  tokenAddress?: string
-  allowance?: number
-}
-
-const ContractData = [
-  {
-    title: 'BUSD',
-    tokenAddress: BUSD_TOKEN_ADDRESS,
-    allowance: 0,
-  },
-  {
-    title: 'USDT',
-    tokenAddress: USDT_TOKEN_ADDRESS,
-    allowance: 0,
-  },
-]
+import { parseUnits } from 'ethers/lib/utils.js'
 
 const Plan = () => {
-  const { setTransaction, loading } = useTransactionModal()
   const { address } = useAccount()
   const { data: signerData } = useSigner()
+  const { setTransaction, loading } = useTransactionModal()
   const [tokenAddress, setTokenAddress] = useState(BUSD_TOKEN_ADDRESS)
+  const [plan, setPlan] = useState('1')
+  const [amount, setAmount] = useState('0')
   const [canShow, setCanShow] = useState('')
+
   console.log(tokenAddress)
   const handleApproveToken = async () => {
     try {
@@ -51,7 +37,7 @@ const Plan = () => {
       })
       const nftContract = new ethers.Contract(
         tokenAddress,
-        erc20ABI,
+        TokenAbi,
         signerData,
       )
       const tx = await nftContract.approve(
@@ -72,19 +58,37 @@ const Plan = () => {
 
   const handlStake = async () => {
     try {
-      console.log('')
-    } catch (error) {
-      console.log(error)
+      if (!tokenAddress || !signerData) return
+      const nftContract = new ethers.Contract(
+        STAKE_CONTRACT_ADDRESS,
+        StakeAbi,
+        signerData,
+      )
+      const tx = await nftContract.stake(
+        plan,
+        parseUnits(amount, '18'),
+        tokenAddress,
+        '',
+      )
+      await tx.wait()
+      setTransaction({ loading: true, status: 'success' })
+      setTimeout(() => {
+        window.location.reload()
+      }, 3000)
+    } catch (error: any) {
+      console.log(error.reason)
+      setTransaction({ loading: true, status: 'error', message: error.reason })
     }
   }
   return (
     <div className="plan-container">
       <div className="plan-dropdown">
         <h3>PLAN</h3>
-        <select name="" id="">
-          <option value="">30days</option>
-          <option value="">60days</option>
-          <option value="">90days</option>
+        <select name="" id="" onChange={(e) => setPlan(e.target.value)}>
+          <option value="1">30days</option>
+          <option value="2">60days</option>
+          <option value="3">90days</option>
+          <option value="4">120days</option>
         </select>
       </div>
       <div className="profit">
@@ -117,26 +121,24 @@ const Plan = () => {
         </div>
       </div>
       <div className="max-container">
-        <p>0</p>
+        <input type="text" onChange={(e) => setAmount(e.target.value)} />
         <h4>Max</h4>
       </div>
 
       <div className="button">
-        {canShow ? (
-          <button onClick={() => handleApproveToken()}>Approve</button>
-        ) : (
-          <button
-            className="btn-mint"
-            onClick={() => {
-              handlStake()
-            }}
-            disabled={loading}
-          >
-            Create
-          </button>
-        )}
+        <button onClick={() => handleApproveToken()}>Approve</button>
+
+        <Button
+          variant="primary"
+          onClick={() => {
+            handlStake()
+          }}
+          disabled={loading}
+        >
+          Stake
+        </Button>
       </div>
-      <Button variant="primary">Stake</Button>
+
       <div className="min-max">
         <p>Min: 0.01, Max:100</p>
       </div>
