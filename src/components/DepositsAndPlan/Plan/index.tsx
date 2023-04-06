@@ -5,7 +5,6 @@ import Button from '../../Button/Button'
 import { useAccount, useSigner } from 'wagmi'
 import TokenAbi from '../../../utils/abi/tokenABI.json'
 import StakeAbi from '../../../utils/abi/stakingABI.json'
-
 import { useTransactionModal } from 'context/TransactionContext'
 import { PENDING_MESSAGE, SUCCESS_MESSAGE } from 'utils/messaging'
 import './Plan.scss'
@@ -54,20 +53,29 @@ const Plan = () => {
     }
   }
 
+  console.log(plan)
+  console.log(amount)
+  console.log(tokenAddress)
+  // console.log(refferer)
+
   const handlStake = async () => {
     try {
-      if (!tokenAddress || !signerData) return
-      const nftContract = new ethers.Contract(
+      if (!signerData || !address) return
+
+      const contract = new ethers.Contract(
         STAKE_CONTRACT_ADDRESS,
         StakeAbi,
         signerData,
       )
-      const tx = await nftContract.stake(
+      const refferer = await contract.getReferrerAddress(address)
+
+      const tx = await contract.stake(
         plan,
         parseUnits(amount, '18'),
         tokenAddress,
-        '',
+        refferer,
       )
+
       await tx.wait()
       setTransaction({ loading: true, status: 'success' })
       setTimeout(() => {
@@ -124,7 +132,9 @@ const Plan = () => {
       </div>
 
       <div className="button">
-        <button onClick={() => handleApproveToken()}>Approve</button>
+        <Button varient="secondary" onClick={() => handleApproveToken()}>
+          Approve
+        </Button>
 
         <Button
           varient="primary"
