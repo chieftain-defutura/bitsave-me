@@ -27,15 +27,18 @@ const Deposits: React.FC = () => {
                   <Button varient="primary">Copy</Button>
                 </div>
               </div>
+
+              <div className="total-referrals">
+                <h5>Total REFERRALS</h5>
+                <h1>0</h1>
+              </div>
+
               <div className="referral-content">
                 <div>
                   <h5>Total REFERRAL EARNED</h5>
                   <h1>0.000</h1>
                 </div>
-                <div>
-                  <h5>Total REFERRALS</h5>
-                  <h1>0</h1>
-                </div>
+
                 <div className="Claim-btn">
                   <Button varient="secondary">Claim</Button>
                 </div>

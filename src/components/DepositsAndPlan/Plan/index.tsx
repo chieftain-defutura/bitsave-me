@@ -5,6 +5,8 @@ import Button from '../../Button/Button'
 import { useAccount, useSigner } from 'wagmi'
 import TokenAbi from '../../../utils/abi/tokenABI.json'
 import StakeAbi from '../../../utils/abi/stakingABI.json'
+import USDCoin from '../../../assets/icons/usd-coin.svg'
+import ChevronDown from '../../../assets/icons/chevron-down.svg'
 
 import { useTransactionModal } from 'context/TransactionContext'
 import { PENDING_MESSAGE, SUCCESS_MESSAGE } from 'utils/messaging'
@@ -16,7 +18,7 @@ import {
 } from 'utils/contractAddress'
 import { parseUnits } from 'ethers/lib/utils.js'
 
-const Plan = () => {
+const Plan: React.FC = () => {
   const { address } = useAccount()
   const { data: signerData } = useSigner()
   const { setTransaction, loading } = useTransactionModal()
@@ -104,7 +106,13 @@ const Plan = () => {
         </div>
       </div>
       <div className="balance-container">
-        <div className="busd-dropdown">
+        <div className="drop-down">
+          <img src={USDCoin} alt="" />
+          <p>BUSD</p>
+
+          <img src={ChevronDown} alt="" className="chevron-down" />
+        </div>
+        {/* <div className="busd-dropdown">
           <select
             name=""
             id=""
@@ -113,14 +121,14 @@ const Plan = () => {
             <option value={BUSD_TOKEN_ADDRESS}>BUSD</option>
             <option value={USDT_TOKEN_ADDRESS}>USDT</option>
           </select>
-        </div>
+        </div> */}
         <div className="balance">
           <p>Balance:0.00002</p>
         </div>
       </div>
       <div className="max-container">
         <input type="text" onChange={(e) => setAmount(e.target.value)} />
-        <h4>Max</h4>
+        {/* <h4>Max</h4> */}
       </div>
 
       <div className="button">
