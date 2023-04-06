@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import { useConnect } from 'wagmi'
 import './Navigation.scss'
 import MetamaskLogo from '../../assets/logo/metamask-logo.png'
@@ -12,7 +12,7 @@ import Button from 'components/Button/Button'
 const Navigation: React.FC = () => {
   const { connectAsync, connectors, error, isLoading, pendingConnector } =
     useConnect()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const { address } = useAccount()
   const [open, setOpen] = useState(false)
 
@@ -38,7 +38,6 @@ const Navigation: React.FC = () => {
                       key={connector.id}
                       onClick={async () => {
                         await connectAsync({ connector })
-                        navigate('/home')
                       }}
                     >
                       {connector.name === 'MetaMask' && (
