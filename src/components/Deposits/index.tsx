@@ -8,6 +8,7 @@ import { useAccount, useSigner } from 'wagmi'
 import { claimReferralBonus, getUserReferralData } from 'utils/userMethods'
 import { tokensLists } from 'constants/tokenList'
 import { useTransactionModal } from 'context/TransactionContext'
+import { userStore } from 'store/userStore'
 
 const getBaseUrl = () => {
   const splitedurl = window.location.href.split('://')
@@ -31,6 +32,7 @@ const Deposits: React.FC = () => {
       rewards: number
     }[]
   } | null>(null)
+  const userStakedData = userStore((state) => state.userStakedData)
 
   useEffect(() => {
     if (!copied) return
@@ -88,7 +90,11 @@ const Deposits: React.FC = () => {
                 <input
                   type="search"
                   readOnly
-                  value={`${getBaseUrl()}?ref=${address}`}
+                  value={
+                    userStakedData.length > 0
+                      ? `${getBaseUrl()}?ref=${address}`
+                      : ''
+                  }
                   placeholder="You will get your ref link after investing"
                 />
                 <div className="copy-btn">
@@ -96,7 +102,12 @@ const Deposits: React.FC = () => {
                     text={`${getBaseUrl()}?ref=${address}`}
                     onCopy={() => setCopied(true)}
                   >
-                    <Button varient="primary">Copy</Button>
+                    <Button
+                      varient="primary"
+                      disabled={userStakedData.length <= 0}
+                    >
+                      {copied ? 'Copied' : 'Copy'}
+                    </Button>
                   </CopyToClipboard>
                 </div>
               </div>

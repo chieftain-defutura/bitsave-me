@@ -136,91 +136,95 @@ const Plan: React.FC = () => {
   }
 
   return (
-    <div className="plan-container">
-      <div className="plan-dropdown">
-        <h3>PLAN</h3>
-        <select name="" id="" onChange={(e) => setPlan(e.target.value)}>
-          <option value="1">30days</option>
-          <option value="2">60days</option>
-          <option value="3">90days</option>
-          <option value="4">120days</option>
-        </select>
-      </div>
-      <div className="profit">
-        <div className="profit-content">
-          <h3>daily profit</h3>
-          <h1>
-            <span>1%</span>
-          </h1>
+    <div className="card-1">
+      <div className="plan-container">
+        <div className="plan-dropdown">
+          <h3>PLAN</h3>
+          <select name="" id="" onChange={(e) => setPlan(e.target.value)}>
+            <option value="1">30days</option>
+            <option value="2">60days</option>
+            <option value="3">90days</option>
+            <option value="4">120days</option>
+          </select>
         </div>
-        <div className="profit-content">
-          <h3>Total profit</h3>
-          <h1>
-            <span>30%</span>
-          </h1>
-        </div>
-      </div>
-      <div className="balance-container">
-        <div className="dropdown-container">
-          <div className="drop-down" onClick={() => setDropdown((d) => !d)}>
-            <img src={selectedToken.logo} alt="" />
-            <p>{selectedToken.name}</p>
-
-            <img src={ChevronDown} alt="" className="chevron-down" />
+        <div className="profit">
+          <div className="profit-content">
+            <h3>daily profit</h3>
+            <h1>
+              <span>1%</span>
+            </h1>
           </div>
-          <div className={dropdown ? 'dropdown-list active' : 'dropdown-list'}>
-            {tokens.map((token) => (
-              <div
-                key={token.tokenAddress}
-                onClick={() => {
-                  setSelectedToken(token)
-                  setDropdown(false)
-                }}
-              >
-                <img src={token.logo} alt="" />
-                <p>{token.name}</p>
-              </div>
-            ))}
+          <div className="profit-content">
+            <h3>Total profit</h3>
+            <h1>
+              <span>30%</span>
+            </h1>
           </div>
         </div>
-        <div className="balance">
-          <p>
-            Balance:{' '}
-            {new Intl.NumberFormat('en-US', {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 4,
-            }).format(selectedToken.balance)}
-            &nbsp;{selectedToken.name}
-          </p>
+        <div className="balance-container">
+          <div className="dropdown-container">
+            <div className="drop-down" onClick={() => setDropdown((d) => !d)}>
+              <img src={selectedToken.logo} alt="" />
+              <p>{selectedToken.name}</p>
+
+              <img src={ChevronDown} alt="" className="chevron-down" />
+            </div>
+            <div
+              className={dropdown ? 'dropdown-list active' : 'dropdown-list'}
+            >
+              {tokens.map((token) => (
+                <div
+                  key={token.tokenAddress}
+                  onClick={() => {
+                    setSelectedToken(token)
+                    setDropdown(false)
+                  }}
+                >
+                  <img src={token.logo} alt="" />
+                  <p>{token.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="balance">
+            <p>
+              Balance:{' '}
+              {new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 4,
+              }).format(selectedToken.balance)}
+              &nbsp;{selectedToken.name}
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="max-container">
-        <input
-          type="text"
-          placeholder="0"
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <button>max</button>
-      </div>
+        <div className="max-container">
+          <input
+            type="text"
+            placeholder="0"
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <button>max</button>
+        </div>
 
-      {!selectedToken.isApproved ? (
-        <Button varient="secondary" onClick={() => handleApproveToken()}>
-          Approve
-        </Button>
-      ) : (
-        <Button
-          varient="primary"
-          onClick={() => {
-            handlStake()
-          }}
-          disabled={loading}
-        >
-          Stake
-        </Button>
-      )}
+        {!selectedToken.isApproved ? (
+          <Button varient="secondary" onClick={() => handleApproveToken()}>
+            Approve
+          </Button>
+        ) : (
+          <Button
+            varient="primary"
+            onClick={() => {
+              handlStake()
+            }}
+            disabled={loading}
+          >
+            Stake
+          </Button>
+        )}
 
-      <div className="min-max">
-        <p>Min: 10, Max:100000</p>
+        <div className="min-max">
+          <p>Min: 10, Max:100000</p>
+        </div>
       </div>
     </div>
   )

@@ -1,9 +1,6 @@
 .card-1 {
-  @media (max-width: 822px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: center;
 }
 
 .plan-container {
@@ -12,10 +9,9 @@
   border-radius: 12px;
   padding: 32px;
   text-align: center;
-  max-width: 408px;
+  max-width: 400px;
   width: 100%;
   height: 100%;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 15px;

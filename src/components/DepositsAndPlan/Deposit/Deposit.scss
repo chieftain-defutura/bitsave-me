@@ -1,22 +1,20 @@
 .card-2 {
-  @media (max-width: 822px) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .deposit-container {
   background: rgba(17, 17, 17, 0.48);
   box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
   padding: 32px;
   text-align: left;
-  max-width: 408px;
-  width: 100%;
+
   max-height: 528px;
   overflow-y: auto;
-  margin: 0 auto;
   height: 100%;
 
   h1 {
