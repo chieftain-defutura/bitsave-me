@@ -21,6 +21,16 @@
   gap: 15px;
 
   .plan-dropdown {
+    select {
+      width: 100%;
+      padding: 16px;
+      background-color: transparent;
+      border: 1px solid #777777;
+      border-radius: 10px;
+      color: #aaaaaa;
+      font-size: 20px;
+      line-height: 24px;
+    }
     h3 {
       text-align: left;
       font-weight: 100;
