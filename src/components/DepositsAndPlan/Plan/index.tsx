@@ -1,30 +1,100 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 
 import Button from '../../Button/Button'
 import { useAccount, useSigner } from 'wagmi'
 import TokenAbi from '../../../utils/abi/tokenABI.json'
-import StakeAbi from '../../../utils/abi/stakingABI.json'
 import USDCoin from '../../../assets/icons/usd-coin.svg'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
 
 import { useTransactionModal } from 'context/TransactionContext'
-import { PENDING_MESSAGE, SUCCESS_MESSAGE } from 'utils/messaging'
 import './Plan.scss'
 import {
   BUSD_TOKEN_ADDRESS,
   STAKE_CONTRACT_ADDRESS,
   USDT_TOKEN_ADDRESS,
 } from 'utils/contractAddress'
-import { parseUnits } from 'ethers/lib/utils.js'
+import {
+  getIsApproved,
+  getUserContractData,
+  getUserTokenBalance,
+  stake,
+} from 'utils/userMethods'
+import { userStore } from 'store/userStore'
+
+const tokensLists = [
+  {
+    tokenAddress: BUSD_TOKEN_ADDRESS,
+    isApproved: false,
+    name: 'BUSD',
+    logo: USDCoin,
+    balance: 0,
+  },
+  {
+    tokenAddress: USDT_TOKEN_ADDRESS,
+    isApproved: false,
+    name: 'USDT',
+    logo: USDCoin,
+    balance: 0,
+  },
+]
 
 const Plan: React.FC = () => {
   const { address } = useAccount()
   const { data: signerData } = useSigner()
   const { setTransaction, loading } = useTransactionModal()
-  const [tokenAddress, setTokenAddress] = useState(BUSD_TOKEN_ADDRESS)
+  const [tokens, setTokens] = useState<typeof tokensLists>([])
+  const [selectedToken, setSelectedToken] = useState(tokensLists[0])
   const [plan, setPlan] = useState('1')
   const [amount, setAmount] = useState('0')
+  const referrer = userStore((state) => state.referrer)
+  const updateStatus = userStore((state) => state.updateStatus)
+  const updateUserData = userStore((state) => state.updateUserData)
+
+  const handleGetData = useCallback(async () => {
+    if (address && signerData) {
+      try {
+        updateStatus(true)
+        updateUserData(await getUserContractData(address, signerData))
+        const modifiedTokens = await Promise.all(
+          tokensLists.map(async (token) => {
+            const allowance = await getIsApproved(
+              address,
+              signerData,
+              token.tokenAddress,
+            )
+            const balance = await getUserTokenBalance(
+              address,
+              signerData,
+              token.tokenAddress,
+            )
+            return {
+              ...token,
+              isApproved: allowance > 0,
+              balance,
+            }
+          }),
+        )
+        setTokens(modifiedTokens)
+        setSelectedToken(modifiedTokens[0])
+      } catch (error: any) {
+        console.log(error)
+      } finally {
+        updateStatus(false)
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, signerData])
+
+  const handleSetDefaultData = useCallback(() => {
+    setSelectedToken(tokensLists[0])
+  }, [])
+
+  useEffect(() => {
+    handleGetData()
+    handleSetDefaultData()
+  }, [handleGetData, handleSetDefaultData])
 
   const handleApproveToken = async () => {
     try {
@@ -33,14 +103,13 @@ const Plan: React.FC = () => {
       setTransaction({
         loading: true,
         status: 'pending',
-        message: PENDING_MESSAGE,
       })
-      const nftContract = new ethers.Contract(
-        tokenAddress,
+      const tokenContract = new ethers.Contract(
+        selectedToken.tokenAddress,
         TokenAbi,
         signerData,
       )
-      const tx = await nftContract.approve(
+      const tx = await tokenContract.approve(
         STAKE_CONTRACT_ADDRESS,
         ethers.constants.MaxUint256,
       )
@@ -48,7 +117,6 @@ const Plan: React.FC = () => {
       setTransaction({
         loading: true,
         status: 'success',
-        message: SUCCESS_MESSAGE,
       })
     } catch (error) {
       console.log(error)
@@ -56,30 +124,18 @@ const Plan: React.FC = () => {
     }
   }
 
-  console.log(plan)
-  console.log(amount)
-  console.log(tokenAddress)
-  // console.log(refferer)
-
   const handlStake = async () => {
     try {
       if (!signerData || !address) return
 
-      const contract = new ethers.Contract(
-        STAKE_CONTRACT_ADDRESS,
-        StakeAbi,
+      await stake(
+        address,
         signerData,
-      )
-      const refferer = await contract.getReferrerAddress(address)
-
-      const tx = await contract.stake(
         plan,
-        parseUnits(amount, '18'),
-        tokenAddress,
-        refferer,
+        amount,
+        selectedToken.tokenAddress,
+        referrer,
       )
-
-      await tx.wait()
       setTransaction({ loading: true, status: 'success' })
       setTimeout(() => {
         window.location.reload()
@@ -89,6 +145,7 @@ const Plan: React.FC = () => {
       setTransaction({ loading: true, status: 'error', message: error.reason })
     }
   }
+
   return (
     <div className="plan-container">
       <div className="plan-dropdown">
@@ -115,24 +172,34 @@ const Plan: React.FC = () => {
         </div>
       </div>
       <div className="balance-container">
-        <div className="drop-down">
-          <img src={USDCoin} alt="" />
-          <p>BUSD</p>
+        <div className="dropdown-container">
+          <div className="drop-down">
+            <img src={selectedToken.logo} alt="" />
+            <p>{selectedToken.name}</p>
 
-          <img src={ChevronDown} alt="" className="chevron-down" />
+            <img src={ChevronDown} alt="" className="chevron-down" />
+          </div>
+          <div className="dropdown-list">
+            {tokens.map((token) => (
+              <div
+                key={token.tokenAddress}
+                onClick={() => setSelectedToken(token)}
+              >
+                <img src={token.logo} alt="" />
+                <p>{token.name}</p>
+              </div>
+            ))}
+          </div>
         </div>
-        {/* <div className="busd-dropdown">
-          <select
-            name=""
-            id=""
-            onChange={(e) => setTokenAddress(e.target.value)}
-          >
-            <option value={BUSD_TOKEN_ADDRESS}>BUSD</option>
-            <option value={USDT_TOKEN_ADDRESS}>USDT</option>
-          </select>
-        </div> */}
         <div className="balance">
-          <p>Balance:0.00002</p>
+          <p>
+            Balance:{' '}
+            {new Intl.NumberFormat('en-US', {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 4,
+            }).format(selectedToken.balance)}
+            &nbsp;{selectedToken.name}
+          </p>
         </div>
       </div>
       <div className="max-container">
@@ -141,23 +208,25 @@ const Plan: React.FC = () => {
       </div>
 
       <div className="button">
-        <Button varient="secondary" onClick={() => handleApproveToken()}>
-          Approve
-        </Button>
-
-        <Button
-          varient="primary"
-          onClick={() => {
-            handlStake()
-          }}
-          disabled={loading}
-        >
-          Stake
-        </Button>
+        {!selectedToken.isApproved ? (
+          <Button varient="secondary" onClick={() => handleApproveToken()}>
+            Approve
+          </Button>
+        ) : (
+          <Button
+            varient="primary"
+            onClick={() => {
+              handlStake()
+            }}
+            disabled={loading}
+          >
+            Stake
+          </Button>
+        )}
       </div>
 
       <div className="min-max">
-        <p>Min: 0.01, Max:100</p>
+        <p>Min: 10, Max:100000</p>
       </div>
     </div>
   )
