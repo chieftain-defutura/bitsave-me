@@ -4,6 +4,7 @@ import tokenAbi from './abi/tokenABI.json'
 import stakingAbi from './abi/stakingABI.json'
 import { formatEther } from 'ethers/lib/utils.js'
 import { Status } from 'constants/types'
+import { tokensLists } from 'constants/tokenList'
 
 export const loadTokenContract = (
   signer: ethers.Signer,
@@ -140,5 +141,34 @@ export const getUserContractData = async (
     user: String(address),
     referrer: String(referrer),
     userStakedData: modifiedUserStakedData,
+  }
+}
+
+export const getUserReferralData = async (
+  address: string,
+  provider: ethers.Signer,
+  tokenList: typeof tokensLists,
+) => {
+  const stakingContract = loadStakingContract(address, provider)
+
+  const referralList = await stakingContract.getUserReferralList(address)
+
+  const referralRewards = await Promise.all(
+    tokenList.map(async (token) => {
+      const rewards = await stakingContract.getUserReferralRewards(
+        address,
+        token.tokenAddress,
+      )
+
+      return {
+        rewards: Number(ethers.utils.formatEther(rewards).toString()),
+        ...token,
+      }
+    }),
+  )
+
+  return {
+    referralList,
+    referralRewards,
   }
 }

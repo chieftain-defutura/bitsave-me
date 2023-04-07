@@ -4,16 +4,11 @@ import { ethers } from 'ethers'
 import Button from '../../Button/Button'
 import { useAccount, useSigner } from 'wagmi'
 import TokenAbi from '../../../utils/abi/tokenABI.json'
-import USDCoin from '../../../assets/icons/usd-coin.svg'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
 
 import { useTransactionModal } from 'context/TransactionContext'
 import './Plan.scss'
-import {
-  BUSD_TOKEN_ADDRESS,
-  STAKE_CONTRACT_ADDRESS,
-  USDT_TOKEN_ADDRESS,
-} from 'utils/contractAddress'
+import { STAKE_CONTRACT_ADDRESS } from 'utils/contractAddress'
 import {
   getIsApproved,
   getUserContractData,
@@ -21,23 +16,8 @@ import {
   stake,
 } from 'utils/userMethods'
 import { userStore } from 'store/userStore'
-
-const tokensLists = [
-  {
-    tokenAddress: BUSD_TOKEN_ADDRESS,
-    isApproved: false,
-    name: 'BUSD',
-    logo: USDCoin,
-    balance: 0,
-  },
-  {
-    tokenAddress: USDT_TOKEN_ADDRESS,
-    isApproved: false,
-    name: 'USDT',
-    logo: USDCoin,
-    balance: 0,
-  },
-]
+import { useSearchParams } from 'react-router-dom'
+import { tokensLists } from 'constants/tokenList'
 
 const Plan: React.FC = () => {
   const { address } = useAccount()
@@ -51,6 +31,8 @@ const Plan: React.FC = () => {
   const referrer = userStore((state) => state.referrer)
   const updateStatus = userStore((state) => state.updateStatus)
   const updateUserData = userStore((state) => state.updateUserData)
+  const [searchParams] = useSearchParams()
+  const referral_address = searchParams.get('ref')
 
   const handleGetData = useCallback(async () => {
     if (address && signerData) {
@@ -129,13 +111,19 @@ const Plan: React.FC = () => {
     try {
       if (!signerData || !address) return
 
+      let ref = referrer
+
+      if (referral_address) {
+        ref = referral_address
+      }
+
       await stake(
         address,
         signerData,
         plan,
         amount,
         selectedToken.tokenAddress,
-        referrer,
+        ref,
       )
       setTransaction({ loading: true, status: 'success' })
       setTimeout(() => {
@@ -162,13 +150,13 @@ const Plan: React.FC = () => {
         <div className="profit-content">
           <h3>daily profit</h3>
           <h1>
-            <span>9%</span>
+            <span>1%</span>
           </h1>
         </div>
         <div className="profit-content">
           <h3>Total profit</h3>
           <h1>
-            <span>170%</span>
+            <span>30%</span>
           </h1>
         </div>
       </div>
