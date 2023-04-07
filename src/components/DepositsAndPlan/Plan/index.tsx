@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ethers } from 'ethers'
 
 import Button from '../../Button/Button'
@@ -7,6 +7,7 @@ import TokenAbi from '../../../utils/abi/tokenABI.json'
 import StakeAbi from '../../../utils/abi/stakingABI.json'
 import USDCoin from '../../../assets/icons/usd-coin.svg'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
+import autoAnimate from '@formkit/auto-animate'
 
 import { useTransactionModal } from 'context/TransactionContext'
 import { PENDING_MESSAGE, SUCCESS_MESSAGE } from 'utils/messaging'
@@ -25,6 +26,14 @@ const Plan: React.FC = () => {
   const [tokenAddress, setTokenAddress] = useState(BUSD_TOKEN_ADDRESS)
   const [plan, setPlan] = useState('1')
   const [amount, setAmount] = useState('0')
+  const [dropDownOpen, setDropDownOpen] = useState(false)
+
+  //auto animate
+  const parent = useRef(null)
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current)
+  }, [parent])
 
   const handleApproveToken = async () => {
     try {
@@ -84,12 +93,15 @@ const Plan: React.FC = () => {
     <div className="plan-container">
       <div className="plan-dropdown">
         <h3>PLAN</h3>
-        <select name="" id="" onChange={(e) => setPlan(e.target.value)}>
-          <option value="1">30days</option>
-          <option value="2">60days</option>
-          <option value="3">90days</option>
-          <option value="4">120days</option>
-        </select>
+
+        <div className="days-drop-down">
+          <select name="" id="" onChange={(e) => setPlan(e.target.value)}>
+            <option value="1">30days</option>
+            <option value="2">60days</option>
+            <option value="3">90days</option>
+            <option value="4">120days</option>
+          </select>
+        </div>
       </div>
       <div className="profit">
         <div className="profit-content">
@@ -106,22 +118,29 @@ const Plan: React.FC = () => {
         </div>
       </div>
       <div className="balance-container">
-        <div className="drop-down">
-          <img src={USDCoin} alt="" />
-          <p>BUSD</p>
-
-          <img src={ChevronDown} alt="" className="chevron-down" />
-        </div>
-        {/* <div className="busd-dropdown">
-          <select
-            name=""
-            id=""
-            onChange={(e) => setTokenAddress(e.target.value)}
+        <div className="drop-down" onClick={() => setTokenAddress('')}>
+          <div
+            className="drop-down-select"
+            onClick={() => setDropDownOpen(!dropDownOpen)}
           >
-            <option value={BUSD_TOKEN_ADDRESS}>BUSD</option>
-            <option value={USDT_TOKEN_ADDRESS}>USDT</option>
-          </select>
-        </div> */}
+            <img src={USDCoin} alt="" />
+            <p>BUSD</p>
+            <img src={ChevronDown} alt="" className="chevron-down" />
+          </div>
+          <div ref={parent}>
+            {dropDownOpen && (
+              <div className="drop-down-list">
+                <div className="drop-down-item">
+                  <option value={BUSD_TOKEN_ADDRESS}>BUSD</option>
+                </div>
+                <div className="drop-down-item">
+                  <option value={USDT_TOKEN_ADDRESS}>USDT</option>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         <div className="balance">
           <p>Balance:0.00002</p>
         </div>
