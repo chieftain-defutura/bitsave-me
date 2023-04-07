@@ -47,6 +47,7 @@ const Plan: React.FC = () => {
   const [selectedToken, setSelectedToken] = useState(tokensLists[0])
   const [plan, setPlan] = useState('1')
   const [amount, setAmount] = useState('0')
+  const [dropdown, setDropdown] = useState(false)
   const referrer = userStore((state) => state.referrer)
   const updateStatus = userStore((state) => state.updateStatus)
   const updateUserData = userStore((state) => state.updateUserData)
@@ -173,17 +174,20 @@ const Plan: React.FC = () => {
       </div>
       <div className="balance-container">
         <div className="dropdown-container">
-          <div className="drop-down">
+          <div className="drop-down" onClick={() => setDropdown((d) => !d)}>
             <img src={selectedToken.logo} alt="" />
             <p>{selectedToken.name}</p>
 
             <img src={ChevronDown} alt="" className="chevron-down" />
           </div>
-          <div className="dropdown-list">
+          <div className={dropdown ? 'dropdown-list active' : 'dropdown-list'}>
             {tokens.map((token) => (
               <div
                 key={token.tokenAddress}
-                onClick={() => setSelectedToken(token)}
+                onClick={() => {
+                  setSelectedToken(token)
+                  setDropdown(false)
+                }}
               >
                 <img src={token.logo} alt="" />
                 <p>{token.name}</p>
@@ -203,27 +207,29 @@ const Plan: React.FC = () => {
         </div>
       </div>
       <div className="max-container">
-        <input type="text" onChange={(e) => setAmount(e.target.value)} />
-        {/* <h4>Max</h4> */}
+        <input
+          type="text"
+          placeholder="0"
+          onChange={(e) => setAmount(e.target.value)}
+        />
+        <button>max</button>
       </div>
 
-      <div className="button">
-        {!selectedToken.isApproved ? (
-          <Button varient="secondary" onClick={() => handleApproveToken()}>
-            Approve
-          </Button>
-        ) : (
-          <Button
-            varient="primary"
-            onClick={() => {
-              handlStake()
-            }}
-            disabled={loading}
-          >
-            Stake
-          </Button>
-        )}
-      </div>
+      {!selectedToken.isApproved ? (
+        <Button varient="secondary" onClick={() => handleApproveToken()}>
+          Approve
+        </Button>
+      ) : (
+        <Button
+          varient="primary"
+          onClick={() => {
+            handlStake()
+          }}
+          disabled={loading}
+        >
+          Stake
+        </Button>
+      )}
 
       <div className="min-max">
         <p>Min: 10, Max:100000</p>

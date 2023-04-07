@@ -11,14 +11,9 @@
   }
   .container {
     display: flex;
-    justify-content: space-around;
-    gap: 150px;
+    justify-content: space-evenly;
+    gap: 50px;
     margin-top: 32px;
-    @media (max-width: 920px) {
-      gap: 50px;
-    }
-    @media (max-width: 822px) {
-      display: block;
-    }
+    flex-wrap: wrap;
   }
 }
