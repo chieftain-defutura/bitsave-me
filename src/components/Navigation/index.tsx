@@ -15,7 +15,7 @@ const Navigation: React.FC = () => {
   // const navigate = useNavigate()
   const { address } = useAccount()
   const [open, setOpen] = useState(false)
-
+  console.log(address)
   return (
     <div className="mx">
       <div className="header">

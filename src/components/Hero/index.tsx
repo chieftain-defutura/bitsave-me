@@ -1,7 +1,10 @@
 import React from 'react'
 import './Hero.scss'
-
-import Robot from '../../assets/images/robot.png'
+import CoinOne from '../../assets/images/coin-img-1.png'
+import CoinTwo from '../../assets/images/coin-img-2.png'
+import CoinThree from '../../assets/images/coin-img-3.png'
+import CoinFour from '../../assets/images/coin-img-4.png'
+import Robot from '../../assets/images/robot-img.png'
 import Button from 'components/Button/Button'
 const Hero: React.FC = () => {
   return (
@@ -12,9 +15,26 @@ const Hero: React.FC = () => {
             <span>Stake</span>House
           </h1>
 
-          <div className="hero-robot-img-media">
-            <img src={Robot} alt="" />
+          <div className="robot-img-content-media">
+            <div className="hero-robot-img-media">
+              <img src={Robot} alt="" />
+            </div>
+            <div className="coin-rotation-media">
+              <div className="coin-one">
+                <img src={CoinOne} alt="" />
+              </div>
+              <div className="coin-two">
+                <img src={CoinTwo} alt="" />
+              </div>
+              <div className="coin-three">
+                <img src={CoinThree} alt="" />
+              </div>
+              <div className="coin-four">
+                <img src={CoinFour} alt="" />
+              </div>
+            </div>
           </div>
+
           <p>
             Stake your BNB & earn daily 9% for 30 days. Stable & profitable
             yield farming DApp with automated users insurance.
@@ -24,8 +44,25 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-        <div className="hero-robot-img">
-          <img src={Robot} alt="" />
+        <div className="robot-img-content">
+          <div className="hero-robot-img">
+            <img src={Robot} alt="" />
+          </div>
+
+          <div className="coin-rotation">
+            <div className="coin-one">
+              <img src={CoinOne} alt="" />
+            </div>
+            <div className="coin-two">
+              <img src={CoinTwo} alt="" />
+            </div>
+            <div className="coin-three">
+              <img src={CoinThree} alt="" />
+            </div>
+            <div className="coin-four">
+              <img src={CoinFour} alt="" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

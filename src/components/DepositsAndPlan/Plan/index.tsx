@@ -1,39 +1,101 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 
 import Button from '../../Button/Button'
 import { useAccount, useSigner } from 'wagmi'
 import TokenAbi from '../../../utils/abi/tokenABI.json'
-import StakeAbi from '../../../utils/abi/stakingABI.json'
 import USDCoin from '../../../assets/icons/usd-coin.svg'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
-import autoAnimate from '@formkit/auto-animate'
 
 import { useTransactionModal } from 'context/TransactionContext'
-import { PENDING_MESSAGE, SUCCESS_MESSAGE } from 'utils/messaging'
 import './Plan.scss'
 import {
   BUSD_TOKEN_ADDRESS,
   STAKE_CONTRACT_ADDRESS,
   USDT_TOKEN_ADDRESS,
 } from 'utils/contractAddress'
-import { parseUnits } from 'ethers/lib/utils.js'
+import {
+  getIsApproved,
+  getUserContractData,
+  getUserTokenBalance,
+  stake,
+} from 'utils/userMethods'
+import { userStore } from 'store/userStore'
+
+const tokensLists = [
+  {
+    tokenAddress: BUSD_TOKEN_ADDRESS,
+    isApproved: false,
+    name: 'BUSD',
+    logo: USDCoin,
+    balance: 0,
+  },
+  {
+    tokenAddress: USDT_TOKEN_ADDRESS,
+    isApproved: false,
+    name: 'USDT',
+    logo: USDCoin,
+    balance: 0,
+  },
+]
 
 const Plan: React.FC = () => {
   const { address } = useAccount()
   const { data: signerData } = useSigner()
   const { setTransaction, loading } = useTransactionModal()
-  const [tokenAddress, setTokenAddress] = useState(BUSD_TOKEN_ADDRESS)
+  const [tokens, setTokens] = useState<typeof tokensLists>([])
+  const [selectedToken, setSelectedToken] = useState(tokensLists[0])
   const [plan, setPlan] = useState('1')
   const [amount, setAmount] = useState('0')
-  const [dropDownOpen, setDropDownOpen] = useState(false)
+  const [dropdown, setDropdown] = useState(false)
+  const referrer = userStore((state) => state.referrer)
+  const updateStatus = userStore((state) => state.updateStatus)
+  const updateUserData = userStore((state) => state.updateUserData)
 
-  //auto animate
-  const parent = useRef(null)
+  const handleGetData = useCallback(async () => {
+    if (address && signerData) {
+      try {
+        updateStatus(true)
+        updateUserData(await getUserContractData(address, signerData))
+        const modifiedTokens = await Promise.all(
+          tokensLists.map(async (token) => {
+            const allowance = await getIsApproved(
+              address,
+              signerData,
+              token.tokenAddress,
+            )
+            const balance = await getUserTokenBalance(
+              address,
+              signerData,
+              token.tokenAddress,
+            )
+            return {
+              ...token,
+              isApproved: allowance > 0,
+              balance,
+            }
+          }),
+        )
+        setTokens(modifiedTokens)
+        setSelectedToken(modifiedTokens[0])
+      } catch (error: any) {
+        console.log(error)
+      } finally {
+        updateStatus(false)
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, signerData])
+
+  const handleSetDefaultData = useCallback(() => {
+    setSelectedToken(tokensLists[0])
+  }, [])
 
   useEffect(() => {
-    parent.current && autoAnimate(parent.current)
-  }, [parent])
+    handleGetData()
+    handleSetDefaultData()
+  }, [handleGetData, handleSetDefaultData])
 
   const handleApproveToken = async () => {
     try {
@@ -42,14 +104,13 @@ const Plan: React.FC = () => {
       setTransaction({
         loading: true,
         status: 'pending',
-        message: PENDING_MESSAGE,
       })
-      const nftContract = new ethers.Contract(
-        tokenAddress,
+      const tokenContract = new ethers.Contract(
+        selectedToken.tokenAddress,
         TokenAbi,
         signerData,
       )
-      const tx = await nftContract.approve(
+      const tx = await tokenContract.approve(
         STAKE_CONTRACT_ADDRESS,
         ethers.constants.MaxUint256,
       )
@@ -57,7 +118,6 @@ const Plan: React.FC = () => {
       setTransaction({
         loading: true,
         status: 'success',
-        message: SUCCESS_MESSAGE,
       })
     } catch (error) {
       console.log(error)
@@ -67,19 +127,16 @@ const Plan: React.FC = () => {
 
   const handlStake = async () => {
     try {
-      if (!tokenAddress || !signerData) return
-      const nftContract = new ethers.Contract(
-        STAKE_CONTRACT_ADDRESS,
-        StakeAbi,
+      if (!signerData || !address) return
+
+      await stake(
+        address,
         signerData,
-      )
-      const tx = await nftContract.stake(
         plan,
-        parseUnits(amount, '18'),
-        tokenAddress,
-        '',
+        amount,
+        selectedToken.tokenAddress,
+        referrer,
       )
-      await tx.wait()
       setTransaction({ loading: true, status: 'success' })
       setTimeout(() => {
         window.location.reload()
@@ -89,15 +146,16 @@ const Plan: React.FC = () => {
       setTransaction({ loading: true, status: 'error', message: error.reason })
     }
   }
+
   return (
     <div className="plan-container">
       <div className="plan-dropdown">
         <h3>PLAN</h3>
 
-        <div className="days-drop-down">
+        <div className="select-input">
           <select name="" id="" onChange={(e) => setPlan(e.target.value)}>
             <option value="1">30days</option>
-            <option value="2">60days</option>
+            <option value="2"> 60days</option>
             <option value="3">90days</option>
             <option value="4">120days</option>
           </select>
@@ -118,54 +176,70 @@ const Plan: React.FC = () => {
         </div>
       </div>
       <div className="balance-container">
-        <div className="drop-down" onClick={() => setTokenAddress('')}>
-          <div
-            className="drop-down-select"
-            onClick={() => setDropDownOpen(!dropDownOpen)}
-          >
-            <img src={USDCoin} alt="" />
-            <p>BUSD</p>
+        <div className="dropdown-container">
+          <div className="drop-down" onClick={() => setDropdown((d) => !d)}>
+            <img src={selectedToken.logo} alt="" />
+            <p>{selectedToken.name}</p>
+
             <img src={ChevronDown} alt="" className="chevron-down" />
           </div>
-          <div ref={parent}>
-            {dropDownOpen && (
-              <div className="drop-down-list">
-                <div className="drop-down-item">
-                  <option value={BUSD_TOKEN_ADDRESS}>BUSD</option>
-                </div>
-                <div className="drop-down-item">
-                  <option value={USDT_TOKEN_ADDRESS}>USDT</option>
-                </div>
+          <div className={dropdown ? 'dropdown-list active' : 'dropdown-list'}>
+            {tokens.map((token) => (
+              <div
+                key={token.tokenAddress}
+                onClick={() => {
+                  setSelectedToken(token)
+                  setDropdown(false)
+                }}
+              >
+                <img src={token.logo} alt="" />
+                <p>{token.name}</p>
               </div>
-            )}
+            ))}
           </div>
         </div>
-
         <div className="balance">
-          <p>Balance:0.00002</p>
+          <p>
+            <span>Balance:</span>{' '}
+            {new Intl.NumberFormat('en-US', {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 4,
+            }).format(selectedToken.balance)}
+            &nbsp;{selectedToken.name}
+          </p>
         </div>
       </div>
       <div className="max-container">
-        <input type="text" onChange={(e) => setAmount(e.target.value)} />
-        {/* <h4>Max</h4> */}
+        <input
+          type="text"
+          placeholder="0"
+          onChange={(e) => setAmount(e.target.value)}
+        />
+        <button>Max</button>
       </div>
 
-      <div className="button">
-        <button onClick={() => handleApproveToken()}>Approve</button>
-
-        <Button
-          varient="primary"
-          onClick={() => {
-            handlStake()
-          }}
-          disabled={loading}
-        >
-          Stake
-        </Button>
+      <div className="stake-btn">
+        {!selectedToken.isApproved ? (
+          <Button varient="primary" onClick={() => handleApproveToken()}>
+            Approve
+          </Button>
+        ) : (
+          <Button
+            varient="secondary"
+            onClick={() => {
+              handlStake()
+            }}
+            disabled={loading}
+          >
+            Stake
+          </Button>
+        )}
       </div>
 
       <div className="min-max">
-        <p>Min: 0.01, Max:100</p>
+        <p>
+          Min: <span>0.01</span>, Max: <span>100</span>
+        </p>
       </div>
     </div>
   )

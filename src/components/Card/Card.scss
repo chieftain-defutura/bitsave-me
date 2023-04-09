@@ -9,7 +9,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 32px;
 
-    @media (max-width: 520px) {
+    @media (max-width: 768px) {
       grid-template-columns: 1fr;
     }
     .card-content {

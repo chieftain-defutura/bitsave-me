@@ -32,9 +32,10 @@ const WrongNetworkModal: React.FC<IWrongNetworkModal> = ({
               <button
                 onClick={() => switchNetwork?.(5)}
                 style={{
-                  background: ' #38F2AF',
+                  background:
+                    'linear-gradient(98.86deg, #FEA823 -0.11%, #EB7F00 99.89%)',
+                  borderRadius: ' 8px',
                   color: '#fff',
-                  borderRadius: '5px',
                   padding: '15px 20px',
                   border: 'none',
                   outline: 'none',

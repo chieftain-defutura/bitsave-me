@@ -9,11 +9,9 @@ interface button extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 const Button: React.FC<button> = ({ varient, size, children, ...rest }) => {
   return (
-    <div>
-      <button className={`btn btn-${varient} ${size} `} {...rest}>
-        {children}
-      </button>
-    </div>
+    <button className={`btn btn-${varient} ${size} `} {...rest}>
+      {children}
+    </button>
   )
 }
 export default Button

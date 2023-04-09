@@ -2,8 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { WagmiConfig } from 'wagmi'
-// import { Provider as ReduxProvider } from 'react-redux'
-import { createClient, Provider as UrqlProvider } from 'urql'
+import { SkeletonTheme } from 'react-loading-skeleton'
+import { Buffer } from 'buffer'
+
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -11,28 +12,18 @@ import { client } from './utils/Connector/Connector'
 import Provider from './store/provider'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-import { SUB_GRAPH_API_URL } from './constants/api'
-import { SkeletonTheme } from 'react-loading-skeleton'
-import { Buffer } from 'buffer'
 window.Buffer = Buffer
-
-const urqlClient = createClient({
-  url: SUB_GRAPH_API_URL,
-})
-
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <WagmiConfig client={client}>
-        <UrqlProvider value={urqlClient}>
-          <Provider>
-            <SkeletonTheme baseColor="#343741" highlightColor="#272a34">
-              <App />
-            </SkeletonTheme>
-          </Provider>
-        </UrqlProvider>
+        <Provider>
+          <SkeletonTheme baseColor="#343741" highlightColor="#272a34">
+            <App />
+          </SkeletonTheme>
+        </Provider>
       </WagmiConfig>
     </BrowserRouter>
   </React.StrictMode>,

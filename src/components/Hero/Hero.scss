@@ -33,15 +33,120 @@
         background-clip: text;
       }
     }
-    .hero-robot-img-media {
-      margin-top: 20px;
-      img {
-        width: 100%;
+    .robot-img-content-media {
+      position: relative;
+      animation: logo 5s linear infinite;
+
+      @keyframes logo {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(42px);
+        }
       }
-      @media (min-width: 591px) {
-        display: none;
+      .hero-robot-img-media {
+        margin-top: 20px;
+        img {
+          width: 100%;
+        }
+        @media (min-width: 591px) {
+          display: none;
+        }
+      }
+      .coin-rotation-media {
+        @media (min-width: 591px) {
+          display: none;
+        }
+        .coin-one {
+          height: 150px;
+          width: 300px;
+          border-radius: 50%;
+          position: absolute;
+          top: 10%;
+          left: 10%;
+          animation: coinOne 12s linear infinite;
+          @media (max-width: 440px) {
+            width: 200px;
+            height: 150px;
+          }
+          @keyframes coinOne {
+            0% {
+              transform: rotateZ(0deg);
+            }
+            100% {
+              transform: rotateZ(-360deg);
+            }
+          }
+        }
+        .coin-two {
+          height: 150px;
+          width: 300px;
+          border-radius: 50%;
+          position: absolute;
+          top: 10%;
+          left: 10%;
+          animation: coinTwo 12s linear infinite;
+          @media (max-width: 440px) {
+            width: 200px;
+            height: 150px;
+          }
+          @keyframes coinTwo {
+            0% {
+              transform: rotateZ(0deg);
+            }
+            100% {
+              transform: rotateZ(360deg);
+            }
+          }
+        }
+        .coin-three {
+          height: 150px;
+          width: 300px;
+          border-radius: 50%;
+          position: absolute;
+          top: 10%;
+          left: 10%;
+          animation: coinThree 12s linear infinite;
+          @media (max-width: 440px) {
+            width: 200px;
+            height: 150px;
+          }
+          @keyframes coinThree {
+            0% {
+              transform: rotateZ(0deg);
+            }
+            100% {
+              transform: rotateZ(-350deg);
+            }
+          }
+        }
+        .coin-four {
+          height: 150px;
+          width: 300px;
+          border-radius: 50%;
+          position: absolute;
+          top: 10%;
+          left: 10%;
+          animation: coinFour 12s linear infinite;
+          @media (max-width: 440px) {
+            width: 200px;
+            height: 150px;
+          }
+          @keyframes coinFour {
+            0% {
+              transform: rotateZ(0deg);
+            }
+            100% {
+              transform: rotateZ(350deg);
+            }
+          }
+        }
       }
     }
+
     p {
       padding: 10px 90px 20px 0;
       color: #f5f5f5;
@@ -65,14 +170,103 @@
       }
     }
   }
-  .hero-robot-img {
-    @media (max-width: 820px) {
-      img {
-        width: 300px;
+  .robot-img-content {
+    position: relative;
+    animation: logo 5s linear infinite;
+
+    @keyframes logo {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(42px);
       }
     }
-    @media (max-width: 590px) {
-      display: none;
+
+    .hero-robot-img {
+      @media (max-width: 820px) {
+        img {
+          width: 300px;
+        }
+      }
+      @media (max-width: 590px) {
+        display: none;
+      }
+    }
+    .coin-rotation {
+      @media (max-width: 590px) {
+        display: none;
+      }
+      .coin-one {
+        height: 250px;
+        width: 300px;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 10%;
+        animation: coinOne 12s linear infinite;
+        @keyframes coinOne {
+          0% {
+            transform: rotateZ(0deg);
+          }
+          100% {
+            transform: rotateZ(-360deg);
+          }
+        }
+      }
+      .coin-two {
+        height: 250px;
+        width: 300px;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 10%;
+        animation: coinTwo 12s linear infinite;
+        @keyframes coinTwo {
+          0% {
+            transform: rotateZ(0deg);
+          }
+          100% {
+            transform: rotateZ(360deg);
+          }
+        }
+      }
+      .coin-three {
+        height: 250px;
+        width: 300px;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 10%;
+        animation: coinThree 12s linear infinite;
+        @keyframes coinThree {
+          0% {
+            transform: rotateZ(0deg);
+          }
+          100% {
+            transform: rotateZ(-360deg);
+          }
+        }
+      }
+      .coin-four {
+        height: 250px;
+        width: 300px;
+        border-radius: 50%;
+        position: absolute;
+        top: 0;
+        left: 10%;
+        animation: coinFour 12s linear infinite;
+        @keyframes coinFour {
+          0% {
+            transform: rotateZ(0deg);
+          }
+          100% {
+            transform: rotateZ(360deg);
+          }
+        }
+      }
     }
   }
 }
