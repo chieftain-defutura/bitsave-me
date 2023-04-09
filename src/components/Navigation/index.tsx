@@ -7,14 +7,22 @@ import './Navigation.scss'
 import MetamaskLogo from '../../assets/logo/metamask-logo.png'
 import WalletConnectLogo from '../../assets/logo/walletconnect-logo.png'
 import Logo from '../../assets/images/footer-logo.png'
+import { ReactComponent as Copy } from '../../assets/icons/copy.svg'
+import { ReactComponent as BlueIcon } from '../../assets/icons/blue-round.svg'
+import { ReactComponent as Disconnect } from '../../assets/icons/disconnect.svg'
+import { ReactComponent as ArrowUp } from '../../assets/icons/arrow-up.svg'
+import { ReactComponent as ArrowDown } from '../../assets/icons/arrow-down.svg'
 import Button from 'components/Button/Button'
 
 const Navigation: React.FC = () => {
   const { connectAsync, connectors, error, isLoading, pendingConnector } =
     useConnect()
+  const [connectedLogo, setConnectedLogo] = useState(MetamaskLogo)
+  console.log(connectedLogo)
   // const navigate = useNavigate()
   const { address } = useAccount()
   const [open, setOpen] = useState(false)
+  const [modal, setModal] = useState(false)
   console.log(address)
   return (
     <div className="mx">
@@ -41,13 +49,19 @@ const Navigation: React.FC = () => {
                       }}
                     >
                       {connector.name === 'MetaMask' && (
-                        <div className="modal-content">
+                        <div
+                          className="modal-content"
+                          onClick={() => setConnectedLogo(MetamaskLogo)}
+                        >
                           <img src={MetamaskLogo} alt="" />
                           <p>{connector.name}</p>
                         </div>
                       )}
                       {connector.name === 'WalletConnect' && (
-                        <div className="modal-content">
+                        <div
+                          className="modal-content"
+                          onClick={() => setConnectedLogo(WalletConnectLogo)}
+                        >
                           <img src={WalletConnectLogo} alt="" />
                           <p> {connector.name}</p>
                         </div>
@@ -64,7 +78,43 @@ const Navigation: React.FC = () => {
             </>
           ) : (
             <div className="address">
-              {address?.slice(0, 6)}...{address?.slice(address?.length - 6)}
+              <div className="connected-logo">
+                <img
+                  src={
+                    connectedLogo === MetamaskLogo
+                      ? MetamaskLogo
+                      : WalletConnectLogo
+                  }
+                  alt=""
+                />
+              </div>
+              <div
+                className="connected-address"
+                onClick={() => setModal((m) => !m)}
+              >
+                <BlueIcon />
+                {address?.slice(0, 6)}...{address?.slice(address?.length - 6)}
+                {!modal ? <ArrowDown /> : <ArrowUp />}
+              </div>
+              {modal && (
+                <div className="connected-modal">
+                  <div
+                    className="copy-address"
+                    onClick={(e) => e.preventDefault}
+                  >
+                    <BlueIcon />
+                    {address?.slice(0, 6)}...
+                    {address?.slice(address?.length - 6)}
+                    <Copy />
+                  </div>
+                  <h1>0 ETH</h1>
+                  <p>$0.00</p>
+                  <div className="disconnect">
+                    <h3>Disconnect</h3>
+                    <Disconnect />
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
