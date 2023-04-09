@@ -1,0 +1,199 @@
+.plan-container {
+  max-width: 408px;
+  width: 100%;
+  max-height: auto;
+  height: 100%;
+  background: rgba(17, 17, 17, 0.48);
+  box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 32px;
+  @media (max-width: 425px) {
+    padding: 32px 20px;
+  }
+  .plan-head {
+    h5 {
+      font-weight: 100;
+      font-size: 20px;
+      text-align: left;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .select-input {
+      padding: 16px;
+      border: 1px solid #777777;
+      border-radius: 10px;
+      select {
+        width: 100%;
+        outline: none;
+        border: none;
+        background: transparent;
+        color: #aaaaaa;
+        font-size: 20px;
+
+        option {
+          font-size: 20px;
+          background: #252525;
+        }
+      }
+    }
+    .profit {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 32px;
+      h3 {
+        text-transform: uppercase;
+        font-size: 20px;
+        font-weight: 100;
+        @media (max-width: 425px) {
+          font-size: 16px;
+        }
+      }
+      h1 {
+        margin-top: 8px;
+        text-align: left;
+        span {
+          font-size: 40px;
+          @media (max-width: 425px) {
+            font-size: 36px;
+          }
+        }
+      }
+    }
+    .balance-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .dropDown {
+        width: 110px;
+        position: relative;
+        padding: 10px 0;
+
+        .select-dropDown {
+          padding: 9px 12px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          cursor: pointer;
+
+          p {
+            color: #f5f5f5;
+            font-size: 14px;
+          }
+          img {
+            width: 16px;
+            height: 16px;
+          }
+          .chevronDown {
+            margin-left: 6px;
+            img {
+              width: 8px;
+              height: 4px;
+            }
+          }
+        }
+        .dropDown-list {
+          background: #252525;
+          border-radius: 8px;
+          color: #ffffff;
+          position: absolute;
+          top: 8px;
+          left: 0;
+          right: 0;
+          padding: 9px 16px;
+
+          .usdt-img {
+            img {
+              width: 14px;
+              height: 14px;
+              border-radius: 50%;
+            }
+          }
+          .dropDown-items {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 3px 6px;
+            margin-bottom: 5px;
+            border-bottom: 0.2px solid rgba(119, 119, 119, 0.2);
+            p {
+              font-size: 12px;
+              text-transform: uppercase;
+              padding: 2px;
+            }
+            &:hover {
+              color: #fea823;
+            }
+          }
+        }
+      }
+      .balance {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        p {
+          color: #777777;
+          font-size: 16px;
+        }
+        h6 {
+          font-size: 14px;
+          font-weight: 100;
+        }
+      }
+    }
+    .max-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      padding: 16px;
+      background: rgba(119, 119, 119, 0.16);
+      border-radius: 10px;
+      margin-top: 16px;
+      @media (max-width: 425px) {
+        padding: 12px 16px;
+      }
+      input {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 24px;
+        line-height: 28px;
+        color: #fff;
+      }
+      > button {
+        border: 1px solid rgba(119, 119, 119, 0.2);
+        border-radius: 8px;
+        padding: 8px 32px;
+        font-size: 20px;
+        font-weight: 100;
+        background-color: transparent;
+        color: #aaaaaa;
+      }
+    }
+    .stake-btn {
+      margin-top: 16px;
+      button {
+        width: 100%;
+        border-radius: 25px;
+        font-size: 20px;
+        padding: 10px 32px;
+        @media (max-width: 425px) {
+          padding: 8px 32px;
+        }
+      }
+    }
+    .min-max {
+      margin-top: 32px;
+      p {
+        color: #777777;
+        font-size: 20px;
+        font-weight: 100;
+      }
+    }
+  }
+}

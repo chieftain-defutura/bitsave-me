@@ -75,6 +75,8 @@
             background: transparent;
             color: rgba(170, 170, 170, 0.6);
             padding: 16px;
+            outline: none;
+
             @media (max-width: 412px) {
               font-size: 14px;
             }
@@ -173,9 +175,10 @@
           }
         }
         .referral-content {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          place-items: center;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
           gap: 23px;
           margin-top: 12px;
           @media (max-width: 550px) {

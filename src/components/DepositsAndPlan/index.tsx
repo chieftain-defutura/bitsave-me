@@ -1,7 +1,6 @@
 import React from 'react'
-import Plan from './Plan'
 import Deposit from './Deposit'
-
+import PlanBNB from './PlanBNB'
 import './DepositAndPlan.scss'
 
 const DepositAndPlan: React.FC = () => {
@@ -9,7 +8,7 @@ const DepositAndPlan: React.FC = () => {
     <div className="deposit-and-plan-container">
       <h1>BNB Stake</h1>
       <div className="container">
-        <Plan />
+        <PlanBNB />
         <Deposit />
       </div>
     </div>
