@@ -14,6 +14,7 @@ import { claimReferralBonus, getUserReferralData } from 'utils/userMethods'
 import { tokensLists } from 'constants/tokenList'
 import { useTransactionModal } from 'context/TransactionContext'
 import { userStore } from 'store/userStore'
+import { ArrElement } from 'constants/types'
 
 const getBaseUrl = () => {
   const splitedurl = window.location.href.split('://')
@@ -46,6 +47,8 @@ const Deposits: React.FC = () => {
     }[]
   } | null>(null)
   const userStakedData = userStore((state) => state.userStakedData)
+  const [selectedDropDown, setSelectedDropDown] =
+    useState<ArrElement<typeof tokensLists>>()
 
   useEffect(() => {
     if (!copied) return
@@ -135,25 +138,31 @@ const Deposits: React.FC = () => {
                   className="select-dropDown"
                   onClick={() => setDropDownOpen(!dropDownOpen)}
                 >
-                  <img src={Usdt} alt="" />
-                  <p>USD</p>
+                  <img
+                    src={selectedDropDown?.logo}
+                    alt=""
+                    style={{ borderRadius: '50%' }}
+                  />
+                  <p>{selectedDropDown?.name}</p>
                   <img src={ChevronDown} alt="" className="chevronDown" />
                 </div>
                 <div ref={parent}>
                   {dropDownOpen && (
                     <div className="dropDown-list">
-                      <div className="dropDown-items">
-                        <img src={Usdt} alt="" />
-                        <p>BUSD</p>
-                      </div>
-                      <div className="dropDown-items usdt-img">
-                        <img src={USDT} alt="" />
-                        <p>USD</p>
-                      </div>
-                      <div className="dropDown-items">
-                        <img src={Usdt} alt="" />
-                        <p>BUSD</p>
-                      </div>
+                      {tokensLists.map((f, index) => {
+                        return (
+                          <div
+                            className="dropDown-items usdt-img"
+                            key={index}
+                            onClick={() => {
+                              setSelectedDropDown(f)
+                            }}
+                          >
+                            <img src={f.logo} alt="" />
+                            <p>{f.name}</p>
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
                 </div>

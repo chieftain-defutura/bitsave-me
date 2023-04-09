@@ -1,12 +1,12 @@
 import { BUSD_TOKEN_ADDRESS, USDT_TOKEN_ADDRESS } from 'utils/contractAddress'
-import USDCoin from '../assets/icons/usd-coin.svg'
-
+import BUSDCoin from '../assets/icons/usd-coin.svg'
+import USDCoin from '../assets/icons/usdt.png'
 export const tokensLists = [
   {
     tokenAddress: BUSD_TOKEN_ADDRESS,
     isApproved: false,
     name: 'BUSD',
-    logo: USDCoin,
+    logo: BUSDCoin,
     balance: 0,
   },
   {

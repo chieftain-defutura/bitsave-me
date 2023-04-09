@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './PlanBNB.scss'
-import USDT from '../../../assets/icons/usdt.png'
-import Usdt from '../../../assets/icons/usd-coin.svg'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
 import Button from 'components/Button/Button'
 import autoAnimate from '@formkit/auto-animate'
+import { ArrElement } from 'constants/types'
+import { tokensLists } from 'constants/tokenList'
 
 const PlanBNB: React.FC = () => {
   const [dropDownOpen, setDropDownOpen] = useState(false)
+  const [selectedDropDown, setSelectedDropDown] =
+    useState<ArrElement<typeof tokensLists>>()
 
   //auto animate
   const parent = useRef(null)
@@ -49,25 +51,31 @@ const PlanBNB: React.FC = () => {
               className="select-dropDown"
               onClick={() => setDropDownOpen(!dropDownOpen)}
             >
-              <img src={Usdt} alt="" />
-              <p>BUSD</p>
+              <img
+                src={selectedDropDown?.logo}
+                alt=""
+                style={{ borderRadius: '50%' }}
+              />
+              <p>{selectedDropDown?.name}</p>
               <img src={ChevronDown} alt="" className="chevronDown" />
             </div>
             <div ref={parent}>
               {dropDownOpen && (
                 <div className="dropDown-list">
-                  <div className="dropDown-items">
-                    <img src={Usdt} alt="" />
-                    <p>BUSD</p>
-                  </div>
-                  <div className="dropDown-items usdt-img">
-                    <img src={USDT} alt="" />
-                    <p>USD</p>
-                  </div>
-                  <div className="dropDown-items">
-                    <img src={Usdt} alt="" />
-                    <p>BUSD</p>
-                  </div>
+                  {tokensLists.map((f, index) => {
+                    return (
+                      <div
+                        className="dropDown-items usdt-img"
+                        key={index}
+                        onClick={() => {
+                          setSelectedDropDown(f)
+                        }}
+                      >
+                        <img src={f.logo} alt="" />
+                        <p>{f.name}</p>
+                      </div>
+                    )
+                  })}
                 </div>
               )}
             </div>
