@@ -2,7 +2,7 @@ import React from 'react'
 import './Hero.scss'
 import CoinOne from '../../assets/images/coin-img-1.png'
 import CoinTwo from '../../assets/images/coin-img-2.png'
-import CoinThree from '../../assets/images/coin-img-3.png'
+import CoinThree from '../../assets/icons/usdt.png'
 import CoinFour from '../../assets/images/coin-img-4.png'
 import Robot from '../../assets/images/robot-img.png'
 import Button from 'components/Button/Button'
@@ -41,7 +41,7 @@ const Hero: React.FC = () => {
             <div className="coin-two">
               <img src={CoinTwo} alt="" />
             </div>
-            <div className="coin-three">
+            <div className="coin-three usdt-icon">
               <img src={CoinThree} alt="" />
             </div>
             <div className="coin-four">

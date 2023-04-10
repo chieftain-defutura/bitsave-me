@@ -114,7 +114,7 @@
         position: absolute;
         top: 0;
         left: 5%;
-        animation: coinOne 7s linear infinite;
+        animation: coinOne 10s linear infinite;
 
         @keyframes coinOne {
           0% {
@@ -141,6 +141,13 @@
           100% {
             transform: rotateZ(-360deg);
           }
+        }
+      }
+      .usdt-icon {
+        img {
+          border-radius: 50%;
+          width: 80px;
+          height: 80px;
         }
       }
       .coin-three {
