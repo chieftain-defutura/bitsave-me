@@ -20,10 +20,18 @@ const Footer: React.FC = () => {
           <a href="/">Disclaimer</a>
         </div>
         <div className="media-icons">
-          <Twitter />
-          <Instagram />
-          <Linkedin />
-          <Facebook />
+          <a href="/">
+            <Twitter />
+          </a>
+          <a href="/">
+            <Instagram />
+          </a>
+          <a href="/">
+            <Linkedin />
+          </a>
+          <a href="/">
+            <Facebook />
+          </a>
         </div>
         <div className="footer-end">
           <p>

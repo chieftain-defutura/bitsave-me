@@ -4,7 +4,9 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 
 import Button from '../Button/Button'
 import ReferralDepositsImg from '../../assets/images/referral-deposits-img.png'
-import ChevronDown from '../../assets/icons/chevron-down.svg'
+// import Usdt from '../../assets/icons/usd-coin.svg'
+// import ChevronDown from '../../assets/icons/chevron-down.svg'
+// import USDT from '../../assets/icons/usdt.png'
 import autoAnimate from '@formkit/auto-animate'
 import './Deposits.scss'
 import { useAccount, useSigner } from 'wagmi'
@@ -12,7 +14,7 @@ import { claimReferralBonus, getUserReferralData } from 'utils/userMethods'
 import { tokensLists } from 'constants/tokenList'
 import { useTransactionModal } from 'context/TransactionContext'
 import { userStore } from 'store/userStore'
-import { ArrElement } from 'constants/types'
+// import { ArrElement } from 'constants/types'
 
 const getBaseUrl = () => {
   const splitedurl = window.location.href.split('://')
@@ -21,7 +23,7 @@ const getBaseUrl = () => {
 }
 
 const Deposits: React.FC = () => {
-  const [dropDownOpen, setDropDownOpen] = useState(false)
+  // const [dropDownOpen, setDropDownOpen] = useState(false)
 
   //auto animate
   const parent = useRef(null)
@@ -45,8 +47,8 @@ const Deposits: React.FC = () => {
     }[]
   } | null>(null)
   const userStakedData = userStore((state) => state.userStakedData)
-  const [selectedDropDown, setSelectedDropDown] =
-    useState<ArrElement<typeof tokensLists>>()
+  // const [selectedDropDown, setSelectedDropDown] =
+  //   useState<ArrElement<typeof tokensLists>>()
 
   useEffect(() => {
     if (!copied) return
@@ -131,7 +133,7 @@ const Deposits: React.FC = () => {
                 <h1>{referralData?.referralList.length}</h1>
               </div>
 
-              <div className="dropDown">
+              {/* <div className="dropDown">
                 <div
                   className="select-dropDown"
                   onClick={() => setDropDownOpen(!dropDownOpen)}
@@ -164,12 +166,12 @@ const Deposits: React.FC = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
 
-              <div className="referral-content">
+              <div>
                 <div>
-                  <h5>Total REFERRAL EARNED</h5>
-                  <h1>0.000</h1>
+                  {/* <h5>Total REFERRAL EARNED</h5>
+                  <h1>0.000</h1> */}
                   {referralData?.referralRewards.map((data, index) => (
                     <div className="referral-content" key={index}>
                       <div>

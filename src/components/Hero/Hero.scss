@@ -1,7 +1,7 @@
 .hero-container {
   display: flex;
   padding: 32px 124px 32px 64px;
-  gap: 206px;
+  gap: 180px;
   @media (max-width: 1024px) {
     gap: 0px;
     padding: 42px;
@@ -18,19 +18,17 @@
       line-height: 77px;
       letter-spacing: -0.06em;
       color: #fff;
+      span {
+        background: linear-gradient(98.86deg, #fea823 -0.11%, #eb7f00 99.89%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
       @media (max-width: 720px) {
         font-size: 52px;
       }
       @media (max-width: 720px) {
         font-size: 48px;
-      }
-
-      span {
-        background: linear-gradient(180deg, #eb7f00 0%, #fea823 100%);
-
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
       }
     }
     .robot-img-content-media {
@@ -148,7 +146,8 @@
     }
 
     p {
-      padding: 10px 90px 20px 0;
+      // padding: 10px 90px 20px 0;
+      margin-bottom: 32px;
       color: #f5f5f5;
       font-size: 20px;
       line-height: 28px;
@@ -174,6 +173,7 @@
   .robot-img-content {
     position: relative;
     animation: logo 5s linear infinite;
+    z-index: 1;
 
     @keyframes logo {
       0%,

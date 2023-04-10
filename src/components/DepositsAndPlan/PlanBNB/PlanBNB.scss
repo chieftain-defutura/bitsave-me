@@ -54,6 +54,10 @@
         text-align: left;
         span {
           font-size: 40px;
+          background: linear-gradient(98.86deg, #fea823 -0.11%, #eb7f00 99.89%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           @media (max-width: 425px) {
             font-size: 36px;
           }
@@ -194,6 +198,12 @@
         color: #777777;
         font-size: 20px;
         font-weight: 100;
+        span {
+          background: linear-gradient(98.86deg, #fea823 -0.11%, #eb7f00 99.89%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
       }
     }
   }

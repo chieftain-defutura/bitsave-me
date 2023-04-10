@@ -2,18 +2,15 @@
   background: rgba(17, 17, 17, 0.48);
   box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
-  max-width: 400px;
+  max-width: 408px;
   width: 100%;
   padding: 32px;
   text-align: left;
   max-width: 420px;
   width: 100%;
-  max-height: 528px;
-  overflow-y: auto;
-  height: 100%;
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
+  // max-height: 528px;
+  // overflow-y: auto;
+  // height: 100%;
 
   @media (max-width: 476px) {
     padding: 32px 20px;
@@ -32,17 +29,21 @@
   .deposit {
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    max-height: 450px;
+    &::-webkit-scrollbar {
+      width: 12px;
+    }
+
     .details {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-direction: row;
-      gap: 68px;
+      gap: 64px;
       padding: 15px 0;
       border-bottom: 1px solid rgba(119, 119, 119, 0.2);
-      &:nth-child(4) {
-        border-bottom: none;
-      }
+
       @media (max-width: 476px) {
         gap: 50px;
       }
@@ -52,37 +53,52 @@
       @media (max-width: 370px) {
         gap: 20px;
       }
-      .content {
-        .flex-content {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          @media (max-width: 410px) {
-            font-size: 8px;
-          }
-
-          h2 {
-            font-weight: 500;
+      .flex-container {
+        display: flex;
+        gap: 8px;
+        .num {
+          color: #999999;
+          p {
             font-size: 18px;
-            line-height: 21px;
-            text-transform: capitalize;
-            color: #ffffff;
-            @media (max-width: 410px) {
-              font-size: 15px;
-            }
+            font-weight: 100;
           }
         }
+        .content {
+          .flex-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            @media (max-width: 410px) {
+              font-size: 8px;
+            }
 
-        p {
-          padding: 5px 0;
-          font-size: 16px;
-          line-height: 19px;
-          letter-spacing: 0.06em;
-          text-transform: capitalize;
-          color: #eeeeee;
-          font-family: var(--font-light);
-          @media (max-width: 400px) {
-            font-size: 14px;
+            h2 {
+              font-weight: 500;
+              font-size: 18px;
+              line-height: 21px;
+              text-transform: capitalize;
+              color: #ffffff;
+              @media (max-width: 410px) {
+                font-size: 15px;
+              }
+            }
+          }
+
+          p {
+            padding: 5px 0;
+            font-size: 15px;
+            line-height: 19px;
+            letter-spacing: 0.06em;
+            text-transform: capitalize;
+            color: #eeeeee;
+            font-family: var(--font-light);
+            @media (max-width: 400px) {
+              font-size: 14px;
+            }
+            span {
+              color: #aaaaaa;
+              font-family: var(--font-light);
+            }
           }
         }
       }

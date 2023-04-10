@@ -10,9 +10,9 @@
     padding: 32px 10px;
   }
   .total-bnb-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    place-items: center;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
 
     .total-bnb-content {
       text-align: center;
@@ -32,6 +32,10 @@
 
         span {
           font-size: 48px;
+          background: linear-gradient(98.86deg, #fea823 -0.11%, #eb7f00 99.89%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           @media (max-width: 1024px) {
             font-size: 36px;
           }

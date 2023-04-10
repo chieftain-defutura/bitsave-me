@@ -9,13 +9,13 @@ const StakePlans: React.FC = () => {
       <div className="mx">
         <div className="stake-plans-container">
           <h2>Stake Plans</h2>
-          <p>
+          {/* <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
             aliquip ex ea commodo consequat. Duis aute irure dolor in
             reprehenderit in voluptate.
-          </p>
+          </p> */}
         </div>
 
         <div className="stake-plans-grid">
@@ -24,7 +24,10 @@ const StakePlans: React.FC = () => {
               <div key={index} className="stake-plans-items">
                 <h2>{f.heading}</h2>
                 <h6>{f.title}</h6>
-                <Button varient="primary">Stake Now</Button>
+                <a href="#deposit">
+                  <Button varient="primary">Stake Now</Button>
+                </a>
+
                 <p>{f.price}</p>
                 <div className="border"></div>
                 <p>{f.dailyPrecentage}</p>
