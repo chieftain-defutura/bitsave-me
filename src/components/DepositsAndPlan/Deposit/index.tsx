@@ -9,12 +9,13 @@ import { tokensLists } from 'constants/tokenList'
 
 const plansData = [0, 30, 60, 90, 120]
 
-const DepositData: React.FC<IStakedData> = ({
+const DepositData: React.FC<IStakedData & { index: number }> = ({
   amount,
   stakeIndex,
   planId,
   tokenAddress,
   earnings,
+  index,
 }) => {
   const { address } = useAccount()
   const { data: signerData } = useSigner()
@@ -55,7 +56,7 @@ const DepositData: React.FC<IStakedData> = ({
     <div className="details">
       <div className="flex-container">
         <div className="num">
-          <p>1. </p>
+          <p>{index}. </p>
         </div>
         <div className="content">
           <div className="flex-content">
@@ -107,7 +108,7 @@ const Deposit: React.FC = () => {
         <h1>your deposits</h1>
         <div className="deposit">
           {userStakedData.map((data, index) => (
-            <DepositData {...data} key={index.toString()} />
+            <DepositData {...data} index={index + 1} key={index.toString()} />
           ))}
         </div>
       </div>
