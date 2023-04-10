@@ -29,7 +29,7 @@ const Footer: React.FC = () => {
           <a href="/">
             <Linkedin />
           </a>
-          <a href="">
+          <a href="/">
             <Facebook />
           </a>
         </div>
