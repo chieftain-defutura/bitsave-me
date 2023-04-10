@@ -10,9 +10,9 @@
     padding: 32px 10px;
   }
   .total-bnb-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    place-items: center;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
 
     .total-bnb-content {
       text-align: center;

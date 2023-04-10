@@ -24,7 +24,10 @@ const StakePlans: React.FC = () => {
               <div key={index} className="stake-plans-items">
                 <h2>{f.heading}</h2>
                 <h6>{f.title}</h6>
-                <Button varient="primary">Stake Now</Button>
+                <a href="#deposit">
+                  <Button varient="primary">Stake Now</Button>
+                </a>
+
                 <p>{f.price}</p>
                 <div className="border"></div>
                 <p>{f.dailyPrecentage}</p>

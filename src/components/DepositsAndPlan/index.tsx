@@ -5,7 +5,7 @@ import './DepositAndPlan.scss'
 
 const DepositAndPlan: React.FC = () => {
   return (
-    <div className="deposit-and-plan-container">
+    <div className="deposit-and-plan-container" id="deposit">
       <h1>BNB Stake</h1>
       <div className="container">
         <PlanBNB />

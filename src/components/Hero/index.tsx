@@ -43,7 +43,9 @@ const Hero: React.FC = () => {
             success. Join Stakehouse today
           </p>
           <div className="deposit-btn">
-            <Button varient="primary">Deposit</Button>
+            <a href="#deposit">
+              <Button varient="primary">Deposit</Button>
+            </a>
           </div>
         </div>
 
