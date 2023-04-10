@@ -6,6 +6,9 @@
   }
   h2 {
     font-size: 48px;
+    @media (max-width: 768px) {
+      font-size: 38px;
+    }
   }
   .disclaimer-content {
     p {
@@ -13,6 +16,9 @@
       font-family: var(--font-light);
       color: #aaaaaa;
       margin: 18px 0;
+      @media (max-width: 768px) {
+        font-size: 18px;
+      }
     }
   }
 }
