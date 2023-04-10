@@ -134,8 +134,8 @@ export const getUserContractData = async (
       return {
         stakeIndex: index,
         amount: Number(formatEther(u.amount.toString())),
-        endTime: Number(u.endTime.toString()),
-        lastClaimTimestamp: Number(u.lastClaimTimestamp.toString()),
+        endTime: Number(u.endTime.toString()) * 1000,
+        lastClaimTimestamp: Number(u.lastClaimTimestamp.toString()) * 1000,
         planId: String(u.planId.toString()),
         status: u.status.toString() === '0' ? Status.PENDING : Status.FINISHED,
         tokenAddress: String(u.tokenAddress),

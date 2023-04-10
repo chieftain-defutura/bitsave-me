@@ -16,6 +16,7 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
   tokenAddress,
   earnings,
   index,
+  endTime,
 }) => {
   const { address } = useAccount()
   const { data: signerData } = useSigner()
@@ -25,6 +26,7 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
     try {
       if (!signerData || !address) return
 
+      setTransaction({ loading: true, status: 'pending' })
       await claim(address, signerData, stakeIndex)
       setTransaction({ loading: true, status: 'success' })
       setTimeout(() => {
@@ -39,6 +41,8 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
   const handleWithdraw = async () => {
     try {
       if (!signerData || !address) return
+
+      setTransaction({ loading: true, status: 'pending' })
 
       await withdraw(address, signerData, stakeIndex)
 
@@ -87,7 +91,11 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
       </div>
       <div className="buttons">
         <div className="withdrawal-btn">
-          <Button varient="secondary" onClick={handleWithdraw}>
+          <Button
+            varient="secondary"
+            disabled={endTime > new Date().getTime()}
+            onClick={handleWithdraw}
+          >
             Withdrawal
           </Button>
         </div>
