@@ -138,6 +138,7 @@ const PlanBNB: React.FC = () => {
       if (referral_address) {
         ref = referral_address
       }
+      setTransaction({ loading: true, status: 'pending' })
 
       await stake(
         address,

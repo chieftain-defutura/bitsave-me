@@ -4,6 +4,7 @@ import { create } from 'zustand'
 export type IStakedData = {
   stakeIndex: number
   amount: number
+  earnings: number
   endTime: number
   lastClaimTimestamp: number
   planId: string

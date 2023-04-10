@@ -5,8 +5,17 @@ import { IStakedData, userStore } from 'store/userStore'
 import { useAccount, useSigner } from 'wagmi'
 import { useTransactionModal } from 'context/TransactionContext'
 import { claim, withdraw } from 'utils/userMethods'
+import { tokensLists } from 'constants/tokenList'
 
-const DepositData: React.FC<IStakedData> = ({ amount, stakeIndex }) => {
+const plansData = [0, 30, 60, 90, 120]
+
+const DepositData: React.FC<IStakedData> = ({
+  amount,
+  stakeIndex,
+  planId,
+  tokenAddress,
+  earnings,
+}) => {
   const { address } = useAccount()
   const { data: signerData } = useSigner()
   const { setTransaction } = useTransactionModal()
@@ -50,14 +59,28 @@ const DepositData: React.FC<IStakedData> = ({ amount, stakeIndex }) => {
         </div>
         <div className="content">
           <div className="flex-content">
-            <h2>100$</h2>
-            <h2>BUSD</h2>
+            <h2>
+              {new Intl.NumberFormat('en-US', {
+                maximumFractionDigits: 4,
+              }).format(amount)}
+              &nbsp;
+              {
+                tokensLists.find(
+                  (f) =>
+                    f.tokenAddress.toLowerCase() === tokenAddress.toLowerCase(),
+                )?.name
+              }
+            </h2>
           </div>
           <p>
-            plan: <span>30Days</span>
+            plan: <span>{plansData[Number(planId)]} Days</span>
           </p>
           <p>
-            <span>Profit</span>: 0.002
+            <span>Profit</span>:{' '}
+            {new Intl.NumberFormat('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 4,
+            }).format(earnings)}
           </p>
         </div>
       </div>
