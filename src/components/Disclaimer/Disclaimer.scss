@@ -1,0 +1,15 @@
+.disclaimer-wrapper {
+  padding: 64px 100px;
+  background: rgba(0, 0, 0, 0.2);
+  h2 {
+    font-size: 48px;
+  }
+  .disclaimer-content {
+    p {
+      font-size: 20px;
+      font-family: var(--font-light);
+      color: #aaaaaa;
+      margin: 18px 0;
+    }
+  }
+}

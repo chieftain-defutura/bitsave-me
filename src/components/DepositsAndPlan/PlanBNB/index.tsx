@@ -307,7 +307,7 @@ const PlanBNB: React.FC = () => {
 
         <div className="min-max">
           <p>
-            Min: <span>0.01</span>, Max: <span>100</span>
+            Min: <span>10</span>
           </p>
         </div>
       </div>
