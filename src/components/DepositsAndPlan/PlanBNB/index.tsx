@@ -3,7 +3,6 @@ import './PlanBNB.scss'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
 import Button from 'components/Button/Button'
 import autoAnimate from '@formkit/auto-animate'
-import { ArrElement } from 'constants/types'
 import { useAccount, useSigner } from 'wagmi'
 import { ethers } from 'ethers'
 import TokenAbi from '../../../utils/abi/tokenABI.json'
@@ -49,7 +48,7 @@ const PlanBNB: React.FC = () => {
   const [searchParams] = useSearchParams()
   const referral_address = searchParams.get('ref')
   const { data: signerData } = useSigner()
-  const { setTransaction, loading } = useTransactionModal()
+  const { setTransaction } = useTransactionModal()
   const [tokens, setTokens] = useState<typeof tokensLists>([])
   const [selectedToken, setSelectedToken] = useState(tokensLists[0])
   const [plan, setPlan] = useState('1')
