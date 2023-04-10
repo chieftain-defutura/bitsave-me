@@ -47,7 +47,7 @@ const PlanBNB: React.FC = () => {
   const updateUserData = userStore((state) => state.updateUserData)
   const [searchParams] = useSearchParams()
   const referral_address = searchParams.get('ref')
-  const { data: signerData } = useSigner()
+  const { data: signerData, refetch } = useSigner()
   const { setTransaction } = useTransactionModal()
   const [tokens, setTokens] = useState<typeof tokensLists>([])
   const [selectedToken, setSelectedToken] = useState(tokensLists[0])
@@ -114,7 +114,7 @@ const PlanBNB: React.FC = () => {
         TokenAbi,
         signerData,
       )
-      const tx = await tokenContract.approve(
+      const tx = await tokenContract.increaseAllowance(
         STAKE_CONTRACT_ADDRESS,
         ethers.constants.MaxUint256,
       )
@@ -123,6 +123,7 @@ const PlanBNB: React.FC = () => {
         loading: true,
         status: 'success',
       })
+      refetch()
     } catch (error) {
       console.log(error)
       setTransaction({ loading: true, status: 'error' })
