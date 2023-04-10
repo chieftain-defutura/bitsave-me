@@ -56,6 +56,7 @@ const PlanBNB: React.FC = () => {
                 alt=""
                 style={{ borderRadius: '50%' }}
               />
+
               <p>{selectedDropDown?.name}</p>
               <img src={ChevronDown} alt="" className="chevronDown" />
             </div>
