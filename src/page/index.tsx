@@ -7,6 +7,7 @@ import Footer from 'components/Footer'
 import TotalBNB from 'components/TotalBNB'
 import StakePlans from 'components/StakePlans'
 import Deposits from 'components/Deposits'
+import Disclaimer from 'components/Disclaimer'
 
 const Home: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ const Home: React.FC = () => {
         <StakePlans />
         <DepositAndPlan />
         <Deposits />
+        <Disclaimer />
         <Card />
         <Footer />
       </div>

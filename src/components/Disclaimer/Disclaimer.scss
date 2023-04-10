@@ -1,0 +1,24 @@
+.disclaimer-wrapper {
+  padding: 64px 100px;
+  background: rgba(0, 0, 0, 0.2);
+  @media (max-width: 768px) {
+    padding: 32px;
+  }
+  h2 {
+    font-size: 48px;
+    @media (max-width: 768px) {
+      font-size: 38px;
+    }
+  }
+  .disclaimer-content {
+    p {
+      font-size: 20px;
+      font-family: var(--font-light);
+      color: #aaaaaa;
+      margin: 18px 0;
+      @media (max-width: 768px) {
+        font-size: 18px;
+      }
+    }
+  }
+}
