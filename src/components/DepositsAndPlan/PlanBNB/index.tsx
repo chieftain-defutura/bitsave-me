@@ -1,28 +1,204 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import './PlanBNB.scss'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
 import Button from 'components/Button/Button'
 import autoAnimate from '@formkit/auto-animate'
 import { ArrElement } from 'constants/types'
-import { tokensLists } from 'constants/tokenList'
+import { useAccount, useSigner } from 'wagmi'
+import { ethers } from 'ethers'
+import TokenAbi from '../../../utils/abi/tokenABI.json'
+import BUSDCoin from '../../../assets/icons/usd-coin.svg'
+import USDCoin from '../../../assets/icons/usdt.png'
+import { useSearchParams } from 'react-router-dom'
+import { useTransactionModal } from 'context/TransactionContext'
+import {
+  BUSD_TOKEN_ADDRESS,
+  STAKE_CONTRACT_ADDRESS,
+  USDT_TOKEN_ADDRESS,
+} from 'utils/contractAddress'
+import {
+  getIsApproved,
+  getUserContractData,
+  getUserTokenBalance,
+  stake,
+} from 'utils/userMethods'
+import { userStore } from 'store/userStore'
+
+const tokensLists = [
+  {
+    tokenAddress: BUSD_TOKEN_ADDRESS,
+    isApproved: false,
+    name: 'BUSD',
+    logo: BUSDCoin,
+    balance: 0,
+  },
+  {
+    tokenAddress: USDT_TOKEN_ADDRESS,
+    isApproved: false,
+    name: 'USDT',
+    logo: USDCoin,
+    balance: 0,
+  },
+]
 
 const PlanBNB: React.FC = () => {
-  const [dropDownOpen, setDropDownOpen] = useState(false)
-  const [selectedDropDown, setSelectedDropDown] =
-    useState<ArrElement<typeof tokensLists>>()
+  const { address } = useAccount()
+  const referrer = userStore((state) => state.referrer)
+  const updateStatus = userStore((state) => state.updateStatus)
+  const updateUserData = userStore((state) => state.updateUserData)
+  const [searchParams] = useSearchParams()
+  const referral_address = searchParams.get('ref')
+  const { data: signerData } = useSigner()
+  const { setTransaction, loading } = useTransactionModal()
+  const [tokens, setTokens] = useState<typeof tokensLists>([])
+  const [selectedToken, setSelectedToken] = useState(tokensLists[0])
+  const [plan, setPlan] = useState('1')
+  const [amount, setAmount] = useState('')
+  const [dropdown, setDropdown] = useState(false)
+  const [totalProfit, setTotalProfit] = useState(0)
+  const [dailyProfit, setDailyProfit] = useState(0)
+  const handleGetData = useCallback(async () => {
+    if (address && signerData) {
+      try {
+        updateStatus(true)
+        updateUserData(await getUserContractData(address, signerData))
+        const modifiedTokens = await Promise.all(
+          tokensLists.map(async (token) => {
+            const allowance = await getIsApproved(
+              address,
+              signerData,
+              token.tokenAddress,
+            )
+            const balance = await getUserTokenBalance(
+              address,
+              signerData,
+              token.tokenAddress,
+            )
+            return {
+              ...token,
+              isApproved: allowance > 0,
+              balance,
+            }
+          }),
+        )
+        setTokens(modifiedTokens)
+        setSelectedToken(modifiedTokens[0])
+      } catch (error: any) {
+        console.log(error)
+      } finally {
+        updateStatus(false)
+      }
+    }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, signerData])
+
+  const handleSetDefaultData = useCallback(() => {
+    setSelectedToken(tokensLists[0])
+  }, [])
+
+  useEffect(() => {
+    handleGetData()
+    handleSetDefaultData()
+  }, [handleGetData, handleSetDefaultData])
+
+  const handleApproveToken = async () => {
+    try {
+      if (!signerData || !address) return
+
+      setTransaction({
+        loading: true,
+        status: 'pending',
+      })
+      const tokenContract = new ethers.Contract(
+        selectedToken.tokenAddress,
+        TokenAbi,
+        signerData,
+      )
+      const tx = await tokenContract.approve(
+        STAKE_CONTRACT_ADDRESS,
+        ethers.constants.MaxUint256,
+      )
+      await tx.wait()
+      setTransaction({
+        loading: true,
+        status: 'success',
+      })
+    } catch (error) {
+      console.log(error)
+      setTransaction({ loading: true, status: 'error' })
+    }
+  }
+
+  const handlStake = async () => {
+    try {
+      if (!signerData || !address) return
+
+      let ref = referrer
+
+      if (referral_address) {
+        ref = referral_address
+      }
+
+      await stake(
+        address,
+        signerData,
+        plan,
+        amount,
+        selectedToken.tokenAddress,
+        ref,
+      )
+      setTransaction({ loading: true, status: 'success' })
+      setTimeout(() => {
+        window.location.reload()
+      }, 3000)
+    } catch (error: any) {
+      console.log(error.reason)
+      setTransaction({ loading: true, status: 'error', message: error.reason })
+    }
+  }
   //auto animate
   const parent = useRef(null)
 
   useEffect(() => {
     parent.current && autoAnimate(parent.current)
   }, [parent])
+
+  useEffect(() => {
+    const amt = Number(amount)
+    if (amt <= 1000) {
+      setDailyProfit(0.5)
+    }
+    if (amt > 1000 && amt <= 10000) {
+      setDailyProfit(1)
+    }
+    if (amt > 10000 && amt <= 50000) {
+      setDailyProfit(2)
+    }
+    if (amt > 50000) {
+      setDailyProfit(3)
+    }
+  }, [amount, setDailyProfit])
+  useEffect(() => {
+    if (plan === '1') {
+      setTotalProfit(dailyProfit * 30)
+    }
+    if (plan === '2') {
+      setTotalProfit(dailyProfit * 60)
+    }
+    if (plan === '3') {
+      setTotalProfit(dailyProfit * 90)
+    }
+    if (plan === '4') {
+      setTotalProfit(dailyProfit * 120)
+    }
+  }, [dailyProfit, plan])
   return (
     <div className="plan-container">
       <div className="plan-head">
         <h5>Plan</h5>
         <div className="select-input">
-          <select name="" id="">
+          <select name="" id="" onChange={(e) => setPlan(e.target.value)}>
             <option value="1">30days</option>
             <option value="2"> 60days</option>
             <option value="3">90days</option>
@@ -34,13 +210,13 @@ const PlanBNB: React.FC = () => {
           <div>
             <h3>Daily profit</h3>
             <h1>
-              <span>9%</span>
+              <span>{dailyProfit} %</span>
             </h1>
           </div>
           <div>
             <h3>Total profit</h3>
             <h1>
-              <span>270%</span>
+              <span>{totalProfit}%</span>
             </h1>
           </div>
         </div>
@@ -49,26 +225,28 @@ const PlanBNB: React.FC = () => {
           <div className="dropDown">
             <div
               className="select-dropDown"
-              onClick={() => setDropDownOpen(!dropDownOpen)}
+              onClick={() => setDropdown((d) => !d)}
             >
               <img
-                src={selectedDropDown?.logo}
+                src={selectedToken.logo}
                 alt=""
                 style={{ borderRadius: '50%' }}
               />
-              <p>{selectedDropDown?.name}</p>
-              <img src={ChevronDown} alt="" className="chevronDown" />
+              <p>{selectedToken.name}</p>
+
+              <img src={ChevronDown} alt="" className="chevron-down" />
             </div>
             <div ref={parent}>
-              {dropDownOpen && (
+              {dropdown && (
                 <div className="dropDown-list">
-                  {tokensLists.map((f, index) => {
+                  {tokens.map((f, index) => {
                     return (
                       <div
                         className="dropDown-items usdt-img"
                         key={index}
                         onClick={() => {
-                          setSelectedDropDown(f)
+                          setSelectedToken(f)
+                          setDropdown(false)
                         }}
                       >
                         <img src={f.logo} alt="" />
@@ -81,18 +259,51 @@ const PlanBNB: React.FC = () => {
             </div>
           </div>
           <div className="balance">
-            <p>Balance:</p>
-            <h6> 0.00000</h6>
+            <p>
+              Balance:{' '}
+              {new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 4,
+              }).format(selectedToken.balance)}
+              &nbsp;{selectedToken.name}
+            </p>
           </div>
         </div>
 
         <div className="max-container">
-          <input type="text" placeholder="0" />
-          <button>Max</button>
+          <input
+            type="text"
+            value={amount}
+            placeholder="0"
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <button onClick={() => setAmount(selectedToken.balance.toString())}>
+            Max
+          </button>
         </div>
 
         <div className="stake-btn">
-          <Button varient="primary">Stake</Button>
+          {!selectedToken.isApproved ? (
+            <Button varient="secondary" onClick={() => handleApproveToken()}>
+              Approve
+            </Button>
+          ) : (
+            <Button
+              varient="primary"
+              onClick={() => {
+                handlStake()
+              }}
+              disabled={
+                Number(amount) > selectedToken.balance || !Number(amount)
+              }
+            >
+              {Number(amount) > selectedToken.balance
+                ? 'Insufficient Balance'
+                : !Number(amount)
+                ? 'Enter Amount'
+                : 'Stake '}
+            </Button>
+          )}
         </div>
 
         <div className="min-max">
