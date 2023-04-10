@@ -20,7 +20,11 @@ const Footer: React.FC = () => {
           <a href="/">Disclaimer</a>
         </div>
         <div className="media-icons">
-          <a href="https://t.me/+Z3AoAkvo6X81ZjA0" target="_blank">
+          <a
+            href="https://t.me/+Z3AoAkvo6X81ZjA0"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Twitter />
           </a>
           {/* <a href="/">
