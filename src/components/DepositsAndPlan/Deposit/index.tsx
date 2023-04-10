@@ -63,9 +63,13 @@ const DepositData: React.FC<IStakedData> = ({ amount, stakeIndex }) => {
       </div>
       <div className="buttons">
         <div className="withdrawal-btn">
-          <Button varient="secondary">Withdrawal</Button>
+          <Button varient="secondary" onClick={handleWithdraw}>
+            Withdrawal
+          </Button>
         </div>
-        <Button varient="waring">Claim</Button>
+        <Button varient="waring" onClick={handleClaim}>
+          Claim
+        </Button>
       </div>
     </div>
   )

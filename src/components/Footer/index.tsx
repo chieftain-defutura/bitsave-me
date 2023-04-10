@@ -1,9 +1,9 @@
 import React from 'react'
 import FooterLogo from '../../assets/images/footer-logo.png'
 import { ReactComponent as Twitter } from '../../assets/icons/twitter.svg'
-import { ReactComponent as Instagram } from '../../assets/icons/instagram.svg'
-import { ReactComponent as Linkedin } from '../../assets/icons/linkedin.svg'
-import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg'
+// import { ReactComponent as Instagram } from '../../assets/icons/instagram.svg'
+// import { ReactComponent as Linkedin } from '../../assets/icons/linkedin.svg'
+// import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg'
 
 import './Footer.scss'
 
