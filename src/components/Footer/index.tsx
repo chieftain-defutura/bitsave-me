@@ -1,9 +1,9 @@
 import React from 'react'
 import FooterLogo from '../../assets/images/footer-logo.png'
 import { ReactComponent as Twitter } from '../../assets/icons/twitter.svg'
-import { ReactComponent as Instagram } from '../../assets/icons/instagram.svg'
-import { ReactComponent as Linkedin } from '../../assets/icons/linkedin.svg'
-import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg'
+// import { ReactComponent as Instagram } from '../../assets/icons/instagram.svg'
+// import { ReactComponent as Linkedin } from '../../assets/icons/linkedin.svg'
+// import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg'
 
 import './Footer.scss'
 
@@ -20,10 +20,14 @@ const Footer: React.FC = () => {
           <a href="/">Disclaimer</a>
         </div>
         <div className="media-icons">
-          <a href="/">
+          <a
+            href="https://t.me/+Z3AoAkvo6X81ZjA0"
+            target="_blank"
+            rel="noreferrer"
+          >
             <Twitter />
           </a>
-          <a href="/">
+          {/* <a href="/">
             <Instagram />
           </a>
           <a href="/">
@@ -31,7 +35,7 @@ const Footer: React.FC = () => {
           </a>
           <a href="/">
             <Facebook />
-          </a>
+          </a> */}
         </div>
         <div className="footer-end">
           <p>

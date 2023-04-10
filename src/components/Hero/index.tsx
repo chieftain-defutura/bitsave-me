@@ -15,26 +15,6 @@ const Hero: React.FC = () => {
             <span>Stake</span>House
           </h1>
 
-          <div className="robot-img-content-media">
-            <div className="hero-robot-img-media">
-              <img src={Robot} alt="" />
-            </div>
-            <div className="coin-rotation-media">
-              <div className="coin-one">
-                <img src={CoinOne} alt="" />
-              </div>
-              <div className="coin-two">
-                <img src={CoinTwo} alt="" />
-              </div>
-              <div className="coin-three">
-                <img src={CoinThree} alt="" />
-              </div>
-              <div className="coin-four">
-                <img src={CoinFour} alt="" />
-              </div>
-            </div>
-          </div>
-
           <p>
             Stakehouse is a group of professional traders who use their
             extensive expertise and advanced trading bots to navigate the
