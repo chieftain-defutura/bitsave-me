@@ -75,13 +75,22 @@ const Deposit: React.FC = () => {
         <h1>your deposits</h1>
         <div className="deposit">
           <div className="details">
-            <div className="content">
-              <div className="flex-content">
-                <h2>1. 100$</h2>
-                <h2>BUSD</h2>
+            <div className="flex-container">
+              <div className="num">
+                <p>1. </p>
               </div>
-              <p>plan: 30Days</p>
-              <p>Profit:0.002</p>
+              <div className="content">
+                <div className="flex-content">
+                  <h2>100$</h2>
+                  <h2>BUSD</h2>
+                </div>
+                <p>
+                  plan: <span>30Days</span>
+                </p>
+                <p>
+                  <span>Profit</span>: 0.002
+                </p>
+              </div>
             </div>
             <div className="buttons">
               <div className="withdrawal-btn">
@@ -91,13 +100,22 @@ const Deposit: React.FC = () => {
             </div>
           </div>
           <div className="details">
-            <div className="content">
-              <div className="flex-content">
-                <h2>1. 100$</h2>
-                <h2>BUSD</h2>
+            <div className="flex-container">
+              <div className="num">
+                <p>2. </p>
               </div>
-              <p>plan: 30Days</p>
-              <p>Profit:0.002</p>
+              <div className="content">
+                <div className="flex-content">
+                  <h2>100$</h2>
+                  <h2>BUSD</h2>
+                </div>
+                <p>
+                  plan: <span>30Days</span>
+                </p>
+                <p>
+                  <span>Profit</span>: 0.002
+                </p>
+              </div>
             </div>
             <div className="buttons">
               <div className="withdrawal-btn">
@@ -107,13 +125,22 @@ const Deposit: React.FC = () => {
             </div>
           </div>
           <div className="details">
-            <div className="content">
-              <div className="flex-content">
-                <h2>1. 100$</h2>
-                <h2>BUSD</h2>
+            <div className="flex-container">
+              <div className="num">
+                <p>3. </p>
               </div>
-              <p>plan: 30Days</p>
-              <p>Profit:0.002</p>
+              <div className="content">
+                <div className="flex-content">
+                  <h2>100$</h2>
+                  <h2>BUSD</h2>
+                </div>
+                <p>
+                  plan: <span>30Days</span>
+                </p>
+                <p>
+                  <span>Profit</span>: 0.002
+                </p>
+              </div>
             </div>
             <div className="buttons">
               <div className="withdrawal-btn">
@@ -123,13 +150,47 @@ const Deposit: React.FC = () => {
             </div>
           </div>
           <div className="details">
-            <div className="content">
-              <div className="flex-content">
-                <h2>1. 100$</h2>
-                <h2>BUSD</h2>
+            <div className="flex-container">
+              <div className="num">
+                <p>4. </p>
               </div>
-              <p>plan: 30Days</p>
-              <p>Profit:0.002</p>
+              <div className="content">
+                <div className="flex-content">
+                  <h2>100$</h2>
+                  <h2>BUSD</h2>
+                </div>
+                <p>
+                  plan: <span>30Days</span>
+                </p>
+                <p>
+                  <span>Profit</span>: 0.002
+                </p>
+              </div>
+            </div>
+            <div className="buttons">
+              <div className="withdrawal-btn">
+                <Button varient="secondary">Withdrawal</Button>
+              </div>
+              <Button varient="waring">Claim</Button>
+            </div>
+          </div>
+          <div className="details">
+            <div className="flex-container">
+              <div className="num">
+                <p>5. </p>
+              </div>
+              <div className="content">
+                <div className="flex-content">
+                  <h2>100$</h2>
+                  <h2>BUSD</h2>
+                </div>
+                <p>
+                  plan: <span>30Days</span>
+                </p>
+                <p>
+                  <span>Profit</span>: 0.002
+                </p>
+              </div>
             </div>
             <div className="buttons">
               <div className="withdrawal-btn">

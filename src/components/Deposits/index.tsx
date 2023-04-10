@@ -133,7 +133,7 @@ const Deposits: React.FC = () => {
                 <h1>{referralData?.referralList.length}</h1>
               </div>
 
-              <div className="dropDown">
+              {/* <div className="dropDown">
                 <div
                   className="select-dropDown"
                   onClick={() => setDropDownOpen(!dropDownOpen)}
@@ -166,12 +166,12 @@ const Deposits: React.FC = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </div> */}
 
-              <div className="referral-content">
+              <div>
                 <div>
-                  <h5>Total REFERRAL EARNED</h5>
-                  <h1>0.000</h1>
+                  {/* <h5>Total REFERRAL EARNED</h5>
+                  <h1>0.000</h1> */}
                   {referralData?.referralRewards.map((data, index) => (
                     <div className="referral-content" key={index}>
                       <div>

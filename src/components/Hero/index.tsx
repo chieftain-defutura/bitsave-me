@@ -36,8 +36,11 @@ const Hero: React.FC = () => {
           </div>
 
           <p>
-            Stake your BNB & earn daily 9% for 30 days. Stable & profitable
-            yield farming DApp with automated users insurance.
+            Stakehouse is a group of professional traders who use their
+            extensive expertise and advanced trading bots to navigate the
+            complex cryptocurrency market. Their commitment to delivering
+            exceptional results is evident in their impressive track record of
+            success. Join Stakehouse today
           </p>
           <div className="deposit-btn">
             <Button varient="primary">Deposit</Button>

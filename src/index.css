@@ -56,15 +56,8 @@ a {
   color: var(--white-color);
 }
 
-span {
-  background: linear-gradient(98.86deg, #fea823 -0.11%, #eb7f00 99.89%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .bg-img-move {
-  background-image: url('./assets/images/bg-img.png');
+  background-image: url('./assets/images/bg-img-bnb.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   animation: moving 60s linear infinite;
@@ -79,8 +72,30 @@ span {
     background-position: -20% 0px;
   }
 }
-/* aside {
-  color: #999999;
-  font-size: 18px;
-  font-weight: 100;
-} */
+.hero-bg-video {
+  position: relative;
+}
+.hero-bg-video video {
+  object-fit: cover;
+  height: 100vh;
+  width: 100%;
+}
+
+.hero-bg-content {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  min-height: 100vh;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+}

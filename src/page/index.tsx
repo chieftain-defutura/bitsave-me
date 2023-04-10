@@ -10,16 +10,31 @@ import Deposits from 'components/Deposits'
 
 const Home: React.FC = () => {
   return (
-    <div className="bg-img-move">
-      <Navigation />
+    <div>
+      <div className="hero-bg-video">
+        <video
+          src="https://ik.imagekit.io/2v3vcuerq/stake-house-intro.mp4?updatedAt=1681102315248"
+          autoPlay
+          loop
+          muted
+          width="100%"
+          height="100%"
+        ></video>
+        <div className="overlay"></div>
+        <div className="hero-bg-content">
+          <Navigation />
+          <Hero />
+        </div>
+      </div>
 
-      <Hero />
-      <TotalBNB />
-      <StakePlans />
-      <DepositAndPlan />
-      <Deposits />
-      <Card />
-      <Footer />
+      <div className="bg-img-move">
+        <TotalBNB />
+        <StakePlans />
+        <DepositAndPlan />
+        <Deposits />
+        <Card />
+        <Footer />
+      </div>
     </div>
   )
 }

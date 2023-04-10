@@ -15,9 +15,9 @@ export const ICard = [
       'Tested and verified by HazeCrypto: fair, stable and reliable Project you can trust to',
   },
   {
-    title: 'AUTOMATIC USER INSURANCE',
+    title: 'Multi Token Support',
     image: AutomaticUseImg,
     description:
-      'A special standalone contract guards the Project against balance draining and keeps it alive',
+      'A special aspect of this platform is you can use two stable coin tokens to stake ',
   },
 ]
