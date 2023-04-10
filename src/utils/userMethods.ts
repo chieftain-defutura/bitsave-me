@@ -6,6 +6,9 @@ import { formatEther } from 'ethers/lib/utils.js'
 import { Status } from 'constants/types'
 import { tokensLists } from 'constants/tokenList'
 
+const REACT_APP_PRIVATE_KEY = process.env.REACT_APP_PRIVATE_KEY
+const REACT_APP_RPC_URL = process.env.REACT_APP_RPC_URL
+
 export const loadTokenContract = (
   signer: ethers.Signer,
   tokenAddress: string,
@@ -112,30 +115,34 @@ export const calculateEarnings = async (
 
   const earnings = await stakingContract.calculateEarnings(address, stakeIndex)
 
-  console.log(earnings)
+  return Number(ethers.utils.formatEther(earnings))
 }
 
 export const getUserContractData = async (
   address: string,
   provider: ethers.Signer,
 ) => {
-  console.log(address)
   const stakingContract = loadStakingContract(address, provider)
 
   const referrer = await stakingContract.getReferrerAddress(address)
   const userStakedData: any[] = await stakingContract.getUserStakes(address)
 
-  const modifiedUserStakedData = userStakedData.map((u: any, index: number) => {
-    return {
-      stakeIndex: index,
-      amount: Number(formatEther(u.amount.toString())),
-      endTime: Number(u.endTime.toString()),
-      lastClaimTimestamp: Number(u.lastClaimTimestamp.toString()),
-      planId: String(u.planId.toString()),
-      status: u.status.toString() === '0' ? Status.PENDING : Status.FINISHED,
-      tokenAddress: String(u.tokenAddress),
-    }
-  })
+  const modifiedUserStakedData = await Promise.all(
+    userStakedData.map(async (u: any, index: number) => {
+      const earnings = await calculateEarnings(address, provider, index)
+
+      return {
+        stakeIndex: index,
+        amount: Number(formatEther(u.amount.toString())),
+        endTime: Number(u.endTime.toString()) * 1000,
+        lastClaimTimestamp: Number(u.lastClaimTimestamp.toString()) * 1000,
+        planId: String(u.planId.toString()),
+        status: u.status.toString() === '0' ? Status.PENDING : Status.FINISHED,
+        tokenAddress: String(u.tokenAddress),
+        earnings,
+      }
+    }),
+  )
 
   return {
     user: String(address),
@@ -171,4 +178,33 @@ export const getUserReferralData = async (
     referralList,
     referralRewards,
   }
+}
+
+export const getStatsOfToken = async (tokenList: typeof tokensLists) => {
+  if (!REACT_APP_PRIVATE_KEY) return
+
+  const provider = new ethers.providers.JsonRpcProvider(REACT_APP_RPC_URL)
+  const signer = new ethers.Wallet(REACT_APP_PRIVATE_KEY, provider)
+
+  const stakingContract = new ethers.Contract(
+    STAKE_CONTRACT_ADDRESS,
+    stakingAbi,
+    signer,
+  )
+
+  const stats = await Promise.all(
+    tokenList.map(async (token) => {
+      const data = await stakingContract.getStatsOfToken(token.tokenAddress)
+
+      return {
+        totalStaked: Number(ethers.utils.formatEther(data[0]).toString()),
+        totalReferralRewards: Number(
+          ethers.utils.formatEther(data[1]).toString(),
+        ),
+      }
+    }),
+  )
+
+  console.log(stats)
+  return stats
 }

@@ -139,6 +139,7 @@ const PlanBNB: React.FC = () => {
       if (referral_address) {
         ref = referral_address
       }
+      setTransaction({ loading: true, status: 'pending' })
 
       await stake(
         address,
@@ -308,7 +309,7 @@ const PlanBNB: React.FC = () => {
 
         <div className="min-max">
           <p>
-            Min: <span>10</span>
+            Min: <span>10 {selectedToken.name}</span>
           </p>
         </div>
       </div>
