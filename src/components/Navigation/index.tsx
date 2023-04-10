@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { Link } from 'react-router-dom'
 // import { useNavigate } from 'react-router-dom'
 import { useConnect } from 'wagmi'
+import { disconnect } from '@wagmi/core'
 import './Navigation.scss'
 import MetamaskLogo from '../../assets/logo/metamask-logo.png'
 import WalletConnectLogo from '../../assets/logo/walletconnect-logo.png'
@@ -12,6 +13,7 @@ import { ReactComponent as BlueIcon } from '../../assets/icons/blue-round.svg'
 import { ReactComponent as Disconnect } from '../../assets/icons/disconnect.svg'
 import { ReactComponent as ArrowUp } from '../../assets/icons/arrow-up.svg'
 import { ReactComponent as ArrowDown } from '../../assets/icons/arrow-down.svg'
+import { ReactComponent as Check } from '../../assets/icons/check.svg'
 import Button from 'components/Button/Button'
 
 const Navigation: React.FC = () => {
@@ -23,7 +25,27 @@ const Navigation: React.FC = () => {
   const { address } = useAccount()
   const [open, setOpen] = useState(false)
   const [modal, setModal] = useState(false)
-  console.log(address)
+  const [copySuccess, setCopySuccess] = useState('')
+
+  // your function to copy here
+
+  const copyToClipBoard = async (copyMe: string) => {
+    try {
+      await navigator.clipboard.writeText(copyMe)
+      setCopySuccess('Copied!')
+      setTimeout(() => {
+        console.log('run')
+        setCopySuccess('')
+      }, 5000)
+    } catch (err) {
+      setCopySuccess('Failed to copy!')
+    }
+  }
+
+  const handleDisconnect = async () => {
+    await disconnect()
+  }
+
   return (
     <div className="mx">
       <div className="header">
@@ -105,11 +127,14 @@ const Navigation: React.FC = () => {
                     <BlueIcon />
                     {address?.slice(0, 6)}...
                     {address?.slice(address?.length - 6)}
-                    <Copy />
+                    {copySuccess ? (
+                      <Check />
+                    ) : (
+                      <Copy onClick={() => copyToClipBoard(address)} />
+                    )}
                   </div>
-                  <h1>0 ETH</h1>
-                  <p>$0.00</p>
-                  <div className="disconnect">
+
+                  <div className="disconnect" onClick={handleDisconnect}>
                     <h3>Disconnect</h3>
                     <Disconnect />
                   </div>
