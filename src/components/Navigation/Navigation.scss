@@ -6,7 +6,8 @@
   padding: 12px 64px;
   background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(7px);
-  z-index: 10;
+  z-index: 100;
+
   @media (max-width: 680px) {
     padding: 12px;
     // flex-direction: column;
