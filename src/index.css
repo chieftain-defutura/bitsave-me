@@ -36,6 +36,7 @@ body {
   --white-color: #fff;
   --secondary-color: #aaaaaa;
   --text-primary-color: #fea823;
+  --w3m-accent-color: #fea823 !important;
   --font-bold: 'Gilroy-Bold';
   --font-medium: 'Gilroy-Medium';
   --font-semiBold: 'Gilroy-SemiBold';
