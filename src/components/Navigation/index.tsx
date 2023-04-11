@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useAccount } from 'wagmi'
 import { Link } from 'react-router-dom'
+import { Web3Button } from '@web3modal/react'
 // import { useNavigate } from 'react-router-dom'
 import { useConnect } from 'wagmi'
 import { disconnect } from '@wagmi/core'
@@ -52,7 +53,8 @@ const Navigation: React.FC = () => {
         <Link to="/">
           <img src={Logo} alt="" />
         </Link>
-        <div className="header-container">
+        <Web3Button />
+        {/* <div className="header-container">
           {!address ? (
             <>
               <div className="connect-btn">
@@ -142,7 +144,7 @@ const Navigation: React.FC = () => {
               )}
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   )
