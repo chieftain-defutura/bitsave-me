@@ -37,6 +37,12 @@
     p {
       color: #aaaaaa;
       font-size: 16px;
+      span {
+        background: linear-gradient(98.86deg, #fea823 -0.11%, #eb7f00 99.89%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
     }
   }
 }
