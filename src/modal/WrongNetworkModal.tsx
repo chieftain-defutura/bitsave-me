@@ -14,7 +14,7 @@ const WrongNetworkModal: React.FC<IWrongNetworkModal> = ({
   modal,
   handleClose,
 }) => {
-  const { switchNetwork } = useSwitchNetwork()
+  const { switchNetworkAsync } = useSwitchNetwork()
   return (
     <Backdrop handleClose={handleClose} isOpen={modal}>
       <AnimatePresence exitBeforeEnter>
@@ -30,7 +30,14 @@ const WrongNetworkModal: React.FC<IWrongNetworkModal> = ({
             <div className="transaction_modal-content">
               <h2>Wrong network</h2>
               <button
-                onClick={() => switchNetwork?.(5)}
+                onClick={async () => {
+                  try {
+                    const data = await switchNetworkAsync?.(97)
+                    console.log(data)
+                  } catch (error) {
+                    console.log(error)
+                  }
+                }}
                 style={{
                   background:
                     'linear-gradient(98.86deg, #FEA823 -0.11%, #EB7F00 99.89%)',
@@ -40,7 +47,7 @@ const WrongNetworkModal: React.FC<IWrongNetworkModal> = ({
                   border: 'none',
                   outline: 'none',
                   cursor: 'pointer',
-                  width: '40%',
+                  width: '100%',
                   margin: '0 auto',
                   fontSize: '16px',
                 }}

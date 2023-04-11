@@ -85,6 +85,8 @@
   @extend %base-styles;
   max-width: 480px;
   width: 100%;
+  display: grid;
+  place-items: center;
 
   @media (max-width: 576px) {
     max-width: 90%;
