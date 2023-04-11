@@ -10,7 +10,7 @@ export const IStakePlans = [
   {
     heading: 'GOLD',
     title: '1% For 30 Days',
-    price: '$1000-$10000',
+    price: '$1001-$10000',
     dailyPrecentage: 'Daily 1%',
     profits: 'Profits 130%',
     depositStatus: 'Deposit Included',
@@ -18,7 +18,7 @@ export const IStakePlans = [
   {
     heading: 'PLANTINUM',
     title: '2% For 30 Days',
-    price: '$10000-$50000',
+    price: '$10001-$50000',
     dailyPrecentage: 'Daily 2%',
     profits: 'Profits 160%',
     depositStatus: 'Deposit Included',
@@ -26,7 +26,7 @@ export const IStakePlans = [
   {
     heading: 'VIP',
     title: '3% For 30 Days',
-    price: '$50000-$100000',
+    price: '$50001-$100000',
     dailyPrecentage: 'Daily 3%',
     profits: 'Profits 190%',
     depositStatus: 'Deposit Included',
