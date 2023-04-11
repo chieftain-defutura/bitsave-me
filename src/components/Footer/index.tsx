@@ -39,8 +39,7 @@ const Footer: React.FC = () => {
         </div>
         <div className="footer-end">
           <p>
-            <span>2023 BNB FINANCE MINER, </span>
-            All Rights Reserved
+            Copyright © 2022 <span>Stake</span>House ® All right reserved
           </p>
         </div>
       </div>
