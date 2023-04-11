@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Link } from 'react-router-dom'
 import { Web3Button } from '@web3modal/react'

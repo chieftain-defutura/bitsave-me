@@ -106,7 +106,7 @@
           top: 8px;
           left: 0;
           right: 0;
-          padding: 9px 16px;
+          padding: 5px 16px;
 
           .usdt-img {
             img {
@@ -121,8 +121,10 @@
             gap: 6px;
             cursor: pointer;
             padding: 3px 6px;
-            margin-bottom: 5px;
             border-bottom: 0.2px solid rgba(119, 119, 119, 0.2);
+            &:last-child {
+              border-bottom: none;
+            }
             p {
               font-size: 12px;
               text-transform: uppercase;

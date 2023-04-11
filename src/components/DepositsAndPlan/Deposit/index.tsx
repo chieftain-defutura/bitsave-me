@@ -5,8 +5,19 @@ import { IStakedData, userStore } from 'store/userStore'
 import { useAccount, useSigner } from 'wagmi'
 import { useTransactionModal } from 'context/TransactionContext'
 import { claim, withdraw } from 'utils/userMethods'
+import { tokensLists } from 'constants/tokenList'
 
-const DepositData: React.FC<IStakedData> = ({ amount, stakeIndex }) => {
+const plansData = [0, 30, 60, 90, 120]
+
+const DepositData: React.FC<IStakedData & { index: number }> = ({
+  amount,
+  stakeIndex,
+  planId,
+  tokenAddress,
+  earnings,
+  index,
+  endTime,
+}) => {
   const { address } = useAccount()
   const { data: signerData } = useSigner()
   const { setTransaction } = useTransactionModal()
@@ -15,6 +26,7 @@ const DepositData: React.FC<IStakedData> = ({ amount, stakeIndex }) => {
     try {
       if (!signerData || !address) return
 
+      setTransaction({ loading: true, status: 'pending' })
       await claim(address, signerData, stakeIndex)
       setTransaction({ loading: true, status: 'success' })
       setTimeout(() => {
@@ -29,6 +41,8 @@ const DepositData: React.FC<IStakedData> = ({ amount, stakeIndex }) => {
   const handleWithdraw = async () => {
     try {
       if (!signerData || !address) return
+
+      setTransaction({ loading: true, status: 'pending' })
 
       await withdraw(address, signerData, stakeIndex)
 
@@ -46,24 +60,42 @@ const DepositData: React.FC<IStakedData> = ({ amount, stakeIndex }) => {
     <div className="details">
       <div className="flex-container">
         <div className="num">
-          <p>1. </p>
+          <p>{index}. </p>
         </div>
         <div className="content">
           <div className="flex-content">
-            <h2>100$</h2>
-            <h2>BUSD</h2>
+            <h2>
+              {new Intl.NumberFormat('en-US', {
+                maximumFractionDigits: 4,
+              }).format(amount)}
+              &nbsp;
+              {
+                tokensLists.find(
+                  (f) =>
+                    f.tokenAddress.toLowerCase() === tokenAddress.toLowerCase(),
+                )?.name
+              }
+            </h2>
           </div>
           <p>
-            plan: <span>30Days</span>
+            plan: <span>{plansData[Number(planId)]} Days</span>
           </p>
           <p>
-            <span>Profit</span>: 0.002
+            <span>Profit</span>:{' '}
+            {new Intl.NumberFormat('en-US', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 4,
+            }).format(earnings)}
           </p>
         </div>
       </div>
       <div className="buttons">
         <div className="withdrawal-btn">
-          <Button varient="secondary" onClick={handleWithdraw}>
+          <Button
+            varient="secondary"
+            disabled={endTime > new Date().getTime()}
+            onClick={handleWithdraw}
+          >
             Withdrawal
           </Button>
         </div>
@@ -84,7 +116,7 @@ const Deposit: React.FC = () => {
         <h1>your deposits</h1>
         <div className="deposit">
           {userStakedData.map((data, index) => (
-            <DepositData {...data} key={index.toString()} />
+            <DepositData {...data} index={index + 1} key={index.toString()} />
           ))}
         </div>
       </div>

@@ -94,7 +94,7 @@ const Deposits: React.FC = () => {
         <div className="deposits-container">
           <div className="deposits-first">
             <h4>
-              Earn <span>1%</span> from each level 1 referral deposits.
+              Earn <span>5%</span> from each level 1 referral deposits.
             </h4>
 
             <div className="deposits-media">
