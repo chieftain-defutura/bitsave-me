@@ -28,9 +28,23 @@ const Home: React.FC = () => {
         </div>
       </div>
 
+      <div className="second-bg-video">
+        <video
+          src="https://ik.imagekit.io/2v3vcuerq/stake-house-video-2.mp4?updatedAt=1681212942053"
+          autoPlay
+          loop
+          muted
+          width="100%"
+          height="100%"
+        ></video>
+        <div className="bg-overlay"></div>
+        <div className="second-bg-content">
+          <TotalBNB />
+          <StakePlans />
+        </div>
+      </div>
+
       <div className="bg-img-move">
-        <TotalBNB />
-        <StakePlans />
         <DepositAndPlan />
         <Deposits />
         <Disclaimer />

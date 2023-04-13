@@ -16,11 +16,11 @@ const Hero: React.FC = () => {
               <span>Bit</span>Save
             </h1>
             <p>
-              Bitsave is a group of professional traders who use their extensive
-              expertise and advanced trading bots to navigate the complex
-              cryptocurrency market. Their commitment to delivering exceptional
-              results is evident in their impressive track record of success.
-              Join Bitsave today
+              Stake your USDT, BUSD & earn 0.5% to 3% daily for 30 -120 days
+              with Bitsave. Bitsave is managed by a group of professional
+              traders who use their extensive expertise and advanced trading
+              bots to navigate the complex cryptocurrency market. Join the 10%
+              profitable traders in the crypto industry and make passive income.
             </p>
             <div className="deposit-btn">
               <a href="#deposit">
