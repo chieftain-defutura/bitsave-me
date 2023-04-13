@@ -13,14 +13,14 @@ const Hero: React.FC = () => {
         <div className="hero-container">
           <div className="hero-content">
             <h1>
-              <span>Stake</span>House
+              <span>Bit</span>Save
             </h1>
             <p>
-              Stakehouse is a group of professional traders who use their
-              extensive expertise and advanced trading bots to navigate the
-              complex cryptocurrency market. Their commitment to delivering
-              exceptional results is evident in their impressive track record of
-              success. Join Stakehouse today
+              Bitsave is a group of professional traders who use their extensive
+              expertise and advanced trading bots to navigate the complex
+              cryptocurrency market. Their commitment to delivering exceptional
+              results is evident in their impressive track record of success.
+              Join Bitsave today
             </p>
             <div className="deposit-btn">
               <a href="#deposit">

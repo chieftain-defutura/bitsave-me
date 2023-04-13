@@ -9,11 +9,11 @@ const Disclaimer: React.FC = () => {
         <div className="disclaimer-content">
           <p>
             Disclaimer: The following message is intended to provide important
-            information about Stakehouse, a crypto company. Please read this
+            information about Bitsave, a crypto company. Please read this
             disclaimer carefully before using our platform.
           </p>
           <p>
-            Stakehouse is a cryptocurrency investment and trading platform that
+            Bitsave is a cryptocurrency investment and trading platform that
             allows users to stake and hold various digital assets. While we
             strive to provide a safe and secure platform for our users, it is
             important to understand the inherent risks associated with investing
@@ -28,7 +28,7 @@ const Disclaimer: React.FC = () => {
             any tangible asset or commodity.
           </p>
           <p>
-            Stakehouse is not a registered investment advisor, broker-dealer, or
+            Bitsave is not a registered investment advisor, broker-dealer, or
             financial institution. We do not provide investment advice or
             recommendations, and we are not responsible for any losses or
             damages that may occur as a result of using our services.
@@ -42,7 +42,7 @@ const Disclaimer: React.FC = () => {
           <p>
             By using our platform, you acknowledge and accept the risks
             associated with investing in cryptocurrencies and agree to hold
-            Stakehouse harmless from any losses or damages that may occur.
+            Bitsave harmless from any losses or damages that may occur.
           </p>
         </div>
       </div>
