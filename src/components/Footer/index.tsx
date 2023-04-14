@@ -1,6 +1,6 @@
 import React from 'react'
 import FooterLogo from '../../assets/images/footer-logo.png'
-import { ReactComponent as Twitter } from '../../assets/icons/twitter.svg'
+import { ReactComponent as Telegram } from '../../assets/icons/Telegram.svg'
 // import { ReactComponent as Instagram } from '../../assets/icons/instagram.svg'
 // import { ReactComponent as Linkedin } from '../../assets/icons/linkedin.svg'
 // import { ReactComponent as Facebook } from '../../assets/icons/facebook.svg'
@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
             target="_blank"
             rel="noreferrer"
           >
-            <Twitter />
+            <Telegram />
           </a>
           {/* <a href="/">
             <Instagram />
@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
         </div>
         <div className="footer-end">
           <p>
-            Copyright © 2022 <span>Stake</span>House ® All right reserved
+            Copyright © 2022 <span>Bit</span>save ® All right reserved
           </p>
         </div>
       </div>
