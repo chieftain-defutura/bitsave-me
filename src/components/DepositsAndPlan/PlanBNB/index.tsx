@@ -353,7 +353,10 @@ const PlanBNB: React.FC = () => {
         className="register-modal"
       >
         <div className="modal-content">
-          <h2>Welcome to BitSave platform</h2>
+          <h2>
+            Welcome to <span style={{ color: 'var(--primary)' }}>Bit</span>Save
+            platform
+          </h2>
           <div className="flex">
             <div className="flex-between">
               <p>Total amount</p>
