@@ -6,6 +6,7 @@ import { useAccount, useSigner } from 'wagmi'
 import { useTransactionModal } from 'context/TransactionContext'
 import { claim, withdraw } from 'utils/userMethods'
 import { tokensLists } from 'constants/tokenList'
+import { Status } from 'constants/types'
 
 const plansData = [0, 30, 60, 90, 120]
 
@@ -115,9 +116,11 @@ const Deposit: React.FC = () => {
       <div className="deposit-container">
         <h1>your deposits</h1>
         <div className="deposit">
-          {userStakedData.map((data, index) => (
-            <DepositData {...data} index={index + 1} key={index.toString()} />
-          ))}
+          {userStakedData
+            .filter((f) => f.status === Status.PENDING)
+            .map((data, index) => (
+              <DepositData {...data} index={index + 1} key={index.toString()} />
+            ))}
         </div>
       </div>
     </div>

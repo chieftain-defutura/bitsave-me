@@ -22,6 +22,7 @@ import {
   stake,
 } from 'utils/userMethods'
 import { userStore } from 'store/userStore'
+import Modal from 'components/Model'
 
 const tokensLists = [
   {
@@ -40,6 +41,8 @@ const tokensLists = [
   },
 ]
 
+const MINIMUM_STAKE_AMOUNT = 20
+
 const PlanBNB: React.FC = () => {
   const { address } = useAccount()
   const referrer = userStore((state) => state.referrer)
@@ -56,6 +59,9 @@ const PlanBNB: React.FC = () => {
   const [dropdown, setDropdown] = useState(false)
   const [totalProfit, setTotalProfit] = useState(0)
   const [dailyProfit, setDailyProfit] = useState(0)
+  const userStakedData = userStore((state) => state.userStakedData)
+  const [registerModal, setRegisterModal] = useState(false)
+
   const handleGetData = useCallback(async () => {
     if (address && signerData) {
       try {
@@ -194,6 +200,7 @@ const PlanBNB: React.FC = () => {
       setTotalProfit(dailyProfit * 120)
     }
   }, [dailyProfit, plan])
+
   return (
     <div className="plan-container">
       <div className="plan-head">
@@ -288,6 +295,26 @@ const PlanBNB: React.FC = () => {
             <Button varient="secondary" onClick={() => handleApproveToken()}>
               Approve
             </Button>
+          ) : !userStakedData.length ? (
+            <Button
+              varient="primary"
+              onClick={() => {
+                setRegisterModal(true)
+              }}
+              disabled={
+                Number(amount) > selectedToken.balance ||
+                !Number(amount) ||
+                Number(amount) < MINIMUM_STAKE_AMOUNT
+              }
+            >
+              {Number(amount) > selectedToken.balance
+                ? 'Insufficient Balance'
+                : !Number(amount)
+                ? 'Enter Amount'
+                : Number(amount) < MINIMUM_STAKE_AMOUNT
+                ? `Min ${MINIMUM_STAKE_AMOUNT} ${selectedToken.name}`
+                : 'Register'}
+            </Button>
           ) : (
             <Button
               varient="primary"
@@ -295,24 +322,68 @@ const PlanBNB: React.FC = () => {
                 handlStake()
               }}
               disabled={
-                Number(amount) > selectedToken.balance || !Number(amount)
+                Number(amount) > selectedToken.balance ||
+                !Number(amount) ||
+                Number(amount) < MINIMUM_STAKE_AMOUNT
               }
             >
               {Number(amount) > selectedToken.balance
                 ? 'Insufficient Balance'
                 : !Number(amount)
                 ? 'Enter Amount'
-                : 'Stake '}
+                : Number(amount) < MINIMUM_STAKE_AMOUNT
+                ? `Min 10 ${selectedToken.name}`
+                : 'Stake'}
             </Button>
           )}
         </div>
 
         <div className="min-max">
           <p>
-            Min: <span>10 {selectedToken.name}</span>
+            Min:{' '}
+            <span>
+              {MINIMUM_STAKE_AMOUNT} {selectedToken.name}
+            </span>
           </p>
         </div>
       </div>
+      <Modal
+        isOpen={registerModal}
+        handleClose={() => setRegisterModal(false)}
+        className="register-modal"
+      >
+        <div className="modal-content">
+          <h2>Welcome to BitSave platform</h2>
+          <div className="flex">
+            <div className="flex-between">
+              <p>Total amount</p>
+              <b>
+                {amount} {selectedToken.name}
+              </b>
+            </div>
+            <div className="flex-between">
+              <p>Registration Fee</p>
+              <b>10 {selectedToken.name}</b>
+            </div>
+            <div className="flex-between">
+              <p>Staking amount</p>
+              <b>
+                {Number(amount) - 10} {selectedToken.name}
+              </b>
+            </div>
+          </div>
+          <Button
+            varient="primary"
+            onClick={() => {
+              setRegisterModal(false)
+              handlStake()
+            }}
+            disabled={Number(amount) > selectedToken.balance || !Number(amount)}
+          >
+            Register and stake
+          </Button>
+        </div>
+      </Modal>
     </div>
   )
 }

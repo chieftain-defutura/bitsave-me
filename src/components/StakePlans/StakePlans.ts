@@ -2,7 +2,7 @@ export const IStakePlans = [
   {
     heading: 'SILVER',
     title: '0.5% For 30 Days',
-    price: '$10 - $1000',
+    price: '$20 - $1000',
     dailyPrecentage: 'Daily 0.5%',
     profits: 'Profits 115%',
     depositStatus: 'Deposit Included',

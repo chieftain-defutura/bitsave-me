@@ -32,6 +32,7 @@ interface IReactModal {
   isOpen: boolean
   overlay?: boolean
   style?: React.CSSProperties
+  className?: string
 }
 
 interface IModal {
@@ -40,6 +41,7 @@ interface IModal {
   isOpen?: boolean
   overlay?: boolean
   style?: React.CSSProperties
+  className?: string
 }
 
 const BaseModal: React.FC<IModal> = ({
@@ -48,6 +50,7 @@ const BaseModal: React.FC<IModal> = ({
   isOpen,
   overlay = true,
   style,
+  className,
 }) => {
   if (!isOpen) return null
 
@@ -58,7 +61,7 @@ const BaseModal: React.FC<IModal> = ({
           <motion.div
             onClick={(e) => e.stopPropagation()}
             variants={modalVaraints}
-            className="fixed-modal"
+            className={className ? `fixed-modal ${className}` : 'fixed-modal'}
             animate="animate"
             initial="initial"
             exit="initial"
