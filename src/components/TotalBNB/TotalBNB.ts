@@ -1,17 +1,5 @@
 export const ITotalBNB = [
   {
-    title: 'Total Deposit (BUSD)',
-    bnb: 0,
-    dollar: '$57.98',
-    symbol: 'BUSD',
-  },
-  {
-    title: 'Total Referral (BUSD)',
-    bnb: 0,
-    dollar: '$57.98',
-    symbol: 'BUSD',
-  },
-  {
     title: 'Total Deposit (USDT)',
     bnb: 0,
     dollar: '$57.98',
@@ -22,5 +10,17 @@ export const ITotalBNB = [
     bnb: 0,
     dollar: '$57.98',
     symbol: 'USDT',
+  },
+  {
+    title: 'Total Deposit (BUSD)',
+    bnb: 0,
+    dollar: '$57.98',
+    symbol: 'BUSD',
+  },
+  {
+    title: 'Total Referral (BUSD)',
+    bnb: 0,
+    dollar: '$57.98',
+    symbol: 'BUSD',
   },
 ]

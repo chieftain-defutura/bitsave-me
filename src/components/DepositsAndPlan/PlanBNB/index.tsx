@@ -26,17 +26,17 @@ import Modal from 'components/Model'
 
 const tokensLists = [
   {
-    tokenAddress: BUSD_TOKEN_ADDRESS,
-    isApproved: false,
-    name: 'BUSD',
-    logo: BUSDCoin,
-    balance: 0,
-  },
-  {
     tokenAddress: USDT_TOKEN_ADDRESS,
     isApproved: false,
     name: 'USDT',
     logo: USDCoin,
+    balance: 0,
+  },
+  {
+    tokenAddress: BUSD_TOKEN_ADDRESS,
+    isApproved: false,
+    name: 'BUSD',
+    logo: BUSDCoin,
     balance: 0,
   },
 ]
