@@ -27,4 +27,19 @@
       width: 220px;
     }
   }
+  .nav {
+    display: flex;
+    justify-content: space-evenly;
+    justify-content: space-between;
+    gap: 60px;
+    p {
+      &:hover {
+        color: orange;
+        transition: 0.5s;
+      }
+    }
+    @media (max-width: 900px) {
+      display: none;
+    }
+  }
 }

@@ -23,7 +23,7 @@ const Home: React.FC = () => {
         ></video>
         <div className="overlay"></div>
         <div className="hero-bg-content">
-          <Navigation />
+          {/* <Navigation /> */}
           <Hero />
         </div>
       </div>
