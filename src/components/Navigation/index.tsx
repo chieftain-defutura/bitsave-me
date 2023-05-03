@@ -74,7 +74,9 @@ const Navigation: React.FC = () => {
     <div className="mx">
       <div className="header">
         <Link to="/">
-          <img src={Logo} alt="" />
+          <div className="logo">
+            <img src={Logo} alt="" />
+          </div>
         </Link>
         {renderLinks}
         <Web3Button />

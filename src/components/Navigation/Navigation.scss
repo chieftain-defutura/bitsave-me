@@ -7,7 +7,13 @@
   background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(7px);
   z-index: 100;
-
+  .logo {
+    @media (max-width: 480px) {
+      img {
+        width: 180px;
+      }
+    }
+  }
   @media (max-width: 680px) {
     padding: 12px;
     // flex-direction: column;
@@ -61,7 +67,7 @@
   background: rgba(0, 0, 0, 0.5);
   .bar {
     position: fixed;
-    width: 300px;
+    width: 50%;
     height: 100vh;
     right: 0;
     top: 67px;
