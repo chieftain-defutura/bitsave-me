@@ -84,7 +84,12 @@ const Navigation: React.FC = () => {
           {!openClose ? (
             <img src={Menu} alt="" onClick={() => setOpenClose((m) => !m)} />
           ) : (
-            <img src={Close} alt="" onClick={() => setOpenClose((m) => !m)} />
+            <img
+              src={Close}
+              alt=""
+              width="28px"
+              onClick={() => setOpenClose((m) => !m)}
+            />
           )}
         </div>
       </div>

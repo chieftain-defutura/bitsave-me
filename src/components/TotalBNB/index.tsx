@@ -39,8 +39,8 @@ const TotalBNB: React.FC = () => {
                 <h1>
                   <span>
                     {new Intl.NumberFormat('en-US', {
-                      maximumFractionDigits: 2,
-                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 0,
+                      minimumFractionDigits: 0,
                     }).format(f.bnb)}
                     &nbsp;{f.symbol}
                   </span>
