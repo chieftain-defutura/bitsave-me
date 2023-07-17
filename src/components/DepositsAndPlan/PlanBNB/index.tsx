@@ -257,8 +257,10 @@ const PlanBNB: React.FC = () => {
                           setDropdown(false)
                         }}
                       >
-                        <img src={f.logo} alt="" />
-                        <p>{f.name}</p>
+                        {/* <img src={f.logo} alt="" />
+                        <p>{f.name}</p> */}
+                        <p>xsjnxjw</p>
+                        <p>zms w</p>
                       </div>
                     )
                   })}
