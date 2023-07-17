@@ -3,7 +3,7 @@ import { configureChains, createClient } from 'wagmi'
 import { bsc } from 'wagmi/chains'
 
 export const chains = [bsc]
-export const projectId = 'bf9397e41bf0ab99a492296a2957db54'
+export const projectId = 'ee83a6abf3d3b38701872852fd11b985'
 
 const { provider } = configureChains(chains, [w3mProvider({ projectId })])
 export const wagmiClient = createClient({

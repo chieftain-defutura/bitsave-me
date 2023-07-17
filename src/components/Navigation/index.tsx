@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Web3Button } from '@web3modal/react'
 import './Navigation.scss'
+
 import Logo from '../../assets/images/footer-logo.png'
 import Menu from '../../assets/icons/menu.svg'
 import Close from '../../assets/icons/close.svg'
