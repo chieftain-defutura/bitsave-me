@@ -1,7 +1,7 @@
 export const IStakePlans = [
   {
     heading: 'GROUP I',
-    title: '0.5% APR 30 Days',
+    title: '0.5% APR',
     price: '$20 - $1000',
     dailyPrecentage: 'Daily 0.5% APR',
     profits: 'Profits 115%',
@@ -9,7 +9,7 @@ export const IStakePlans = [
   },
   {
     heading: 'GROUP II',
-    title: '1% APR 30 Days',
+    title: '1% APR',
     price: '$1001 - $10000',
     dailyPrecentage: 'Daily 1% APR',
     profits: 'Profits 130%',
@@ -17,7 +17,7 @@ export const IStakePlans = [
   },
   {
     heading: 'GROUP III',
-    title: '2% APR 30 Days',
+    title: '2% APR',
     price: '$10001 - $50000',
     dailyPrecentage: 'Daily 2% APR',
     profits: 'Profits 160%',
@@ -25,7 +25,7 @@ export const IStakePlans = [
   },
   {
     heading: 'GROUP IV',
-    title: '3% APR 30 Days',
+    title: '3% APR',
     price: '$50001 - $100000',
     dailyPrecentage: 'Daily 3% APR',
     profits: 'Profits 190%',
