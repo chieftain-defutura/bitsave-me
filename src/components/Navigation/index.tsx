@@ -46,28 +46,6 @@ const Navigation: React.FC = () => {
           </p>
         </div>
       </Link>
-      <Link to="/buy">
-        <div onClick={() => setOpenClose(false)}>
-          <p
-            onClick={() => setActive('buy')}
-            style={{ color: Active === 'buy' ? 'orange' : '#fff' }}
-            className="buy"
-          >
-            Buy
-          </p>
-        </div>
-      </Link>
-      <Link to="/sell">
-        <div onClick={() => setOpenClose(false)}>
-          <p
-            onClick={() => setActive('sell')}
-            style={{ color: Active === 'sell' ? 'orange' : '#fff' }}
-            className="sell"
-          >
-            Sell
-          </p>
-        </div>
-      </Link>
     </div>
   )
 
