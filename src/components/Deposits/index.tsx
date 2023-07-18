@@ -9,11 +9,12 @@ import ReferralDepositsImg from '../../assets/images/referral-deposits-img.png'
 // import USDT from '../../assets/icons/usdt.png'
 import autoAnimate from '@formkit/auto-animate'
 import './Deposits.scss'
-import { useAccount, useSigner } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { claimReferralBonus, getUserReferralData } from 'utils/userMethods'
 import { tokensLists } from 'constants/tokenList'
 import { useTransactionModal } from 'context/TransactionContext'
 import { userStore } from 'store/userStore'
+import { useEthersSigner } from 'utils/ethers'
 // import { ArrElement } from 'constants/types'
 
 const getBaseUrl = () => {
@@ -33,8 +34,8 @@ const Deposits: React.FC = () => {
   }, [parent])
   const { address } = useAccount()
   const [copied, setCopied] = useState(false)
-  const { data: signerData } = useSigner()
   const { setTransaction } = useTransactionModal()
+  const signer = useEthersSigner()
   const [referralData, setReferralData] = useState<{
     referralList: string[]
     referralRewards: {
@@ -61,16 +62,14 @@ const Deposits: React.FC = () => {
   }, [copied])
 
   const handleGetReferralData = useCallback(async () => {
-    if (address && signerData) {
+    if (address && signer) {
       try {
-        setReferralData(
-          await getUserReferralData(address, signerData, tokensLists),
-        )
+        setReferralData(await getUserReferralData(address, signer, tokensLists))
       } catch (error: any) {
         console.log(error)
       }
     }
-  }, [address, signerData])
+  }, [address, signer])
 
   useEffect(() => {
     handleGetReferralData()
@@ -78,10 +77,10 @@ const Deposits: React.FC = () => {
 
   const handleClaim = async (tokenAddress: string) => {
     try {
-      if (!address || !signerData) return
+      if (!address || !signer) return
 
       setTransaction({ loading: true, status: 'pending' })
-      await claimReferralBonus(address, signerData, tokenAddress)
+      await claimReferralBonus(address, signer, tokenAddress)
       setTransaction({ loading: true, status: 'success' })
     } catch (error) {
       setTransaction({ loading: true, status: 'error' })

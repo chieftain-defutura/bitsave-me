@@ -32,7 +32,7 @@ const WrongNetworkModal: React.FC<IWrongNetworkModal> = ({
               <button
                 onClick={async () => {
                   try {
-                    const data = await switchNetworkAsync?.(97)
+                    const data = await switchNetworkAsync?.(56)
                     console.log(data)
                   } catch (error) {
                     console.log(error)

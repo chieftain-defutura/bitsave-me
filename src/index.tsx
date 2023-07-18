@@ -4,16 +4,16 @@ import { BrowserRouter } from 'react-router-dom'
 import { WagmiConfig } from 'wagmi'
 import { SkeletonTheme } from 'react-loading-skeleton'
 import { Buffer } from 'buffer'
-import { Web3Modal } from '@web3modal/react'
-import { wagmiClient, chains, projectId } from './utils/Connector/Connector'
-import { EthereumClient } from '@web3modal/ethereum'
-import './index.css'
-import App from './App'
 import reportWebVitals from './reportWebVitals'
 import Provider from './store/provider'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { chains, projectId, wagmiConfig } from 'utils/Connector/Connector'
+import { Web3Modal } from '@web3modal/react'
+import { EthereumClient } from '@web3modal/ethereum'
+import App from './App'
+import './index.css'
 
-const ethereumClient = new EthereumClient(wagmiClient, chains)
+const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 window.Buffer = Buffer
 //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -21,7 +21,7 @@ const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <WagmiConfig client={wagmiClient}>
+      <WagmiConfig config={wagmiConfig}>
         <Provider>
           <SkeletonTheme baseColor="#343741" highlightColor="#272a34">
             <App />

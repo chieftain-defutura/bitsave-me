@@ -2,11 +2,12 @@ import React from 'react'
 import './Deposit.scss'
 import Button from 'components/Button/Button'
 import { IStakedData, userStore } from 'store/userStore'
-import { useAccount, useSigner } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { useTransactionModal } from 'context/TransactionContext'
 import { claim, withdraw } from 'utils/userMethods'
 import { tokensLists } from 'constants/tokenList'
 import { Status } from 'constants/types'
+import { useEthersSigner } from 'utils/ethers'
 
 const plansData = [0, 30, 60, 90, 120]
 
@@ -20,15 +21,15 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
   endTime,
 }) => {
   const { address } = useAccount()
-  const { data: signerData } = useSigner()
   const { setTransaction } = useTransactionModal()
+  const signer = useEthersSigner()
 
   const handleClaim = async () => {
     try {
-      if (!signerData || !address) return
+      if (!signer || !address) return
 
       setTransaction({ loading: true, status: 'pending' })
-      await claim(address, signerData, stakeIndex)
+      await claim(address, signer, stakeIndex)
       setTransaction({ loading: true, status: 'success' })
       setTimeout(() => {
         window.location.reload()
@@ -41,11 +42,11 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
 
   const handleWithdraw = async () => {
     try {
-      if (!signerData || !address) return
+      if (!signer || !address) return
 
       setTransaction({ loading: true, status: 'pending' })
 
-      await withdraw(address, signerData, stakeIndex)
+      await withdraw(address, signer, stakeIndex)
 
       setTransaction({ loading: true, status: 'success' })
       setTimeout(() => {

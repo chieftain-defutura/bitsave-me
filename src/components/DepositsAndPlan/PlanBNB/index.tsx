@@ -3,13 +3,14 @@ import './PlanBNB.scss'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
 import Button from 'components/Button/Button'
 import autoAnimate from '@formkit/auto-animate'
-import { useAccount, useSigner } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { ethers } from 'ethers'
 import TokenAbi from '../../../utils/abi/tokenABI.json'
 import BUSDCoin from '../../../assets/icons/usd-coin.svg'
 import USDCoin from '../../../assets/icons/usdt.png'
 import { useSearchParams } from 'react-router-dom'
 import { useTransactionModal } from 'context/TransactionContext'
+import { useEthersSigner } from 'utils/ethers'
 import {
   BUSD_TOKEN_ADDRESS,
   STAKE_CONTRACT_ADDRESS,
@@ -50,7 +51,6 @@ const PlanBNB: React.FC = () => {
   const updateUserData = userStore((state) => state.updateUserData)
   const [searchParams] = useSearchParams()
   const referral_address = searchParams.get('ref')
-  const { data: signerData, refetch } = useSigner()
   const { setTransaction } = useTransactionModal()
   const [tokens, setTokens] = useState<typeof tokensLists>([])
   const [selectedToken, setSelectedToken] = useState(tokensLists[0])
@@ -60,23 +60,24 @@ const PlanBNB: React.FC = () => {
   const [totalProfit, setTotalProfit] = useState(0)
   const [dailyProfit, setDailyProfit] = useState(0)
   const userStakedData = userStore((state) => state.userStakedData)
+  const signer = useEthersSigner()
   const [registerModal, setRegisterModal] = useState(false)
 
   const handleGetData = useCallback(async () => {
-    if (address && signerData) {
+    if (address && signer) {
       try {
         updateStatus(true)
-        updateUserData(await getUserContractData(address, signerData))
+        updateUserData(await getUserContractData(address, signer))
         const modifiedTokens = await Promise.all(
           tokensLists.map(async (token) => {
             const allowance = await getIsApproved(
               address,
-              signerData,
+              signer,
               token.tokenAddress,
             )
             const balance = await getUserTokenBalance(
               address,
-              signerData,
+              signer,
               token.tokenAddress,
             )
             return {
@@ -96,7 +97,7 @@ const PlanBNB: React.FC = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, signerData])
+  }, [address, signer])
 
   const handleSetDefaultData = useCallback(() => {
     setSelectedToken(tokensLists[0])
@@ -109,7 +110,7 @@ const PlanBNB: React.FC = () => {
 
   const handleApproveToken = async () => {
     try {
-      if (!signerData || !address) return
+      if (!signer || !address) return
 
       setTransaction({
         loading: true,
@@ -118,7 +119,7 @@ const PlanBNB: React.FC = () => {
       const tokenContract = new ethers.Contract(
         selectedToken.tokenAddress,
         TokenAbi,
-        signerData,
+        signer,
       )
       const tx = await tokenContract.increaseAllowance(
         STAKE_CONTRACT_ADDRESS,
@@ -129,7 +130,6 @@ const PlanBNB: React.FC = () => {
         loading: true,
         status: 'success',
       })
-      refetch()
     } catch (error) {
       console.log(error)
       setTransaction({ loading: true, status: 'error' })
@@ -138,7 +138,7 @@ const PlanBNB: React.FC = () => {
 
   const handlStake = async () => {
     try {
-      if (!signerData || !address) return
+      if (!signer || !address) return
 
       let ref = referrer
 
@@ -149,7 +149,7 @@ const PlanBNB: React.FC = () => {
 
       await stake(
         address,
-        signerData,
+        signer,
         plan,
         amount,
         selectedToken.tokenAddress,
