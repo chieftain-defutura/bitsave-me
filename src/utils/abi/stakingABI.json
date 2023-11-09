@@ -1,72 +1,8 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "changeOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "stakeIndex",
-        "type": "uint256"
-      }
-    ],
-    "name": "claim",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      }
-    ],
-    "name": "claimReferralBonus",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "stakeIndex",
-        "type": "uint256"
-      }
-    ],
-    "name": "Claimed",
-    "type": "event"
   },
   {
     "anonymous": false,
@@ -113,34 +49,6 @@
     "type": "event"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "planId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "referrer",
-        "type": "address"
-      }
-    ],
-    "name": "stake",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
@@ -151,6 +59,12 @@
       },
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
@@ -158,7 +72,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "planId",
+        "name": "stakePeriod",
         "type": "uint256"
       },
       {
@@ -174,22 +88,36 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "planId",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
       },
       {
-        "internalType": "uint256",
-        "name": "duration",
-        "type": "uint256"
-      },
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "calculateReward",
+    "outputs": [
       {
         "internalType": "uint256",
-        "name": "dailyInterestRate",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "updatePlan",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "changeOwner",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -198,11 +126,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_newReferralReward",
+        "name": "_newPercentage",
         "type": "uint256"
       }
     ],
-    "name": "updateReferralReward",
+    "name": "changeReferralRewardPercentage",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -211,24 +139,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_newWithdrawCommission",
+        "name": "_newPercentage",
         "type": "uint256"
       }
     ],
-    "name": "updateWithdrawCommission",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "stakeIndex",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdraw",
+    "name": "changeWithdrawalCommissionPercentage",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -241,58 +156,22 @@
         "type": "address"
       }
     ],
-    "name": "withdrawFunds",
+    "name": "claimReferralBonus",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "stakeIndex",
-        "type": "uint256"
-      }
-    ],
-    "name": "Withdrawn",
-    "type": "event"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
-        "name": "user",
+        "name": "_token",
         "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "stakeIndex",
-        "type": "uint256"
       }
     ],
-    "name": "calculateEarnings",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
+    "name": "claimRewards",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -303,31 +182,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getPlans",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "duration",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "dailyInterestRate",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct StakingContract.Plan[]",
-        "name": "",
-        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
@@ -347,30 +201,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_token",
-        "type": "address"
-      }
-    ],
-    "name": "getStatsOfToken",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -425,6 +255,11 @@
         "internalType": "address",
         "name": "user",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
       }
     ],
     "name": "getUserStakes",
@@ -433,38 +268,72 @@
         "components": [
           {
             "internalType": "uint256",
-            "name": "amount",
+            "name": "balance",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "planId",
+            "name": "firstStakedTime",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "lastClaimTimestamp",
+            "name": "lastStakedTime",
             "type": "uint256"
           },
           {
             "internalType": "uint256",
-            "name": "endTime",
+            "name": "lastWithdrawTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stakePeriod",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "stakeEndTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "plan",
             "type": "uint256"
           },
           {
             "internalType": "address",
-            "name": "tokenAddress",
+            "name": "token",
             "type": "address"
           },
           {
-            "internalType": "enum StakingContract.Status",
-            "name": "status",
-            "type": "uint8"
+            "internalType": "uint256",
+            "name": "reward",
+            "type": "uint256"
           }
         ],
-        "internalType": "struct StakingContract.StakeInfo[]",
+        "internalType": "struct StakingContract.User",
         "name": "",
-        "type": "tuple[]"
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isOldUser",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -484,32 +353,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "plans",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "duration",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "dailyInterestRate",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
-    "name": "REFERRAL_REWARD",
+    "name": "referralRewardPercentage",
     "outputs": [
       {
         "internalType": "uint256",
@@ -591,49 +436,28 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "_token",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "stakes",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
+        "name": "_amount",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "planId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "lastClaimTimestamp",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "endTime",
+        "name": "_stakePeriod",
         "type": "uint256"
       },
       {
         "internalType": "address",
-        "name": "tokenAddress",
+        "name": "referrer",
         "type": "address"
-      },
-      {
-        "internalType": "enum StakingContract.Status",
-        "name": "status",
-        "type": "uint8"
       }
     ],
-    "stateMutability": "view",
+    "name": "stake",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -661,13 +485,58 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
-    "name": "totalStakedAmount",
+    "name": "users",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "balance",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "firstStakedTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastStakedTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastWithdrawTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "stakePeriod",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "stakeEndTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "plan",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "reward",
         "type": "uint256"
       }
     ],
@@ -675,8 +544,39 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawAdminFunds",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
-    "name": "WITHDRAW_COMMISSION",
+    "name": "withdrawalCommissionPercentage",
     "outputs": [
       {
         "internalType": "uint256",

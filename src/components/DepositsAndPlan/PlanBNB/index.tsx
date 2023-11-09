@@ -1,164 +1,208 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import './PlanBNB.scss'
 import ChevronDown from '../../../assets/icons/chevron-down.svg'
 import Button from 'components/Button/Button'
 import autoAnimate from '@formkit/auto-animate'
-import { useAccount } from 'wagmi'
+import {
+  erc20ABI,
+  useAccount,
+  useChainId,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+  useWaitForTransaction,
+} from 'wagmi'
 import { ethers } from 'ethers'
-import TokenAbi from '../../../utils/abi/tokenABI.json'
 import BUSDCoin from '../../../assets/icons/usd-coin.svg'
 import USDCoin from '../../../assets/icons/usdt.png'
 import { useSearchParams } from 'react-router-dom'
 import { useTransactionModal } from 'context/TransactionContext'
-import { useEthersSigner } from 'utils/ethers'
 import {
-  BUSD_TOKEN_ADDRESS,
-  STAKE_CONTRACT_ADDRESS,
-  USDT_TOKEN_ADDRESS,
-} from 'utils/contractAddress'
-import {
-  getIsApproved,
-  getUserContractData,
-  getUserTokenBalance,
-  stake,
-} from 'utils/userMethods'
-import { userStore } from 'store/userStore'
-import Modal from 'components/Model'
+  BUSD_ADDRESS,
+  STAKING_CONTRACT_ADDRESS,
+  USDT_ADDRESS,
+} from 'utils/address'
 
-const tokensLists = [
-  {
-    tokenAddress: USDT_TOKEN_ADDRESS,
-    isApproved: false,
-    name: 'USDT',
-    logo: USDCoin,
-    balance: 0,
-  },
-  {
-    tokenAddress: BUSD_TOKEN_ADDRESS,
-    isApproved: false,
-    name: 'BUSD',
-    logo: BUSDCoin,
-    balance: 0,
-  },
-]
+import { stakingABI } from 'utils/abi/stakingABI'
 
 const MINIMUM_STAKE_AMOUNT = 20
 
 const PlanBNB: React.FC = () => {
   const { address } = useAccount()
-  const referrer = userStore((state) => state.referrer)
-  const updateStatus = userStore((state) => state.updateStatus)
-  const updateUserData = userStore((state) => state.updateUserData)
+  const chainId = useChainId()
   const [searchParams] = useSearchParams()
   const referral_address = searchParams.get('ref')
   const { setTransaction } = useTransactionModal()
-  const [tokens, setTokens] = useState<typeof tokensLists>([])
-  const [selectedToken, setSelectedToken] = useState(tokensLists[0])
-  const [plan, setPlan] = useState('1')
+  const [selectedToken, setSelectedToken] = useState({
+    tokenAddress: USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS],
+    isApproved: false,
+    name: 'USDT',
+    logo: USDCoin,
+    balance: 0,
+  })
+  const [plan, setPlan] = useState('30')
   const [amount, setAmount] = useState('')
   const [dropdown, setDropdown] = useState(false)
   const [totalProfit, setTotalProfit] = useState(0)
   const [dailyProfit, setDailyProfit] = useState(0)
-  const userStakedData = userStore((state) => state.userStakedData)
-  const signer = useEthersSigner()
-  const [registerModal, setRegisterModal] = useState(false)
 
-  const handleGetData = useCallback(async () => {
-    if (address && signer) {
-      try {
-        updateStatus(true)
-        updateUserData(await getUserContractData(address, signer))
-        const modifiedTokens = await Promise.all(
-          tokensLists.map(async (token) => {
-            const allowance = await getIsApproved(
-              address,
-              signer,
-              token.tokenAddress,
-            )
-            const balance = await getUserTokenBalance(
-              address,
-              signer,
-              token.tokenAddress,
-            )
-            return {
-              ...token,
-              isApproved: allowance > 0,
-              balance,
-            }
-          }),
-        )
-        setTokens(modifiedTokens)
-        setSelectedToken(modifiedTokens[0])
-      } catch (error: any) {
-        console.log(error)
-      } finally {
-        updateStatus(false)
-      }
-    }
+  const tokensLists = [
+    {
+      tokenAddress: USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS],
+      isApproved: false,
+      name: 'USDT',
+      logo: USDCoin,
+      balance: 0,
+    },
+    {
+      tokenAddress: BUSD_ADDRESS[chainId as keyof typeof BUSD_ADDRESS],
+      isApproved: false,
+      name: 'BUSD',
+      logo: BUSDCoin,
+      balance: 0,
+    },
+  ]
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, signer])
+  console.log('chainId', chainId)
+  const { data: balanceData } = useContractReads({
+    contracts: [
+      {
+        address: USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS] as any,
+        abi: erc20ABI,
+        functionName: 'balanceOf',
+        args: [address as any],
+      },
+      {
+        address: BUSD_ADDRESS[chainId as keyof typeof BUSD_ADDRESS] as any,
+        abi: erc20ABI,
+        functionName: 'balanceOf',
+        args: [address as any],
+      },
+    ],
+  })
 
-  const handleSetDefaultData = useCallback(() => {
-    setSelectedToken(tokensLists[0])
-  }, [])
+  const { data: allowanceData, refetch } = useContractReads({
+    contracts: [
+      {
+        address: USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS] as any,
+        abi: erc20ABI,
+        functionName: 'allowance',
+        args: [
+          address as any,
+          STAKING_CONTRACT_ADDRESS[
+            chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+          ] as any,
+        ],
+      },
+      {
+        address: BUSD_ADDRESS[chainId as keyof typeof BUSD_ADDRESS] as any,
+        abi: erc20ABI,
+        functionName: 'allowance',
+        args: [
+          address as any,
+          STAKING_CONTRACT_ADDRESS[
+            chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+          ] as any,
+        ],
+      },
+    ],
+  })
 
-  useEffect(() => {
-    handleGetData()
-    handleSetDefaultData()
-  }, [handleGetData, handleSetDefaultData])
+  const { data: referrerData } = useContractRead({
+    address: STAKING_CONTRACT_ADDRESS[
+      chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+    ] as any,
+    abi: stakingABI,
+    functionName: 'getReferrerAddress',
+    args: [address as any],
+  })
+
+  const {
+    write,
+    isError: approveError,
+    data: approveData,
+  } = useContractWrite({
+    address: selectedToken.tokenAddress as any,
+    abi: erc20ABI,
+    functionName: 'approve',
+  })
+  const { isSuccess: approveSuccess } = useWaitForTransaction({
+    hash: approveData?.hash,
+  })
+  const {
+    write: stake,
+    isError: stakeError,
+    data: stakeData,
+  } = useContractWrite({
+    address: STAKING_CONTRACT_ADDRESS[
+      chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+    ] as any,
+    abi: stakingABI,
+    functionName: 'stake',
+  })
+  const { isSuccess: stakeSuccess } = useWaitForTransaction({
+    hash: stakeData?.hash,
+  })
 
   const handleApproveToken = async () => {
-    try {
-      if (!signer || !address) return
+    setTransaction({
+      loading: true,
+      status: 'pending',
+    })
 
-      setTransaction({
-        loading: true,
-        status: 'pending',
-      })
-      const tokenContract = new ethers.Contract(
-        selectedToken.tokenAddress,
-        TokenAbi,
-        signer,
-      )
-      const tx = await tokenContract.increaseAllowance(
-        STAKE_CONTRACT_ADDRESS,
-        ethers.constants.MaxUint256,
-      )
-      await tx.wait()
-      setTransaction({
-        loading: true,
-        status: 'success',
-      })
-    } catch (error) {
-      console.log(error)
-      setTransaction({ loading: true, status: 'error' })
-    }
+    write({
+      args: [
+        STAKING_CONTRACT_ADDRESS[
+          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+        ] as any,
+        ethers.utils.parseEther(amount).toBigInt(),
+      ],
+    })
   }
 
-  const handlStake = async () => {
-    try {
-      if (!signer || !address) return
+  useEffect(() => {
+    if (approveError || stakeError) {
+      setTransaction({ loading: true, status: 'error' })
+    }
+    if (approveSuccess) {
+      setTimeout(() => {
+        setTransaction({ loading: true, status: 'success' })
+        refetch()
+      }, 2000)
+    }
+    if (stakeSuccess) {
+      setTransaction({ loading: true, status: 'success' })
 
-      let ref = referrer
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
+    }
+  }, [
+    approveSuccess,
+    approveError,
+    stakeError,
+    stakeSuccess,
+    setTransaction,
+    refetch,
+  ])
+
+  const handleStake = async () => {
+    try {
+      let ref = referrerData ?? ''
 
       if (referral_address) {
         ref = referral_address
       }
       setTransaction({ loading: true, status: 'pending' })
 
-      await stake(
-        address,
-        signer,
-        plan,
-        amount,
-        selectedToken.tokenAddress,
-        ref,
-      )
-      setTransaction({ loading: true, status: 'success' })
-      setTimeout(() => {
-        window.location.reload()
-      }, 3000)
+      stake({
+        args: [
+          selectedToken.tokenAddress as any,
+          ethers.utils.parseEther(amount).toBigInt(),
+          plan as any,
+          ref as any,
+        ],
+      })
     } catch (error: any) {
       console.log(error.reason)
       setTransaction({ loading: true, status: 'error', message: error.reason })
@@ -173,33 +217,79 @@ const PlanBNB: React.FC = () => {
 
   useEffect(() => {
     const amt = Number(amount)
-    if (amt <= 1000) {
+    if (amt <= 19999) {
       setDailyProfit(0.5)
+      setTotalProfit(0.5 * Number(plan))
     }
-    if (amt > 1000 && amt <= 10000) {
+    if (amt > 19999 && amt <= 50999) {
       setDailyProfit(1)
+      setTotalProfit(1 * Number(plan))
     }
-    if (amt > 10000 && amt <= 50000) {
-      setDailyProfit(2)
+    if (amt > 51000) {
+      setDailyProfit(1.5)
+      setTotalProfit(1.5 * Number(plan))
     }
-    if (amt > 50000) {
-      setDailyProfit(3)
+  }, [amount, setDailyProfit, setTotalProfit, plan])
+
+  const selectedTokenBalance = useMemo(() => {
+    if (
+      selectedToken.tokenAddress ===
+      USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS]
+    ) {
+      if (!balanceData) return 0
+
+      if (balanceData[0].result) {
+        return Number(ethers.utils.formatEther(balanceData[0].result))
+      }
+    } else {
+      if (!balanceData) return 0
+
+      if (balanceData[1].result) {
+        return Number(ethers.utils.formatEther(balanceData[1].result))
+      }
     }
-  }, [amount, setDailyProfit])
-  useEffect(() => {
-    if (plan === '1') {
-      setTotalProfit(dailyProfit * 30)
+
+    return 0
+  }, [balanceData, selectedToken, chainId])
+
+  const isApproved = useMemo(() => {
+    if (
+      selectedToken.tokenAddress ===
+      USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS]
+    ) {
+      if (!allowanceData) return false
+
+      if (allowanceData[0].result) {
+        const allowance = Number(
+          ethers.utils.formatEther(allowanceData[0].result),
+        )
+
+        if (allowance < Number(amount)) {
+          return false
+        }
+
+        return true
+      }
+    } else {
+      if (!allowanceData) return false
+
+      if (allowanceData[1].result) {
+        const allowance = Number(
+          ethers.utils.formatEther(allowanceData[1].result),
+        )
+
+        if (allowance < Number(amount)) {
+          return false
+        }
+
+        return true
+      }
     }
-    if (plan === '2') {
-      setTotalProfit(dailyProfit * 60)
-    }
-    if (plan === '3') {
-      setTotalProfit(dailyProfit * 90)
-    }
-    if (plan === '4') {
-      setTotalProfit(dailyProfit * 120)
-    }
-  }, [dailyProfit, plan])
+
+    return false
+  }, [chainId, allowanceData, selectedToken, amount])
+
+  console.log(isApproved)
 
   return (
     <div className="plan-container">
@@ -207,10 +297,12 @@ const PlanBNB: React.FC = () => {
         <h5>Plan</h5>
         <div className="select-input">
           <select name="" id="" onChange={(e) => setPlan(e.target.value)}>
-            <option value="1">30days</option>
-            <option value="2"> 60days</option>
-            <option value="3">90days</option>
-            <option value="4">120days</option>
+            <option value="30">30 days</option>
+            <option value="60"> 60 days</option>
+            <option value="90">90 days</option>
+            <option value="120">120 days</option>
+            <option value="180">180 days</option>
+            <option value="360">360 days</option>
           </select>
         </div>
 
@@ -247,7 +339,7 @@ const PlanBNB: React.FC = () => {
             <div ref={parent}>
               {dropdown && (
                 <div className="dropDown-list">
-                  {tokens.map((f, index) => {
+                  {tokensLists.map((f, index) => {
                     return (
                       <div
                         className="dropDown-items usdt-img"
@@ -257,10 +349,8 @@ const PlanBNB: React.FC = () => {
                           setDropdown(false)
                         }}
                       >
-                        {/* <img src={f.logo} alt="" />
-                        <p>{f.name}</p> */}
-                        <p>xsjnxjw</p>
-                        <p>zms w</p>
+                        <img src={f.logo} alt="" />
+                        <p>{f.name}</p>
                       </div>
                     )
                   })}
@@ -274,7 +364,7 @@ const PlanBNB: React.FC = () => {
               {new Intl.NumberFormat('en-US', {
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 4,
-              }).format(selectedToken.balance)}
+              }).format(selectedTokenBalance)}
               &nbsp;{selectedToken.name}
             </p>
           </div>
@@ -293,48 +383,40 @@ const PlanBNB: React.FC = () => {
         </div>
 
         <div className="stake-btn">
-          {!selectedToken.isApproved ? (
-            <Button varient="secondary" onClick={() => handleApproveToken()}>
-              Approve
-            </Button>
-          ) : !userStakedData.length ? (
+          {!isApproved ? (
             <Button
-              varient="primary"
-              onClick={() => {
-                setRegisterModal(true)
-              }}
+              varient="secondary"
               disabled={
-                Number(amount) > selectedToken.balance ||
-                !Number(amount) ||
-                Number(amount) < MINIMUM_STAKE_AMOUNT
+                !Number(amount) || Number(amount) < MINIMUM_STAKE_AMOUNT
               }
+              onClick={() => handleApproveToken()}
             >
-              {Number(amount) > selectedToken.balance
+              {Number(amount) > selectedTokenBalance
                 ? 'Insufficient Balance'
                 : !Number(amount)
                 ? 'Enter Amount'
                 : Number(amount) < MINIMUM_STAKE_AMOUNT
-                ? `Min ${MINIMUM_STAKE_AMOUNT} ${selectedToken.name}`
-                : 'Register'}
+                ? `Min 20 ${selectedToken.name}`
+                : 'Approve'}
             </Button>
           ) : (
             <Button
               varient="primary"
               onClick={() => {
-                handlStake()
+                handleStake()
               }}
               disabled={
-                Number(amount) > selectedToken.balance ||
+                Number(amount) > selectedTokenBalance ||
                 !Number(amount) ||
                 Number(amount) < MINIMUM_STAKE_AMOUNT
               }
             >
-              {Number(amount) > selectedToken.balance
+              {Number(amount) > selectedTokenBalance
                 ? 'Insufficient Balance'
                 : !Number(amount)
                 ? 'Enter Amount'
                 : Number(amount) < MINIMUM_STAKE_AMOUNT
-                ? `Min 10 ${selectedToken.name}`
+                ? `Min 20 ${selectedToken.name}`
                 : 'Stake'}
             </Button>
           )}
@@ -349,46 +431,6 @@ const PlanBNB: React.FC = () => {
           </p>
         </div>
       </div>
-      <Modal
-        isOpen={registerModal}
-        handleClose={() => setRegisterModal(false)}
-        className="register-modal"
-      >
-        <div className="modal-content">
-          <h2>
-            Welcome to <span style={{ color: 'var(--primary)' }}>Bit</span>Save
-            platform
-          </h2>
-          <div className="flex">
-            <div className="flex-between">
-              <p>Total amount</p>
-              <b>
-                {amount} {selectedToken.name}
-              </b>
-            </div>
-            <div className="flex-between">
-              <p>Registration Fee</p>
-              <b>10 {selectedToken.name}</b>
-            </div>
-            <div className="flex-between">
-              <p>Staking amount</p>
-              <b>
-                {Number(amount) - 10} {selectedToken.name}
-              </b>
-            </div>
-          </div>
-          <Button
-            varient="primary"
-            onClick={() => {
-              setRegisterModal(false)
-              handlStake()
-            }}
-            disabled={Number(amount) > selectedToken.balance || !Number(amount)}
-          >
-            Register and stake
-          </Button>
-        </div>
-      </Modal>
     </div>
   )
 }
