@@ -1,54 +1,117 @@
-import { tokensLists } from 'constants/tokenList'
-import React, { useCallback, useEffect, useState } from 'react'
-import { getStatsOfToken } from 'utils/userMethods'
-import { ITotalBNB } from './TotalBNB'
+import React, { useMemo } from 'react'
+import { useChainId, useContractReads } from 'wagmi'
+import { ethers } from 'ethers'
+
 import './TotalBNB.scss'
+import { stakingABI } from 'utils/abi/stakingABI'
+import {
+  BUSD_ADDRESS,
+  STAKING_CONTRACT_ADDRESS,
+  USDT_ADDRESS,
+} from 'utils/address'
 
 const TotalBNB: React.FC = () => {
-  const [data, setData] = useState<typeof ITotalBNB>(ITotalBNB)
+  const chainId = useChainId()
 
-  const handleGetData = useCallback(async () => {
-    try {
-      const statsData = await getStatsOfToken(tokensLists)
-      if (!statsData) return
-      const newData = [...data]
-      newData[0].bnb = statsData[0].totalStaked
-      newData[1].bnb = statsData[0].totalReferralRewards
-      newData[2].bnb = statsData[1].totalStaked
-      newData[3].bnb = statsData[1].totalReferralRewards
-      setData(newData)
-    } catch (error) {
-      console.log(error)
+  const { data: totalStakeAmount } = useContractReads({
+    contracts: [
+      {
+        address: STAKING_CONTRACT_ADDRESS[
+          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+        ] as any,
+        abi: stakingABI,
+        functionName: 'totalStakeAmount',
+        args: [USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS] as any],
+      },
+      {
+        address: STAKING_CONTRACT_ADDRESS[
+          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+        ] as any,
+        abi: stakingABI,
+        functionName: 'totalStakeAmount',
+        args: [BUSD_ADDRESS[chainId as keyof typeof BUSD_ADDRESS] as any],
+      },
+    ],
+  })
+  const { data: totalReferralsAmount } = useContractReads({
+    contracts: [
+      {
+        address: STAKING_CONTRACT_ADDRESS[
+          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+        ] as any,
+        abi: stakingABI,
+        functionName: 'totalReferralsAmount',
+        args: [USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS] as any],
+      },
+      {
+        address: STAKING_CONTRACT_ADDRESS[
+          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+        ] as any,
+        abi: stakingABI,
+        functionName: 'totalReferralsAmount',
+        args: [BUSD_ADDRESS[chainId as keyof typeof BUSD_ADDRESS] as any],
+      },
+    ],
+  })
+
+  const formattedTotalStakeAmount = useMemo(() => {
+    if (!totalStakeAmount) return 0
+
+    if (
+      totalStakeAmount[0].result !== undefined &&
+      totalStakeAmount[1].result !== undefined
+    ) {
+      return (
+        Number(ethers.utils.formatEther(totalStakeAmount[0].result)) +
+        Number(ethers.utils.formatEther(totalStakeAmount[1].result))
+      )
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    return 0
+  }, [totalStakeAmount])
 
-  useEffect(() => {
-    handleGetData()
-  }, [handleGetData])
+  const formattedTotalReferralsAmount = useMemo(() => {
+    if (!totalReferralsAmount) return 0
+
+    if (
+      totalReferralsAmount[0].result !== undefined &&
+      totalReferralsAmount[1].result !== undefined
+    ) {
+      return (
+        Number(ethers.utils.formatEther(totalReferralsAmount[0].result)) +
+        Number(ethers.utils.formatEther(totalReferralsAmount[1].result))
+      )
+    }
+
+    return 0
+  }, [totalReferralsAmount])
 
   return (
     <div className="total-bnb-wrapper">
       <div className="mx">
         <div className="total-bnb-container">
-          {ITotalBNB.map((f, index) => {
-            return (
-              <div key={index} className="total-bnb-content">
-                <p>{f.title}</p>
-                <h1>
-                  <span>
-                    {new Intl.NumberFormat('en-US', {
-                      maximumFractionDigits: 0,
-                      minimumFractionDigits: 0,
-                    }).format(f.bnb)}
-                    &nbsp;{f.symbol}
-                  </span>
-                </h1>
-                {/* <h6>{f.dollar}</h6> */}
-              </div>
-            )
-          })}
+          <div className="total-bnb-content">
+            <p>Total Deposits</p>
+            <h1>
+              <span>
+                {new Intl.NumberFormat('en-US', {
+                  maximumFractionDigits: 0,
+                  minimumFractionDigits: 0,
+                }).format(formattedTotalStakeAmount)}
+              </span>
+            </h1>
+          </div>
+          <div className="total-bnb-content">
+            <p>Total Referral Rewards</p>
+            <h1>
+              <span>
+                {new Intl.NumberFormat('en-US', {
+                  maximumFractionDigits: 0,
+                  minimumFractionDigits: 0,
+                }).format(formattedTotalReferralsAmount)}
+              </span>
+            </h1>
+          </div>
         </div>
       </div>
     </div>

@@ -16,11 +16,12 @@ const Hero: React.FC = () => {
               <span>Bit</span>Save
             </h1>
             <p>
-              Stake your USDT, BUSD & earn 0.5% to 3% daily for 30 -120 days
-              with Bitsave. Bitsave is managed by a group of professional
-              traders who use their extensive expertise and advanced trading
-              bots to navigate the complex cryptocurrency market. Join the 10%
-              profitable traders in the crypto industry and make passive income.
+              Our innovative staking algorithm allows you to maximize your
+              earnings without the need for constant trading or monitoring the
+              market. With our user-friendly interface, you can easily lock your
+              USDT & BUSD from 30- 360 days and start earning passive income in
+              no time. Join us today and unlock the potential of passive income
+              with our cutting-edge crypto staking platform.
             </p>
             <div className="deposit-btn">
               <a href="#deposit">

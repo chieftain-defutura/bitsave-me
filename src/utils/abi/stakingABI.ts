@@ -16,6 +16,25 @@ export const stakingABI = [
       {
         indexed: true,
         internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+    ],
+    name: 'Claimed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
         name: 'referrer',
         type: 'address',
       },
@@ -83,6 +102,25 @@ export const stakingABI = [
       },
     ],
     name: 'Staked',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'user',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+    ],
+    name: 'Withdrawn',
     type: 'event',
   },
   {
@@ -469,6 +507,25 @@ export const stakingABI = [
       },
     ],
     name: 'totalReferralsAmount',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'totalStakeAmount',
     outputs: [
       {
         internalType: 'uint256',
