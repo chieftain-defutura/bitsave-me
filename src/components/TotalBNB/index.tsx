@@ -33,26 +33,26 @@ const TotalBNB: React.FC = () => {
       },
     ],
   })
-  const { data: totalReferralsAmount } = useContractReads({
-    contracts: [
-      {
-        address: STAKING_CONTRACT_ADDRESS[
-          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
-        ] as any,
-        abi: stakingABI,
-        functionName: 'totalReferralsAmount',
-        args: [USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS] as any],
-      },
-      {
-        address: STAKING_CONTRACT_ADDRESS[
-          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
-        ] as any,
-        abi: stakingABI,
-        functionName: 'totalReferralsAmount',
-        args: [BUSD_ADDRESS[chainId as keyof typeof BUSD_ADDRESS] as any],
-      },
-    ],
-  })
+  // const { data: totalReferralsAmount } = useContractReads({
+  //   contracts: [
+  //     {
+  //       address: STAKING_CONTRACT_ADDRESS[
+  //         chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+  //       ] as any,
+  //       abi: stakingABI,
+  //       functionName: 'totalReferralsAmount',
+  //       args: [USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS] as any],
+  //     },
+  //     {
+  //       address: STAKING_CONTRACT_ADDRESS[
+  //         chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+  //       ] as any,
+  //       abi: stakingABI,
+  //       functionName: 'totalReferralsAmount',
+  //       args: [BUSD_ADDRESS[chainId as keyof typeof BUSD_ADDRESS] as any],
+  //     },
+  //   ],
+  // })
 
   const formattedTotalStakeAmount = useMemo(() => {
     if (!totalStakeAmount) return 0
@@ -70,21 +70,21 @@ const TotalBNB: React.FC = () => {
     return 0
   }, [totalStakeAmount])
 
-  const formattedTotalReferralsAmount = useMemo(() => {
-    if (!totalReferralsAmount) return 0
+  // const formattedTotalReferralsAmount = useMemo(() => {
+  //   if (!totalReferralsAmount) return 0
 
-    if (
-      totalReferralsAmount[0].result !== undefined &&
-      totalReferralsAmount[1].result !== undefined
-    ) {
-      return (
-        Number(ethers.utils.formatEther(totalReferralsAmount[0].result)) +
-        Number(ethers.utils.formatEther(totalReferralsAmount[1].result))
-      )
-    }
+  //   if (
+  //     totalReferralsAmount[0].result !== undefined &&
+  //     totalReferralsAmount[1].result !== undefined
+  //   ) {
+  //     return (
+  //       Number(ethers.utils.formatEther(totalReferralsAmount[0].result)) +
+  //       Number(ethers.utils.formatEther(totalReferralsAmount[1].result))
+  //     )
+  //   }
 
-    return 0
-  }, [totalReferralsAmount])
+  //   return 0
+  // }, [totalReferralsAmount])
 
   return (
     <div className="total-bnb-wrapper">
@@ -101,7 +101,7 @@ const TotalBNB: React.FC = () => {
               </span>
             </h1>
           </div>
-          <div className="total-bnb-content">
+          {/* <div className="total-bnb-content">
             <p>Total Referral Rewards</p>
             <h1>
               <span>
@@ -111,7 +111,7 @@ const TotalBNB: React.FC = () => {
                 }).format(formattedTotalReferralsAmount)}
               </span>
             </h1>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

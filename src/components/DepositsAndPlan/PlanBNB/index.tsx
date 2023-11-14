@@ -160,32 +160,6 @@ const PlanBNB: React.FC = () => {
     })
   }
 
-  useEffect(() => {
-    if (approveError || stakeError) {
-      setTransaction({ loading: true, status: 'error' })
-    }
-    if (approveSuccess) {
-      setTimeout(() => {
-        setTransaction({ loading: true, status: 'success' })
-        refetch()
-      }, 2000)
-    }
-    if (stakeSuccess) {
-      setTransaction({ loading: true, status: 'success' })
-
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
-    }
-  }, [
-    approveSuccess,
-    approveError,
-    stakeError,
-    stakeSuccess,
-    setTransaction,
-    refetch,
-  ])
-
   const handleStake = async () => {
     try {
       let ref = referrerData ?? ''
@@ -208,6 +182,51 @@ const PlanBNB: React.FC = () => {
       setTransaction({ loading: true, status: 'error', message: error.reason })
     }
   }
+
+  useEffect(() => {
+    if (approveError) {
+      setTransaction({ loading: true, status: 'error' })
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [approveError])
+
+  useEffect(() => {
+    if (stakeError) {
+      setTransaction({ loading: true, status: 'error' })
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stakeError])
+
+  useEffect(() => {
+    if (approveSuccess) {
+      setTimeout(() => {
+        setTransaction({ loading: true, status: 'success' })
+        refetch()
+        handleStake()
+      }, 2000)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [approveSuccess])
+
+  useEffect(() => {
+    if (stakeSuccess) {
+      setTransaction({
+        loading: true,
+        status: 'success',
+        message: 'staked successfully',
+      })
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stakeSuccess])
+
   //auto animate
   const parent = useRef(null)
 
@@ -384,12 +403,31 @@ const PlanBNB: React.FC = () => {
 
         <div className="stake-btn">
           {!isApproved ? (
+            // <Button
+            //   varient="secondary"
+            //   disabled={
+            //     !Number(amount) || Number(amount) < MINIMUM_STAKE_AMOUNT
+            //   }
+            //   onClick={() => handleApproveToken()}
+            // >
+            //   {Number(amount) > selectedTokenBalance
+            //     ? 'Insufficient Balance'
+            //     : !Number(amount)
+            //     ? 'Enter Amount'
+            //     : Number(amount) < MINIMUM_STAKE_AMOUNT
+            //     ? `Min 20 ${selectedToken.name}`
+            //     : 'Approve'}
+            // </Button>
             <Button
-              varient="secondary"
+              varient="primary"
+              onClick={() => {
+                handleApproveToken()
+              }}
               disabled={
-                !Number(amount) || Number(amount) < MINIMUM_STAKE_AMOUNT
+                Number(amount) > selectedTokenBalance ||
+                !Number(amount) ||
+                Number(amount) < MINIMUM_STAKE_AMOUNT
               }
-              onClick={() => handleApproveToken()}
             >
               {Number(amount) > selectedTokenBalance
                 ? 'Insufficient Balance'
@@ -397,7 +435,7 @@ const PlanBNB: React.FC = () => {
                 ? 'Enter Amount'
                 : Number(amount) < MINIMUM_STAKE_AMOUNT
                 ? `Min 20 ${selectedToken.name}`
-                : 'Approve'}
+                : 'Stake'}
             </Button>
           ) : (
             <Button

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 // import React, { useCallback, useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
@@ -9,12 +9,22 @@ import ReferralDepositsImg from '../../assets/images/referral-deposits-img.png'
 // import USDT from '../../assets/icons/usdt.png'
 import autoAnimate from '@formkit/auto-animate'
 import './Deposits.scss'
-import { useAccount } from 'wagmi'
-import { claimReferralBonus, getUserReferralData } from 'utils/userMethods'
-import { tokensLists } from 'constants/tokenList'
+import {
+  useAccount,
+  useChainId,
+  useContractRead,
+  useContractReads,
+  useContractWrite,
+  useWaitForTransaction,
+} from 'wagmi'
 import { useTransactionModal } from 'context/TransactionContext'
-import { userStore } from 'store/userStore'
-import { useEthersSigner } from 'utils/ethers'
+import {
+  BUSD_ADDRESS,
+  STAKING_CONTRACT_ADDRESS,
+  USDT_ADDRESS,
+} from 'utils/address'
+import { stakingABI } from 'utils/abi/stakingABI'
+import { ethers } from 'ethers'
 // import { ArrElement } from 'constants/types'
 
 const getBaseUrl = () => {
@@ -33,21 +43,62 @@ const Deposits: React.FC = () => {
     parent.current && autoAnimate(parent.current)
   }, [parent])
   const { address } = useAccount()
+  const chainId = useChainId()
   const [copied, setCopied] = useState(false)
   const { setTransaction } = useTransactionModal()
-  const signer = useEthersSigner()
-  const [referralData, setReferralData] = useState<{
-    referralList: string[]
-    referralRewards: {
-      tokenAddress: string
-      isApproved: boolean
-      name: string
-      logo: string
-      balance: number
-      rewards: number
-    }[]
-  } | null>(null)
-  const userStakedData = userStore((state) => state.userStakedData)
+
+  const { data: isOldUser } = useContractRead({
+    address: STAKING_CONTRACT_ADDRESS[
+      chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+    ] as any,
+    abi: stakingABI,
+    functionName: 'isOldUser',
+    args: [address as any],
+  })
+  const { data: referralsList } = useContractRead({
+    address: STAKING_CONTRACT_ADDRESS[
+      chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+    ] as any,
+    abi: stakingABI,
+    functionName: 'getUserReferralList',
+    args: [address as any],
+  })
+
+  const { data: referralRewards } = useContractReads({
+    contracts: [
+      {
+        address: STAKING_CONTRACT_ADDRESS[
+          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+        ] as any,
+        abi: stakingABI,
+        functionName: 'getUserReferralRewards',
+        args: [
+          address as any,
+          USDT_ADDRESS[chainId as keyof typeof USDT_ADDRESS] as any,
+        ],
+      },
+      {
+        address: STAKING_CONTRACT_ADDRESS[
+          chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+        ] as any,
+        abi: stakingABI,
+        functionName: 'getUserReferralRewards',
+        args: [
+          address as any,
+          BUSD_ADDRESS[chainId as keyof typeof BUSD_ADDRESS] as any,
+        ],
+      },
+    ],
+  })
+
+  const { data, isError, write } = useContractWrite({
+    address: STAKING_CONTRACT_ADDRESS[
+      chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+    ] as any,
+    abi: stakingABI,
+    functionName: 'claimReferralBonus',
+  })
+  const { isSuccess } = useWaitForTransaction({ hash: data?.hash })
   // const [selectedDropDown, setSelectedDropDown] =
   //   useState<ArrElement<typeof tokensLists>>()
 
@@ -61,30 +112,26 @@ const Deposits: React.FC = () => {
     }
   }, [copied])
 
-  const handleGetReferralData = useCallback(async () => {
-    if (address && signer) {
-      try {
-        setReferralData(await getUserReferralData(address, signer, tokensLists))
-      } catch (error: any) {
-        console.log(error)
-      }
-    }
-  }, [address, signer])
-
   useEffect(() => {
-    handleGetReferralData()
-  }, [handleGetReferralData])
-
-  const handleClaim = async (tokenAddress: string) => {
-    try {
-      if (!address || !signer) return
-
-      setTransaction({ loading: true, status: 'pending' })
-      await claimReferralBonus(address, signer, tokenAddress)
-      setTransaction({ loading: true, status: 'success' })
-    } catch (error) {
+    if (isError) {
       setTransaction({ loading: true, status: 'error' })
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError])
+
+  useEffect(() => {
+    if (isSuccess) {
+      setTransaction({ loading: true, status: 'success' })
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess])
+
+  const handleClaim = async (tokenAddress: string) => {
+    setTransaction({ loading: true, status: 'pending' })
+
+    write({ args: [tokenAddress as any] })
   }
 
   return (
@@ -105,22 +152,15 @@ const Deposits: React.FC = () => {
                 <input
                   type="search"
                   readOnly
-                  value={
-                    userStakedData.length > 0
-                      ? `${getBaseUrl()}?ref=${address}`
-                      : ''
-                  }
-                  placeholder="You will get your ref link after investing"
+                  value={isOldUser ? `${getBaseUrl()}?ref=${address}` : ''}
+                  placeholder="You will get your ref link after staking"
                 />
                 <div className="copy-btn">
                   <CopyToClipboard
                     text={`${getBaseUrl()}?ref=${address}`}
                     onCopy={() => setCopied(true)}
                   >
-                    <Button
-                      varient="primary"
-                      disabled={userStakedData.length <= 0}
-                    >
+                    <Button varient="primary" disabled={!isOldUser}>
                       {copied ? 'Copied' : 'Copy'}
                     </Button>
                   </CopyToClipboard>
@@ -129,7 +169,7 @@ const Deposits: React.FC = () => {
 
               <div className="total-referrals">
                 <h5>Total REFERRALS</h5>
-                <h1>{referralData?.referralList.length}</h1>
+                <h1>{referralsList?.length ?? 0}</h1>
               </div>
 
               {/* <div className="dropDown">
@@ -171,28 +211,41 @@ const Deposits: React.FC = () => {
                 <div>
                   {/* <h5>Total REFERRAL EARNED</h5>
                   <h1>0.000</h1> */}
-                  {referralData?.referralRewards.map((data, index) => (
-                    <div className="referral-content" key={index}>
-                      <div>
-                        <h5>Total REFERRAL EARNED ({data.name})</h5>
-                        <h1>
-                          {new Intl.NumberFormat('en-US', {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 4,
-                          }).format(data.rewards)}
-                        </h1>
+                  {referralRewards &&
+                    referralRewards[0]['result'] === undefined && (
+                      <div className="referral-content">
+                        <div>
+                          <h5>Total REFERRAL EARNED (USDT)</h5>
+                          <h1>
+                            {new Intl.NumberFormat('en-US', {
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 4,
+                            }).format(
+                              Number(
+                                ethers.utils.formatEther(
+                                  referralRewards[0]['result'] ?? '0',
+                                ),
+                              ),
+                            )}
+                          </h1>
+                        </div>
+                        <div className="Claim-btn">
+                          <Button
+                            varient="secondary"
+                            onClick={() =>
+                              handleClaim(
+                                USDT_ADDRESS[
+                                  chainId as keyof typeof USDT_ADDRESS
+                                ] as any,
+                              )
+                            }
+                            // disabled={data.rewards <= 0}
+                          >
+                            Claim
+                          </Button>
+                        </div>
                       </div>
-                      <div className="Claim-btn">
-                        <Button
-                          varient="secondary"
-                          onClick={() => handleClaim(data.tokenAddress)}
-                          disabled={data.rewards <= 0}
-                        >
-                          Claim
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                    )}
                 </div>
               </div>
             </div>

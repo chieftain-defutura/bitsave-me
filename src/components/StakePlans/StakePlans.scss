@@ -30,7 +30,7 @@
   }
   .stake-plans-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     margin: 32px 0;
     border-top: 1px solid rgba(119, 119, 119, 0.3);
     @media (max-width: 720px) {
@@ -40,7 +40,7 @@
       text-align: center;
       border-right: 1px solid rgba(119, 119, 119, 0.3);
       margin-top: 32px;
-      &:nth-child(4) {
+      &:last-child {
         border-right: none;
       }
       @media (max-width: 955px) {
