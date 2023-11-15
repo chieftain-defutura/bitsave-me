@@ -230,7 +230,7 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
                     <Button
                       varient="secondary"
                       disabled={
-                        Number(data.stakeEndTime.toString()) * 1000 >
+                        Number(data?.stakeEndTime.toString()) * 1000 >
                         new Date().getTime()
                       }
                       onClick={handleWithdraw}
@@ -240,14 +240,14 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
                   </div>
                   <div className="flex">
                     {!dayjs().isAfter(
-                      Number(data.stakeEndTime.toString()) * 1000,
+                      Number(data?.stakeEndTime.toString()) * 1000,
                     ) && (
                       <Button varient="waring" onClick={handleClaim}>
                         Claim
                       </Button>
                     )}
                     {!dayjs().isAfter(
-                      Number(data.stakeEndTime.toString()) * 1000,
+                      Number(data?.stakeEndTime.toString()) * 1000,
                     ) && (
                       <Button varient="waring" onClick={handleRestake}>
                         Restake

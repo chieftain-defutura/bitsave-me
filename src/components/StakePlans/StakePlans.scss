@@ -36,6 +36,9 @@
     @media (max-width: 720px) {
       grid-template-columns: repeat(2, 1fr);
     }
+    @media (max-width: 600px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
     .stake-plans-items {
       text-align: center;
       border-right: 1px solid rgba(119, 119, 119, 0.3);
