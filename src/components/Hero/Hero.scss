@@ -17,6 +17,11 @@
       padding: 42px;
     }
 
+    @media (max-width: 600px) {
+      gap: 0px;
+      padding: 70px 42px 42px;
+    }
+
     .hero-content {
       display: flex;
       flex-direction: column;
