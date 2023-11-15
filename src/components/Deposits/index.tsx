@@ -64,7 +64,7 @@ const Deposits: React.FC = () => {
     args: [address as any],
   })
 
-  const { data: referralRewards } = useContractReads({
+  const { data: referralRewards, refetch } = useContractReads({
     contracts: [
       {
         address: STAKING_CONTRACT_ADDRESS[
@@ -123,6 +123,10 @@ const Deposits: React.FC = () => {
   useEffect(() => {
     if (isSuccess) {
       setTransaction({ loading: true, status: 'success' })
+
+      setTimeout(() => {
+        refetch()
+      }, 3000)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -212,7 +216,7 @@ const Deposits: React.FC = () => {
                   {/* <h5>Total REFERRAL EARNED</h5>
                   <h1>0.000</h1> */}
                   {referralRewards &&
-                    referralRewards[0]['result'] === undefined && (
+                    referralRewards[0]['result'] !== undefined && (
                       <div className="referral-content">
                         <div>
                           <h5>Total REFERRAL EARNED (USDT)</h5>
@@ -232,10 +236,59 @@ const Deposits: React.FC = () => {
                         <div className="Claim-btn">
                           <Button
                             varient="secondary"
+                            disabled={
+                              !Number(
+                                ethers.utils.formatEther(
+                                  referralRewards[0]['result'] ?? '0',
+                                ),
+                              )
+                            }
                             onClick={() =>
                               handleClaim(
                                 USDT_ADDRESS[
                                   chainId as keyof typeof USDT_ADDRESS
+                                ] as any,
+                              )
+                            }
+                            // disabled={data.rewards <= 0}
+                          >
+                            Claim
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  {referralRewards &&
+                    referralRewards[1]['result'] !== undefined && (
+                      <div className="referral-content">
+                        <div>
+                          <h5>Total REFERRAL EARNED (BUSD)</h5>
+                          <h1>
+                            {new Intl.NumberFormat('en-US', {
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 4,
+                            }).format(
+                              Number(
+                                ethers.utils.formatEther(
+                                  referralRewards[1]['result'] ?? '0',
+                                ),
+                              ),
+                            )}
+                          </h1>
+                        </div>
+                        <div className="Claim-btn">
+                          <Button
+                            varient="secondary"
+                            disabled={
+                              !Number(
+                                ethers.utils.formatEther(
+                                  referralRewards[1]['result'] ?? '0',
+                                ),
+                              )
+                            }
+                            onClick={() =>
+                              handleClaim(
+                                BUSD_ADDRESS[
+                                  chainId as keyof typeof BUSD_ADDRESS
                                 ] as any,
                               )
                             }

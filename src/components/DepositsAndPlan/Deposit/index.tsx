@@ -192,9 +192,12 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
                       Withdrawal
                     </Button>
                   </div>
-                  <Button varient="waring" onClick={handleClaim}>
-                    Claim
-                  </Button>
+                  {Number(data.stakeEndTime.toString()) * 1000 <
+                    new Date().getTime() && (
+                    <Button varient="waring" onClick={handleClaim}>
+                      Claim
+                    </Button>
+                  )}
                 </>
               )
             }

@@ -9,7 +9,7 @@ export const BUSD_ADDRESS = {
 }
 
 export const STAKING_CONTRACT_ADDRESS = {
-  97: '0x50029bE4c6120D660cFC743D2F21a54794C16870',
+  97: '0xEfa1453BE69897c2b4b1799bA1540E33E84eebAf',
 }
 
 export const stakingContractConfig = (chainId: number) => {
