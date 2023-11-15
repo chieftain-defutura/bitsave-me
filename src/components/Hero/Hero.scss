@@ -1,6 +1,10 @@
 .hero-wrapper {
   height: calc(100% - 100px);
 
+  @media (max-width: 600px) {
+    height: fit-content;
+  }
+
   .mx {
     height: inherit;
     display: flex;
