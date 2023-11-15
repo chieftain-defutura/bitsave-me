@@ -92,6 +92,22 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
     hash: withdrawData?.hash,
   })
 
+  const {
+    data: restakeData,
+    isError: restakeError,
+    write: restake,
+  } = useContractWrite({
+    address: STAKING_CONTRACT_ADDRESS[
+      chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+    ] as any,
+    abi: stakingABI,
+    functionName: 'restake',
+    args: [data?.token as any],
+  })
+  const { isSuccess: restakeSuccess } = useWaitForTransaction({
+    hash: restakeData?.hash,
+  })
+
   useEffect(() => {
     if (claimSuccess || withdrawSuccess) {
       setTransaction({ loading: true, status: 'success' })
@@ -100,10 +116,40 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
         window.location.reload()
       }, 3000)
     }
-    if (claimError || withdrawError) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [claimSuccess, withdrawSuccess])
+
+  useEffect(() => {
+    if (withdrawError) {
       setTransaction({ loading: true, status: 'error' })
     }
-  }, [claimError, claimSuccess, withdrawError, withdrawSuccess, setTransaction])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [withdrawError])
+
+  useEffect(() => {
+    if (claimError) {
+      setTransaction({ loading: true, status: 'error' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [claimError])
+
+  useEffect(() => {
+    if (restakeSuccess) {
+      setTransaction({ loading: true, status: 'success' })
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 3000)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restakeSuccess])
+
+  useEffect(() => {
+    if (restakeError) {
+      setTransaction({ loading: true, status: 'error' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restakeError])
 
   const handleClaim = async () => {
     setTransaction({ loading: true, status: 'pending' })
@@ -115,17 +161,17 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
     writeWithdraw({ args: [data?.token as any] })
   }
 
+  const handleRestake = async () => {
+    setTransaction({ loading: true, status: 'pending' })
+    restake({ args: [data?.token as any] })
+  }
+
   if (!data || !data['balance']) return null
 
   const lastWithdrawTime = Number(data?.lastWithdrawTime.toString()) * 1000
   const stakeEndTime = Number(data.stakeEndTime.toString()) * 1000
   const rewards = Number(ethers.utils.formatEther(data?.reward) ?? '0')
-  const availableRewards = dayjs(
-    Number(data?.firstStakedTime.toString()) * 1000,
-  )
-    .add(30, 'minutes')
-    .toDate()
-  console.log(availableRewards)
+
   return (
     <div className="details">
       <div className="flex-container">
@@ -192,12 +238,22 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
                       Withdrawal
                     </Button>
                   </div>
-                  {Number(data.stakeEndTime.toString()) * 1000 <
-                    new Date().getTime() && (
-                    <Button varient="waring" onClick={handleClaim}>
-                      Claim
-                    </Button>
-                  )}
+                  <div className="flex">
+                    {!dayjs().isAfter(
+                      Number(data.stakeEndTime.toString()) * 1000,
+                    ) && (
+                      <Button varient="waring" onClick={handleClaim}>
+                        Claim
+                      </Button>
+                    )}
+                    {!dayjs().isAfter(
+                      Number(data.stakeEndTime.toString()) * 1000,
+                    ) && (
+                      <Button varient="waring" onClick={handleRestake}>
+                        Restake
+                      </Button>
+                    )}
+                  </div>
                 </>
               )
             }
