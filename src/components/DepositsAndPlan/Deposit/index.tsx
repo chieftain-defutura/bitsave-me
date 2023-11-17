@@ -209,7 +209,7 @@ const DepositData: React.FC<IStakedData & { index: number }> = ({
       <div className="buttons">
         <ReactCountdown
           date={dayjs(Number(data?.firstStakedTime.toString()) * 1000)
-            .add(30, 'minute')
+            .add(30, 'days')
             .toDate()}
           renderer={({ completed, days, minutes, seconds, hours }) => {
             if (!completed) {
