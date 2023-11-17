@@ -7,6 +7,7 @@ import Borrow from 'page/borrow'
 import Navigation from 'components/Navigation'
 import Buy from 'page/buy'
 import Sell from 'page/sell'
+import Admin from 'page/Admin'
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
         <Route path="/borrow" element={<Borrow />} />
         <Route path="/buy" element={<Buy />} />
         <Route path="/sell" element={<Sell />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </>
   )

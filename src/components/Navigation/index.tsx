@@ -7,10 +7,15 @@ import Logo from '../../assets/images/footer-logo.png'
 import Menu from '../../assets/icons/menu.svg'
 import Close from '../../assets/icons/close.svg'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useAccount, useChainId, useContractRead } from 'wagmi'
+import { STAKING_CONTRACT_ADDRESS } from 'utils/address'
+import { stakingABI } from 'utils/abi/stakingABI'
 
 const Navigation: React.FC = () => {
   const [Active, setActive] = useState('true')
   const [openClose, setOpenClose] = useState(false)
+  const { address } = useAccount()
+  const chainId = useChainId()
 
   useEffect(() => {
     if (openClose) {
@@ -21,6 +26,14 @@ const Navigation: React.FC = () => {
       document.body.style.height = 'initial'
     }
   }, [openClose])
+
+  const { data } = useContractRead({
+    address: STAKING_CONTRACT_ADDRESS[
+      chainId as keyof typeof STAKING_CONTRACT_ADDRESS
+    ] as any,
+    abi: stakingABI,
+    functionName: 'getOwner',
+  })
 
   const renderLinks = (
     <div className="nav">
@@ -46,6 +59,13 @@ const Navigation: React.FC = () => {
           </p>
         </div>
       </Link>
+      {data && data.toLowerCase() === address?.toLowerCase() && (
+        <Link to="/admin">
+          <div onClick={() => setOpenClose(false)}>
+            <p>Admin</p>
+          </div>
+        </Link>
+      )}
     </div>
   )
 
