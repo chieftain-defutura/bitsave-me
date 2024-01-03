@@ -1,5 +1,5 @@
 import React from 'react'
-import FooterLogo from '../../assets/images/footer-logo.png'
+import FooterLogo from '../../assets/logo/logo.jpg'
 import { ReactComponent as Telegram } from '../../assets/icons/Telegram.svg'
 // import { ReactComponent as Instagram } from '../../assets/icons/instagram.svg'
 // import { ReactComponent as Linkedin } from '../../assets/icons/linkedin.svg'
