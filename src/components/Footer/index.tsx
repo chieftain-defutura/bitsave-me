@@ -39,7 +39,7 @@ const Footer: React.FC = () => {
         </div>
         <div className="footer-end">
           <p>
-            Copyright © 2022 <span>Bit</span>save ® All right reserved
+            Copyright © 2022 <span>Bit</span>aid ® All right reserved
           </p>
         </div>
       </div>

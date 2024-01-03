@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Web3Button } from '@web3modal/react'
 import './Navigation.scss'
 
-import Logo from '../../assets/images/footer-logo.png'
+import Logo from '../../assets/logo/logo.jpg'
 import Menu from '../../assets/icons/menu.svg'
 import Close from '../../assets/icons/close.svg'
 import { AnimatePresence, motion } from 'framer-motion'

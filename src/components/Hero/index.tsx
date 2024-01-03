@@ -6,6 +6,7 @@ import CoinThree from '../../assets/icons/usdt.png'
 import CoinFour from '../../assets/images/coin-img-4.png'
 import Robot from '../../assets/images/robot-img.png'
 import Button from 'components/Button/Button'
+
 const Hero: React.FC = () => {
   return (
     <div className="hero-wrapper">
@@ -13,7 +14,7 @@ const Hero: React.FC = () => {
         <div className="hero-container">
           <div className="hero-content">
             <h1>
-              <span>Bit</span>Save
+              <span>Bit</span>aid
             </h1>
             <p>
               Our innovative staking algorithm allows you to maximize your
